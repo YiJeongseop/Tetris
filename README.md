@@ -11,7 +11,9 @@ pip install pygame
 ↓ go Down
 ```
 
-![tetris](https://user-images.githubusercontent.com/112690335/193194880-3ac682bf-3acd-4f82-94f6-e09b6d312cea.jpg)
+<p align="left">
+<img src="https://github.com/YiJeongseop/Tetris-Python/assets/112690335/5e545ded-5729-4a05-bd62-9bae939bd12d">
+</p>
 
 ## Sound Source
 

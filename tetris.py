@@ -800,7 +800,7 @@ if os.path.isfile(PATH) != True:
     cur = con.cursor() # You can call execute() after creating Cursor Object 
     cur.execute("CREATE TABLE best (Score, AverageSpeed)") 
     cur.execute("INSERT INTO best (Score, AverageSpeed) VALUES (0, 0)")
-    con.commit() # Save (commit) the changes / 변경사항 저장
+    con.commit() # Save (commit) the changes
 else:
     con = sqlite3.connect("best.sqlite")
     cur = con.cursor()

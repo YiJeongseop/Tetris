@@ -1,35 +1,35 @@
-import pygame
+import pygame # https://www.pygame.org/docs/
 from pygame.locals import *
 from pygame import mixer
 import random
 import time
-import sqlite3
+import sqlite3 # https://docs.python.org/3.8/library/sqlite3.html
 import os
 
 
 score = 0
 gameover = False
-average_speed = 0 # 블록을 놓는 평균 속도
-block_count = 0 # 만들어진 블록 개수
-total_time = 0 # 블록을 놓는데 걸린 시간들의 합
-start_time = 0 # 블록이 처음 생겼을 때의 시간
+average_speed = 0 # Average time it took to put a block
+block_count = 0 # How many blocks were made?
+total_time = 0 # Total time it took to put a block
+start_time = 0 # Time when the block was first created
 
 class BackgroundBlock:
     def __init__(self, x, y, number, done):
         super().__init__()
         self.x = x
         self.y = y
-        self.number = number # 0-블록 X   1~7-블록 O   8-경계
-        self.done = done # 경계 블록 또는 놓인 블록인지?
+        self.number = number # 0 - Not block   1~7 - Block   8 - Boundary
+        self.done = done # Is this a boundary or installed blocks?
 
 class Block:
     def __init__(self, blockNumber):
         self.blockNumber = blockNumber
-        self.nextBlockList = [] # 블록이 생길 자리의 배경 블록 리스트
-        self.currentBlockList = [] # 현재 움직이는 블록 리스트
-        self.current_ylist = [] # 현재 움직이는 블록들 y좌표 리스트
-        self.current_xlist = [] # 현재 움직이는 블록들 x좌표 리스트
-        self.state = 1 # 블록 모양 상태 (1 ~ 4)
+        self.nextBlockList = [] # There will be the next block in the waiting area. It's a list of the background blocks.
+        self.currentBlockList = [] # List of moving blocks
+        self.current_ylist = [] # y-coordinate list of moving blocks
+        self.current_xlist = [] # x-coordinate list of moving blocks
+        self.state = 1 # You can turn the block four times. What's the status?
 
     def start(self):
         global block_count
@@ -43,14 +43,14 @@ class Block:
         if self.blockNumber == 1:
             self.nextBlockList.clear()
             for x in range(4, 8):
-                self.nextBlockList.append(backgroundblock_group[0][x].number) # 처음 블록이 생길 자리의 배경 블록들 추가
-            for i in range(1, 8): # 블록이 생길 위치에 다른 블록들이 있다면?
+                self.nextBlockList.append(backgroundblock_group[0][x].number) # Add background blocks where the first block will be. Let's check.
+            for i in range(1, 8): # What if there are other blocks where they will be?
                 if i in self.nextBlockList:
-                    gameover = True # 게임 오버
+                    gameover = True
                     return
-            for x in range(4, 8): # 블록이 생길 위치에 다른 블록들이 없다면?
-                backgroundblock_group[0][x].number = 1 # 블록을 생성한다.
-                self.currentBlockList.append(backgroundblock_group[0][x]) # 현재 움직이는 블록 리스트들에 추가
+            for x in range(4, 8): # What if there are no other blocks where they will be?
+                backgroundblock_group[0][x].number = 1 # Create the blocks
+                self.currentBlockList.append(backgroundblock_group[0][x])
 
         elif self.blockNumber == 2:
             self.nextBlockList.clear()
@@ -149,8 +149,8 @@ class Block:
         global average_speed, total_time
         self.nextBlockList.clear()
         for i in range(0, 4):
-            self.nextBlockList.append(backgroundblock_group[(self.currentBlockList[i].y//32) + 1][(self.currentBlockList[i].x//32)]) # 블록이 이동할 자리의 배경 블록들 추가
-            if self.nextBlockList[i].number in range(1, 9) and self.nextBlockList[i].done == True: # 밑에 이미 놓인 블록들이 있다면 블록들을 멈춘다.
+            self.nextBlockList.append(backgroundblock_group[(self.currentBlockList[i].y//32) + 1][(self.currentBlockList[i].x//32)]) # Add background blocks where the blocks are moving
+            if self.nextBlockList[i].number in range(1, 9) and self.nextBlockList[i].done == True: # If there are blocks down there, stop
                 y_list = []
                 for j in range(0, 4):
                     self.currentBlockList[j].done = True
@@ -163,11 +163,11 @@ class Block:
                 eraseLine(y_list)
                 return y_list
 
-        for i in range(0, 4): # 이동하기 전에 블록들 색을 지운다.
+        for i in range(0, 4): # Remove the background blocks color before moving.
             self.currentBlockList[i].number = 0
             pygame.draw.rect(screen, (0, 0, 0), pygame.Rect(self.currentBlockList[i].x, self.currentBlockList[i].y, 32, 32))
 
-        for i in range(0, 4): # 이동한다.
+        for i in range(0, 4):
             self.currentBlockList[i] = self.nextBlockList[i]
             self.currentBlockList[i].number = self.blockNumber
 
@@ -204,7 +204,7 @@ class Block:
     def turn(self):
         self.current_ylist.clear()
         self.current_xlist.clear()
-        for i in range(0, 4): # 현재 블록들의 x, y 좌표 할당
+        for i in range(0, 4): # The x and y coordinates of the current blocks
             self.current_ylist.append(self.currentBlockList[i].y//32)
             self.current_xlist.append(self.currentBlockList[i].x//32)
 
@@ -721,7 +721,6 @@ class Block:
                 self.state = 1
 
 def nextBlockDraw(blockNumber):
-
     if blockNumber == 1:
         for x in range(14, 18):
             pygame.draw.rect(screen, (80, 188, 223), pygame.Rect(32 * x + 16, 32 * 12, 32, 32))
@@ -759,16 +758,16 @@ def nextBlockDraw(blockNumber):
             pygame.draw.rect(screen, (255, 0, 0), pygame.Rect(32 * x, 32 * 12, 32, 32))
 
 def eraseLine(y_list):
-    maxy = max(y_list)//32 # 놓인 블록의 가장 큰 y 인덱스
-    miny = min(y_list)//32 - 1 # 놓인 블록의 가장 작은 y 인덱스 - 1
+    maxy = max(y_list)//32 # Largest y-index of a placed block
+    miny = min(y_list)//32 - 1 # Smallest y-index of a placed block - 1
     while(maxy > miny):
         count = 0
         for x in range(1, 11):
-            if backgroundblock_group[maxy][x].done == False: # 가로 10개 블록 중 하나라도 비어있으면 루프를 나간다.
+            if backgroundblock_group[maxy][x].done == False: # If any of the 10 blocks are empty, leave the loop
                 break
             count += 1
-            if count == 10: # 가로 10개 블록이 모두 차있으면?
-                plusScore(maxy) # 100점을 더하고 한 줄을 지우고 한 줄씩 내리는 함수 실행
+            if count == 10: # A line is full
+                plusScore(maxy) # Let's add points, erase one line, and Drop on every other line
                 maxy+=1
                 miny+=1
         maxy-=1 
@@ -777,12 +776,12 @@ def plusScore(y):
     global score
     erase_sound.play()
 
-    for x in range(1, 11): # 한 줄을 비운다.
-        backgroundblock_group[y][x].done = False
+    for x in range(1, 11): # Erase a line
+        backgroundblock_group[y][x].done = False # You need to change the status of the background blocks.
         backgroundblock_group[y][x].number = 0
         pygame.draw.rect(screen, (0, 0, 0), pygame.Rect(backgroundblock_group[y][x].x, backgroundblock_group[y][x].y, 32, 32))
 
-    for y2 in range(y, 0, -1): # 한 줄씩 내린다.
+    for y2 in range(y, 0, -1): # Drop on every other line
         for x in range(1, 11):
             backgroundblock_group[y2][x].done = backgroundblock_group[y2-1][x].done
             backgroundblock_group[y2][x].number = backgroundblock_group[y2-1][x].number
@@ -791,33 +790,34 @@ def plusScore(y):
             pygame.draw.rect(screen, (0, 0, 0), pygame.Rect(backgroundblock_group[y2-1][x].x, backgroundblock_group[y2-1][x].y, 32, 32))
 
     score += 100
+    
 
-pygame.init()
+pygame.init() # The coordinate (0, 0) is in the upper left.
 
 PATH = './best.sqlite'
 if os.path.isfile(PATH) != True:
-    con = sqlite3.connect("best.sqlite")
-    cur = con.cursor()
-    cur.execute("CREATE TABLE best (Score, AverageSpeed)")
+    con = sqlite3.connect("best.sqlite") # Create Connection Object
+    cur = con.cursor() # You can call execute() after creating Cursor Object 
+    cur.execute("CREATE TABLE best (Score, AverageSpeed)") 
     cur.execute("INSERT INTO best (Score, AverageSpeed) VALUES (0, 0)")
-    con.commit()
+    con.commit() # Save (commit) the changes / 변경사항 저장
 else:
     con = sqlite3.connect("best.sqlite")
     cur = con.cursor()
 
 cur.execute("SELECT * FROM best ORDER BY Score DESC")
-score_list = cur.fetchall()
+score_list = cur.fetchall() # Fetches all (remaining) rows of a query result, returning a list
 
-pygame.key.set_repeat(80) # 키보드 키의 연속 동작
+pygame.key.set_repeat(100) # Control how held keys are repeated
 
 font = pygame.font.SysFont("consolas", 30)
 font2 = pygame.font.SysFont("ebrima", 100)
 font3 = pygame.font.SysFont("consolas", 20)
 
-pygame.display.set_caption("Tetris")  
-screen = pygame.display.set_mode((672, 672)) # 32x32 칸이 21x21  
+pygame.display.set_caption("Tetris") # Top left title
+screen = pygame.display.set_mode((672, 672)) # Screen consisting of 21 x 21 blocks, the size of one block is 32 x 32
 
-clock = pygame.time.Clock()  
+clock = pygame.time.Clock() # Create an object to help track time
 
 mixer.init()
 mixer.music.load("580898__bloodpixelhero__in-game.wav")
@@ -833,25 +833,25 @@ gameover_sound.set_volume(0.2)
 erase_sound = mixer.Sound("143607__dwoboyle__menu-interface-confirm-003.wav")
 erase_sound.set_volume(0.15)
 
-backgroundblock_group = [[0 for j in range(0, 12)] for i in range(0, 21)] # 12 x 21 게임판 배경 블록 리스트
+backgroundblock_group = [[0 for j in range(0, 12)] for i in range(0, 21)] # Game screen consisting of 12 x 21 blocks
 
-for y in range(0, 21):  
+for y in range(0, 21): # Create blocks that make up the game screen
     for x in range(0, 12):
         if x == 0 or x == 11 or y == 20:
             backgroundblock_group[y][x] = BackgroundBlock(32 * x, 32 * y, 8, True)
         else:
             backgroundblock_group[y][x] = BackgroundBlock(32 * x, 32 * y, 0, False)
 
-current_block = Block(random.randint(1, 7))
+current_block = Block(random.randint(1, 7)) # Randomly select one of the seven types of blocks
 next_block = Block(random.randint(1, 7))
-current_block.start()
+current_block.start() # A block appears on the game screen!
 
-autotime_down = 0 # 블록이 내려가는 속도를 조절하는 변수
+autotime_down = 0 # Variable to control block down speed
 
 running = True
-while running:
+while running: # Main loop
 
-    screen.fill((0, 0, 0))  
+    screen.fill((0, 0, 0)) # Paint the screen black before draw blocks on screen
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:  
@@ -862,7 +862,7 @@ while running:
                     current_block.turn()
             elif event.key == pygame.K_DOWN:
                 autotime_down = 0
-                if type(current_block.goDown()) == list:
+                if type(current_block.goDown()) == list: # The block can no longer go down, create new block
                     current_block = next_block
                     next_block = Block(random.randint(1, 7))
                     current_block.start()
@@ -889,13 +889,13 @@ while running:
     
     pygame.draw.rect(screen, (211, 211, 211), pygame.Rect(32 * 14, 32 * 10, 32*5, 32*4), width = 3)
 
-    nextBlockDraw(next_block.blockNumber)
+    nextBlockDraw(next_block.blockNumber) # Draw the next block to come out in the waiting area
 
-    for x in range(0, 12): 
+    for x in range(0, 12): # Color the boundaries of the background blocks
         for y in range(0, 21):
             pygame.draw.rect(screen, (161, 145, 61), pygame.Rect(32 * x, 32 * y, 32, 32), width=1)
 
-    for y in range(0, 21): # 배경 블록에 할당된 색에 따라 색칠을 한다.
+    for y in range(0, 21): # Color the various blocks on the game screen
         for x in range(0, 12):
             if backgroundblock_group[y][x].number == 1:
                 pygame.draw.rect(screen, (80, 188, 223), pygame.Rect(32 * x, 32 * y, 32, 32))
@@ -937,8 +937,8 @@ while running:
         pygame.time.wait(2000)
         running = False
 
-    pygame.display.flip()  
+    pygame.display.flip() # It makes the screen to be updated continuously
 
-    clock.tick(30)  
+    clock.tick(30) # In main loop, it determine FPS
 
 pygame.quit()

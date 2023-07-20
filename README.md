@@ -16,7 +16,7 @@ pip install pygame
 
 ## Game Scene
 <p align="left">
-<img src="https://github.com/YiJeongseop/Tetris-Python/assets/112690335/5e545ded-5729-4a05-bd62-9bae939bd12d">
+<img src="https://github.com/YiJeongseop/Tetris-Python/assets/112690335/a2accd27-2d06-4947-a712-192e396ddb2f">
 </p>
 
 ## Sound Source

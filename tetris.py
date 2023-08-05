@@ -748,11 +748,11 @@ screen = pygame.display.set_mode((672, 672)) # Full screen consisting of 21 x 21
 clock = pygame.time.Clock() # Create an object to help track time
 
 mixer.init()
-mixer.music.load("580898__bloodpixelhero__in-game.wav"); mixer.music.set_volume(0.04)
+mixer.music.load("resources/audio/580898__bloodpixelhero__in-game.wav"); mixer.music.set_volume(0.04)
 mixer.music.play()
-break_sound = mixer.Sound("202230__deraj__pop-sound.wav"); break_sound.set_volume(0.2)
-gameover_sound = mixer.Sound("42349__irrlicht__game-over.wav"); gameover_sound.set_volume(0.2)
-erase_sound = mixer.Sound("143607__dwoboyle__menu-interface-confirm-003.wav"); erase_sound.set_volume(0.15)
+break_sound = mixer.Sound("resources/audio/202230__deraj__pop-sound.wav"); break_sound.set_volume(0.2)
+gameover_sound = mixer.Sound("resources/audio/42349__irrlicht__game-over.wav"); gameover_sound.set_volume(0.2)
+erase_sound = mixer.Sound("resources/audio/143607__dwoboyle__menu-interface-confirm-003.wav"); erase_sound.set_volume(0.15)
 
 backgroundblock_group = [[0 for j in range(0, 12)] for i in range(0, 21)] # Game screen consisting of 12 x 21 blocks
 for y in range(0, 21): # Create blocks that make up the game screen

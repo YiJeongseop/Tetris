@@ -1,10 +1,11 @@
-import pygame # https://www.pygame.org/docs/
-from pygame.locals import *
-from pygame import mixer
-import random
-import time
-import sqlite3 # https://docs.python.org/3.8/library/sqlite3.html
 import os
+import random
+import sqlite3  # https://docs.python.org/3.8/library/sqlite3.html
+import time
+
+import pygame  # https://www.pygame.org/docs/
+from pygame import mixer
+
 
 class BackgroundBlock:
     def __init__(self, x, y, number, done):

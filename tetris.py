@@ -764,9 +764,9 @@ def eraseLine(y_list):
             count += 1
             if count == 10:  # A line is full
                 plusScore(max_y)  # Let's add points, erase one line, and Drop on every other line
-                max_y+=1
-                min_y+=1
-        max_y-=1
+                max_y += 1
+                min_y += 1
+        max_y -= 1
 
 
 def plusScore(y):

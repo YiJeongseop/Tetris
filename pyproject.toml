@@ -1,7 +1,7 @@
 [tool.ruff]
 # See the options here: https://beta.ruff.rs/docs//rules/
 # Enable pycodestyle (`E`) and Pyflakes (`F`) codes by default.
-select = ["E", "F", "E261", "E251"]
+select = ["E", "F", "E261", "E251", "E225"]
 ignore = []
 
 # Allow autofix for all enabled rules (when `--fix`) is provided.

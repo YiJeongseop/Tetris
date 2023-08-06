@@ -42,7 +42,7 @@ make run
 
 We use [ruff](https://beta.ruff.rs/docs/) as a linter, to format the code.
 
-You can run it with:
+You can run the check with:
 
 ```bash
 make style
@@ -55,7 +55,8 @@ make style
 * [ ] Add type hints to the functions, see [ref](https://docs.python.org/3/library/typing.html), 
   this is a good way to document the code defining the parameters types and the return type.
 * [ ] Add docstrings to the functions, see [ref](https://www.python.org/dev/peps/pep-0257/), in order to document the code.
-* [ ] Reduce the use of global variables, and use the parameters or attributes instead.
+* [ ] Reduce the use of global variables, and use the parameters or attributes instead. And if is really necessary to use 
+  global variables, use them in uppercase, with words separated by underscores as necessary to improve readability (SNAKE_CASE).
 * [ ] Create a main function, and move the code that is in the global scope to this function, and call it at the end of the file.
 
   ```python

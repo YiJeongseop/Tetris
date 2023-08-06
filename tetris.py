@@ -6,6 +6,8 @@ import time
 import pygame  # https://www.pygame.org/docs/
 from pygame import mixer
 
+from settings import DB_PATH, DB_NAME
+
 
 class BackgroundBlock:
     def __init__(self, x, y, number, done):
@@ -812,15 +814,14 @@ autotime_down = 0  # Variable to control block down speed
 
 pygame.init()  # The coordinate (0, 0) is in the upper left.
 
-PATH = "./HighestScore.sqlite"  # This is where the highest score is recorded.
-if os.path.isfile(PATH) is not True:
-    con = sqlite3.connect("HighestScore.sqlite")  # Create Connection Object
+if os.path.isfile(DB_PATH) is not True:
+    con = sqlite3.connect(DB_NAME)  # Create Connection Object
     cur = con.cursor()  # You must create a Cursor Object before execute() can be called.
     cur.execute("CREATE TABLE HighestScore (Score, AverageTimeToPutABlock)")  # Since the file does not exist, create a table
     cur.execute("INSERT INTO HighestScore (Score, AverageTimeToPutABlock) VALUES (0, 0)")  # and insert 0, 0
     con.commit()  # Save (commit) the changes
 else:
-    con = sqlite3.connect("HighestScore.sqlite")
+    con = sqlite3.connect(DB_NAME)
     cur = con.cursor()
 
 cur.execute("SELECT * FROM HighestScore ORDER BY Score DESC")

@@ -15,6 +15,7 @@ class BackgroundBlock:
         self.number = number  # 0 - Not block   1~7 - Block   8 - Boundary
         self.done = done  # Is this a boundary or installed blocks?
 
+
 class Block:
     def __init__(self, blockNumber):
         self.blockNumber = blockNumber
@@ -711,6 +712,7 @@ class Block:
 
                 self.state = 1
 
+
 def nextBlockDraw(blockNumber):
     if blockNumber == 1:
         for x in range(14, 18):
@@ -748,6 +750,7 @@ def nextBlockDraw(blockNumber):
         for x in range(16, 18):
             pygame.draw.rect(screen, (255, 0, 0), pygame.Rect(32 * x, 32 * 12, 32, 32))
 
+
 def eraseLine(y_list):
     max_y = max(y_list)//32  # Largest y-index of a placed block
     min_y = min(y_list)//32 - 1  # Smallest y-index of a placed block - 1
@@ -762,6 +765,7 @@ def eraseLine(y_list):
                 max_y+=1
                 min_y+=1
         max_y-=1
+
 
 def plusScore(y):
     global score
@@ -782,6 +786,7 @@ def plusScore(y):
 
     score += 100
 
+
 def checkAndGoDown():  # Check if the block can go down and go down if possible
     global current_block, next_block
     if type(current_block.goDown()) == list:
@@ -789,9 +794,11 @@ def checkAndGoDown():  # Check if the block can go down and go down if possible
         next_block = Block(random.randint(1, 7))
         current_block.start()
 
+
 def colorTheBlock(screen, coordinates, x, y):
     pygame.draw.rect(screen, coordinates, pygame.Rect(32 * x, 32 * y, 32, 32))
     pygame.draw.rect(screen, (0, 0, 0), pygame.Rect(32 * x, 32 * y, 32, 32), width = 1)
+
 
 score = 0
 gameover = False

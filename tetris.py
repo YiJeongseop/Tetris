@@ -797,7 +797,7 @@ def checkAndGoDown():  # Check if the block can go down and go down if possible
 
 def colorTheBlock(screen, coordinates, x, y):
     pygame.draw.rect(screen, coordinates, pygame.Rect(32 * x, 32 * y, 32, 32))
-    pygame.draw.rect(screen, (0, 0, 0), pygame.Rect(32 * x, 32 * y, 32, 32), width = 1)
+    pygame.draw.rect(screen, (0, 0, 0), pygame.Rect(32 * x, 32 * y, 32, 32), width=1)
 
 
 score = 0
@@ -888,7 +888,7 @@ while running:  # Main loop
     text3 = font3.render(f"Best : {score_list[0][0]} / {score_list[0][1]:.2f}", True, (255, 255, 255))
     screen.blit(text3, (387, 635))
 
-    pygame.draw.rect(screen, (211, 211, 211), pygame.Rect(32 * 14, 32 * 10, 32*5, 32*4), width = 3)  # Border where the next block waits
+    pygame.draw.rect(screen, (211, 211, 211), pygame.Rect(32 * 14, 32 * 10, 32*5, 32*4), width=3)  # Border where the next block waits
 
     nextBlockDraw(next_block.blockNumber)  # Draw the next block to come out in the waiting area
 
@@ -917,7 +917,7 @@ while running:  # Main loop
 
     if gameover is True:
         pygame.draw.rect(screen, (0, 0, 0), pygame.Rect(32 * 1, 32 * 3, 32 * 19, 32 * 15))
-        pygame.draw.rect(screen, (255, 255, 255), pygame.Rect(32 * 1, 32 * 3, 32 * 19, 32 * 15), width = 3)
+        pygame.draw.rect(screen, (255, 255, 255), pygame.Rect(32 * 1, 32 * 3, 32 * 19, 32 * 15), width=3)
         gameover_text = font2.render("GAME OVER!", True, (255, 255, 255))
         screen.blit(gameover_text, (50, 220))
         text = font.render("Score : " + str(score), True, (255, 255, 255))

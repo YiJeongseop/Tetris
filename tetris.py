@@ -10,7 +10,8 @@ from pygame import mixer
 class BackgroundBlock:
     def __init__(self, x, y, number, done):
         super().__init__()
-        self.x = x; self.y = y
+        self.x = x
+        self.y = y
         self.number = number # 0 - Not block   1~7 - Block   8 - Boundary
         self.done = done # Is this a boundary or installed blocks?
 
@@ -24,8 +25,10 @@ class Block:
         self.state = 1 # You can turn the block four times. 1, 2, 3, 4
 
     def start(self):
-        global block_count; block_count += 1
-        global start_time; start_time = time.time()
+        global block_count
+        block_count += 1
+        global start_time
+        start_time = time.time()
         global gameover
 
         if self.blockNumber == 1:
@@ -34,7 +37,8 @@ class Block:
                 self.nextBlockList.append(backgroundblock_group[0][x].number) # Add background blocks where the first block will be placed.. in nextBlockList.
             for i in range(1, 8): # What if there are other blocks where they will be?
                 if i in self.nextBlockList:
-                    gameover = True; return
+                    gameover = True
+                    return
             for x in range(4, 8): # What if there are no other blocks where they will be?
                 backgroundblock_group[0][x].number = 1 # Create the blocks on the game screen
                 self.currentBlockList.append(backgroundblock_group[0][x])
@@ -46,7 +50,8 @@ class Block:
                 self.nextBlockList.append(backgroundblock_group[1][x].number)
             for i in range(1, 8):
                 if i in self.nextBlockList:
-                    gameover = True; return
+                    gameover = True
+                    return
             backgroundblock_group[0][4].number = 2
             self.currentBlockList.append(backgroundblock_group[0][4])
             for x in range(4, 7):
@@ -60,7 +65,8 @@ class Block:
             self.nextBlockList.append(backgroundblock_group[0][6].number)
             for i in range(1, 8):
                 if i in self.nextBlockList:
-                    gameover = True; return
+                    gameover = True
+                    return
             for x in range(4, 7):
                 backgroundblock_group[1][x].number = 3
                 self.currentBlockList.append(backgroundblock_group[1][x])
@@ -74,7 +80,8 @@ class Block:
                     self.nextBlockList.append(backgroundblock_group[y][x].number)
             for i in range(1, 8):
                 if i in self.nextBlockList:
-                    gameover = True; return
+                    gameover = True
+                    return
             for y in range(0, 2):
                 for x in range(5, 7):
                     backgroundblock_group[y][x].number = 4
@@ -88,7 +95,8 @@ class Block:
                 self.nextBlockList.append(backgroundblock_group[0][x].number)
             for i in range(1, 8):
                 if i in self.nextBlockList:
-                    gameover = True; return
+                    gameover = True
+                    return
             for x in range(4, 6):
                 backgroundblock_group[1][x].number = 5
                 self.currentBlockList.append(backgroundblock_group[1][x])
@@ -103,7 +111,8 @@ class Block:
                 self.nextBlockList.append(backgroundblock_group[1][x].number)
             for i in range(1, 8):
                 if i in self.nextBlockList:
-                    gameover = True; return
+                    gameover = True
+                    return
             backgroundblock_group[0][5].number = 6
             self.currentBlockList.append(backgroundblock_group[0][5])
             for x in range(4, 7):
@@ -118,7 +127,8 @@ class Block:
                 self.nextBlockList.append(backgroundblock_group[1][x].number)
             for i in range(1, 8):
                 if i in self.nextBlockList:
-                    gameover = True; return
+                    gameover = True
+                    return
             for x in range(4, 6):
                 backgroundblock_group[0][x].number = 7
                 self.currentBlockList.append(backgroundblock_group[0][x])
@@ -183,18 +193,23 @@ class Block:
             self.currentBlockList[i].number = self.blockNumber
 
     def turn(self): # There are so many codes. I am sad that I am not able to reduce this.
-        self.current_ylist.clear(); self.current_xlist.clear()
+        self.current_ylist.clear()
+        self.current_xlist.clear()
         for i in range(0, 4):
             self.current_ylist.append(self.currentBlockList[i].y//32)
             self.current_xlist.append(self.currentBlockList[i].x//32)
 
         if self.blockNumber == 1:
             if self.state == 1:
-                if self.current_ylist[0] == 0: return
+                if self.current_ylist[0] == 0:
+                    return
                 for x in range(0, 4):
-                    if backgroundblock_group[self.current_ylist[0] - 1][self.current_xlist[0] + x].done is True: return
-                    if backgroundblock_group[self.current_ylist[0] + 1][self.current_xlist[0] + x].done is True: return
-                    if backgroundblock_group[self.current_ylist[0] + 2][self.current_xlist[0] + x].done is True: return
+                    if backgroundblock_group[self.current_ylist[0] - 1][self.current_xlist[0] + x].done is True:
+                        return
+                    if backgroundblock_group[self.current_ylist[0] + 1][self.current_xlist[0] + x].done is True:
+                        return
+                    if backgroundblock_group[self.current_ylist[0] + 2][self.current_xlist[0] + x].done is True:
+                        return
 
                 for i in range(0, 4):
                     self.currentBlockList[i].number = 0
@@ -208,11 +223,14 @@ class Block:
 
             elif self.state == 2:
                 for y in range(0, 4):
-                    if backgroundblock_group[self.current_ylist[3] + y][self.current_xlist[0] - 1].done is True: return
+                    if backgroundblock_group[self.current_ylist[3] + y][self.current_xlist[0] - 1].done is True:
+                        return
                 for y in range(0, 4):
-                    if backgroundblock_group[self.current_ylist[3] + y][self.current_xlist[0] + 1].done is True: return
+                    if backgroundblock_group[self.current_ylist[3] + y][self.current_xlist[0] + 1].done is True:
+                        return
                 for y in range(0, 4):
-                    if backgroundblock_group[self.current_ylist[3] + y][self.current_xlist[0] - 2].done is True: return
+                    if backgroundblock_group[self.current_ylist[3] + y][self.current_xlist[0] - 2].done is True:
+                        return
 
                 for i in range(0, 4):
                     self.currentBlockList[i].number = 0
@@ -226,9 +244,12 @@ class Block:
 
             elif self.state == 3:
                 for x in range(0, 4):
-                    if backgroundblock_group[self.current_ylist[0] + 1][self.current_xlist[0] - x].done is True: return
-                    if backgroundblock_group[self.current_ylist[0] - 1][self.current_xlist[0] - x].done is True: return
-                    if backgroundblock_group[self.current_ylist[0] - 2][self.current_xlist[0] - x].done is True: return
+                    if backgroundblock_group[self.current_ylist[0] + 1][self.current_xlist[0] - x].done is True:
+                        return
+                    if backgroundblock_group[self.current_ylist[0] - 1][self.current_xlist[0] - x].done is True:
+                        return
+                    if backgroundblock_group[self.current_ylist[0] - 2][self.current_xlist[0] - x].done is True:
+                        return
 
                 for i in range(0, 4):
                     self.currentBlockList[i].number = 0
@@ -242,11 +263,14 @@ class Block:
 
             elif self.state == 4:
                 for y in range(0, 4):
-                    if backgroundblock_group[self.current_ylist[0] + y][self.current_xlist[0] - 1].done is True: return
+                    if backgroundblock_group[self.current_ylist[0] + y][self.current_xlist[0] - 1].done is True:
+                        return
                 for y in range(0, 4):
-                    if backgroundblock_group[self.current_ylist[0] + y][self.current_xlist[0] + 1].done is True: return
+                    if backgroundblock_group[self.current_ylist[0] + y][self.current_xlist[0] + 1].done is True:
+                        return
                 for y in range(0, 4):
-                    if backgroundblock_group[self.current_ylist[0] + y][self.current_xlist[0] + 2].done is True: return
+                    if backgroundblock_group[self.current_ylist[0] + y][self.current_xlist[0] + 2].done is True:
+                        return
 
                 for i in range(0, 4):
                     self.currentBlockList[i].number = 0
@@ -261,9 +285,11 @@ class Block:
         elif self.blockNumber == 2:
             if self.state == 1:
                 for x in range(0, 3):
-                    if backgroundblock_group[self.current_ylist[1] + 1][self.current_xlist[1] + x].done is True: return
+                    if backgroundblock_group[self.current_ylist[1] + 1][self.current_xlist[1] + x].done is True:
+                        return
                 for x in range(0, 2):
-                    if backgroundblock_group[self.current_ylist[0]][self.current_xlist[0] + 1 + x].done is True: return
+                    if backgroundblock_group[self.current_ylist[0]][self.current_xlist[0] + 1 + x].done is True:
+                        return
 
                 for i in range(0, 4):
                     self.currentBlockList[i].number = 0
@@ -279,9 +305,11 @@ class Block:
 
             elif self.state == 2:
                 for y in range(0, 3):
-                    if backgroundblock_group[self.current_ylist[1] + y][self.current_xlist[1] - 1].done is True: return
+                    if backgroundblock_group[self.current_ylist[1] + y][self.current_xlist[1] - 1].done is True:
+                        return
                 for x in range(0, 2):
-                    if backgroundblock_group[self.current_ylist[0] + 1 + y][self.current_xlist[0]].done is True: return
+                    if backgroundblock_group[self.current_ylist[0] + 1 + y][self.current_xlist[0]].done is True:
+                        return
 
                 for i in range(0, 4):
                     self.currentBlockList[i].number = 0
@@ -297,9 +325,11 @@ class Block:
 
             elif self.state == 3:
                 for x in range(0, 3):
-                    if backgroundblock_group[self.current_ylist[1] - 1][self.current_xlist[1] - x].done is True: return
+                    if backgroundblock_group[self.current_ylist[1] - 1][self.current_xlist[1] - x].done is True:
+                        return
                 for x in range(0, 2):
-                    if backgroundblock_group[self.current_ylist[0]][self.current_xlist[0] - 1 + x].done is True: return
+                    if backgroundblock_group[self.current_ylist[0]][self.current_xlist[0] - 1 + x].done is True:
+                        return
 
                 for i in range(0, 4):
                     self.currentBlockList[i].number = 0
@@ -315,9 +345,11 @@ class Block:
 
             elif self.state == 4:
                 for y in range(0, 3):
-                    if backgroundblock_group[self.current_ylist[3] + y][self.current_xlist[1] + 1].done is True: return
+                    if backgroundblock_group[self.current_ylist[3] + y][self.current_xlist[1] + 1].done is True:
+                        return
                 for x in range(0, 2):
-                    if backgroundblock_group[self.current_ylist[0] - 2 + y][self.current_xlist[0]].done is True: return
+                    if backgroundblock_group[self.current_ylist[0] - 2 + y][self.current_xlist[0]].done is True:
+                        return
 
                 for i in range(0, 4):
                     self.currentBlockList[i].number = 0
@@ -334,9 +366,11 @@ class Block:
         elif self.blockNumber == 3:
             if self.state == 1:
                 for x in range(0, 3):
-                    if backgroundblock_group[self.current_ylist[0] + 1][self.current_xlist[0] + x].done is True: return
+                    if backgroundblock_group[self.current_ylist[0] + 1][self.current_xlist[0] + x].done is True:
+                        return
                 for x in range(0, 2):
-                    if backgroundblock_group[self.current_ylist[3]][self.current_xlist[3] - 2 + x].done is True: return
+                    if backgroundblock_group[self.current_ylist[3]][self.current_xlist[3] - 2 + x].done is True:
+                        return
 
                 for i in range(0, 4):
                     self.currentBlockList[i].number = 0
@@ -352,9 +386,11 @@ class Block:
 
             elif self.state == 2:
                 for y in range(0, 3):
-                    if backgroundblock_group[self.current_ylist[0] + y][self.current_xlist[0] - 1].done is True: return
+                    if backgroundblock_group[self.current_ylist[0] + y][self.current_xlist[0] - 1].done is True:
+                        return
                 for y in range(0, 2):
-                    if backgroundblock_group[self.current_ylist[0] + y][self.current_xlist[0] + 1].done is True: return
+                    if backgroundblock_group[self.current_ylist[0] + y][self.current_xlist[0] + 1].done is True:
+                        return
 
                 for i in range(0, 4):
                     self.currentBlockList[i].number = 0
@@ -370,9 +406,11 @@ class Block:
 
             elif self.state == 3:
                 for x in range(0, 3):
-                    if backgroundblock_group[self.current_ylist[2] - 1][self.current_xlist[2] + x].done is True: return
+                    if backgroundblock_group[self.current_ylist[2] - 1][self.current_xlist[2] + x].done is True:
+                        return
                 for x in range(0, 2):
-                    if backgroundblock_group[self.current_ylist[3]][self.current_xlist[3] + 1 + x].done is True: return
+                    if backgroundblock_group[self.current_ylist[3]][self.current_xlist[3] + 1 + x].done is True:
+                        return
 
                 for i in range(0, 4):
                     self.currentBlockList[i].number = 0
@@ -388,9 +426,11 @@ class Block:
 
             elif self.state == 4:
                 for y in range(0, 3):
-                    if backgroundblock_group[self.current_ylist[2] + y][self.current_xlist[0] + 1].done is True: return
+                    if backgroundblock_group[self.current_ylist[2] + y][self.current_xlist[0] + 1].done is True:
+                        return
                 for y in range(0, 2):
-                    if backgroundblock_group[self.current_ylist[3] + 1 + y][self.current_xlist[3]].done is True: return
+                    if backgroundblock_group[self.current_ylist[3] + 1 + y][self.current_xlist[3]].done is True:
+                        return
 
                 for i in range(0, 4):
                     self.currentBlockList[i].number = 0
@@ -406,11 +446,15 @@ class Block:
 
         elif self.blockNumber == 5:
             if self.state == 1:
-                if self.current_ylist[2] == 0: return
+                if self.current_ylist[2] == 0:
+                    return
                 for x in range(0, 3):
-                    if backgroundblock_group[self.current_ylist[2] - 1][self.current_xlist[0] + x].done is True: return
-                if backgroundblock_group[self.current_ylist[0] - 1][self.current_xlist[0]].done is True: return
-                if backgroundblock_group[self.current_ylist[1]][self.current_xlist[1] + 1].done is True: return
+                    if backgroundblock_group[self.current_ylist[2] - 1][self.current_xlist[0] + x].done is True:
+                        return
+                if backgroundblock_group[self.current_ylist[0] - 1][self.current_xlist[0]].done is True:
+                    return
+                if backgroundblock_group[self.current_ylist[1]][self.current_xlist[1] + 1].done is True:
+                    return
 
                 for i in range(0, 4):
                     self.currentBlockList[i].number = 0
@@ -427,9 +471,12 @@ class Block:
 
             elif self.state == 2:
                 for y in range(0, 3):
-                    if backgroundblock_group[self.current_ylist[0] + y][self.current_xlist[2] + 1].done is True: return
-                if backgroundblock_group[self.current_ylist[1] + 1][self.current_xlist[1]].done is True: return
-                if backgroundblock_group[self.current_ylist[2] - 1][self.current_xlist[2]].done is True: return
+                    if backgroundblock_group[self.current_ylist[0] + y][self.current_xlist[2] + 1].done is True:
+                        return
+                if backgroundblock_group[self.current_ylist[1] + 1][self.current_xlist[1]].done is True:
+                    return
+                if backgroundblock_group[self.current_ylist[2] - 1][self.current_xlist[2]].done is True:
+                    return
 
                 for i in range(0, 4):
                     self.currentBlockList[i].number = 0
@@ -446,9 +493,12 @@ class Block:
 
             elif self.state == 3:
                 for x in range(0, 3):
-                    if backgroundblock_group[self.current_ylist[2] + 1][self.current_xlist[3] + x].done is True: return
-                if backgroundblock_group[self.current_ylist[0]][self.current_xlist[0] - 2].done is True: return
-                if backgroundblock_group[self.current_ylist[2]][self.current_xlist[0]].done is True: return
+                    if backgroundblock_group[self.current_ylist[2] + 1][self.current_xlist[3] + x].done is True:
+                        return
+                if backgroundblock_group[self.current_ylist[0]][self.current_xlist[0] - 2].done is True:
+                    return
+                if backgroundblock_group[self.current_ylist[2]][self.current_xlist[0]].done is True:
+                    return
 
                 for i in range(0, 4):
                     self.currentBlockList[i].number = 0
@@ -465,9 +515,12 @@ class Block:
 
             elif self.state == 4:
                 for y in range(0, 3):
-                    if backgroundblock_group[self.current_ylist[0] - y][self.current_xlist[2] - 1].done is True: return
-                if backgroundblock_group[self.current_ylist[1] - 1][self.current_xlist[1]].done is True: return
-                if backgroundblock_group[self.current_ylist[2] + 1][self.current_xlist[2]].done is True: return
+                    if backgroundblock_group[self.current_ylist[0] - y][self.current_xlist[2] - 1].done is True:
+                        return
+                if backgroundblock_group[self.current_ylist[1] - 1][self.current_xlist[1]].done is True:
+                    return
+                if backgroundblock_group[self.current_ylist[2] + 1][self.current_xlist[2]].done is True:
+                    return
 
                 for i in range(0, 4):
                     self.currentBlockList[i].number = 0
@@ -485,9 +538,12 @@ class Block:
         elif self.blockNumber == 6:
             if self.state == 1:
                 for x in range(0, 3):
-                    if backgroundblock_group[self.current_ylist[1] + 1][self.current_xlist[1] + x].done is True: return
-                if backgroundblock_group[self.current_ylist[0]][self.current_xlist[1]].done is True: return
-                if backgroundblock_group[self.current_ylist[0]][self.current_xlist[3]].done is True: return
+                    if backgroundblock_group[self.current_ylist[1] + 1][self.current_xlist[1] + x].done is True:
+                        return
+                if backgroundblock_group[self.current_ylist[0]][self.current_xlist[1]].done is True:
+                    return
+                if backgroundblock_group[self.current_ylist[0]][self.current_xlist[3]].done is True:
+                    return
 
                 for i in range(0, 4):
                     self.currentBlockList[i].number = 0
@@ -503,9 +559,12 @@ class Block:
 
             elif self.state == 2:
                 for y in range(0, 3):
-                    if backgroundblock_group[self.current_ylist[1] + y][self.current_xlist[1] - 1].done is True: return
-                if backgroundblock_group[self.current_ylist[0] - 1][self.current_xlist[0]].done is True: return
-                if backgroundblock_group[self.current_ylist[0] + 1][self.current_xlist[0]].done is True: return
+                    if backgroundblock_group[self.current_ylist[1] + y][self.current_xlist[1] - 1].done is True:
+                        return
+                if backgroundblock_group[self.current_ylist[0] - 1][self.current_xlist[0]].done is True:
+                    return
+                if backgroundblock_group[self.current_ylist[0] + 1][self.current_xlist[0]].done is True:
+                    return
 
                 for i in range(0, 4):
                     self.currentBlockList[i].number = 0
@@ -521,9 +580,12 @@ class Block:
 
             elif self.state == 3:
                 for x in range(0, 3):
-                    if backgroundblock_group[self.current_ylist[1] - 1][self.current_xlist[3] + x].done is True: return
-                if backgroundblock_group[self.current_ylist[0]][self.current_xlist[0] - 1].done is True: return
-                if backgroundblock_group[self.current_ylist[0]][self.current_xlist[0] + 1].done is True: return
+                    if backgroundblock_group[self.current_ylist[1] - 1][self.current_xlist[3] + x].done is True:
+                        return
+                if backgroundblock_group[self.current_ylist[0]][self.current_xlist[0] - 1].done is True:
+                    return
+                if backgroundblock_group[self.current_ylist[0]][self.current_xlist[0] + 1].done is True:
+                    return
 
                 for i in range(0, 4):
                     self.currentBlockList[i].number = 0
@@ -539,9 +601,12 @@ class Block:
 
             elif self.state == 4:
                 for y in range(0, 3):
-                    if backgroundblock_group[self.current_ylist[3] + y][self.current_xlist[1] + 1].done is True: return
-                if backgroundblock_group[self.current_ylist[0] - 1][self.current_xlist[0]].done is True: return
-                if backgroundblock_group[self.current_ylist[0] + 1][self.current_xlist[0]].done is True: return
+                    if backgroundblock_group[self.current_ylist[3] + y][self.current_xlist[1] + 1].done is True:
+                        return
+                if backgroundblock_group[self.current_ylist[0] - 1][self.current_xlist[0]].done is True:
+                    return
+                if backgroundblock_group[self.current_ylist[0] + 1][self.current_xlist[0]].done is True:
+                    return
 
                 for i in range(0, 4):
                     self.currentBlockList[i].number = 0
@@ -557,11 +622,15 @@ class Block:
 
         elif self.blockNumber == 7:
             if self.state == 1:
-                if self.current_ylist[0] == 0: return
+                if self.current_ylist[0] == 0:
+                    return
                 for x in range(0, 3):
-                    if backgroundblock_group[self.current_ylist[0] - 1][self.current_xlist[0] + x].done is True: return
-                if backgroundblock_group[self.current_ylist[0]][self.current_xlist[3]].done is True: return
-                if backgroundblock_group[self.current_ylist[2]][self.current_xlist[0]].done is True: return
+                    if backgroundblock_group[self.current_ylist[0] - 1][self.current_xlist[0] + x].done is True:
+                        return
+                if backgroundblock_group[self.current_ylist[0]][self.current_xlist[3]].done is True:
+                    return
+                if backgroundblock_group[self.current_ylist[2]][self.current_xlist[0]].done is True:
+                    return
 
                 for i in range(0, 4):
                     self.currentBlockList[i].number = 0
@@ -578,9 +647,12 @@ class Block:
 
             elif self.state == 2:
                 for y in range(0, 3):
-                    if backgroundblock_group[self.current_ylist[0] + y][self.current_xlist[0] + 1].done is True: return
-                if backgroundblock_group[self.current_ylist[0]][self.current_xlist[2]].done is True: return
-                if backgroundblock_group[self.current_ylist[3]][self.current_xlist[0]].done is True: return
+                    if backgroundblock_group[self.current_ylist[0] + y][self.current_xlist[0] + 1].done is True:
+                        return
+                if backgroundblock_group[self.current_ylist[0]][self.current_xlist[2]].done is True:
+                    return
+                if backgroundblock_group[self.current_ylist[3]][self.current_xlist[0]].done is True:
+                    return
 
                 for i in range(0, 4):
                     self.currentBlockList[i].number = 0
@@ -597,9 +669,12 @@ class Block:
 
             elif self.state == 3:
                 for x in range(0, 3):
-                    if backgroundblock_group[self.current_ylist[0] + 1][self.current_xlist[3] + x].done is True: return
-                if backgroundblock_group[self.current_ylist[0]][self.current_xlist[3]].done is True: return
-                if backgroundblock_group[self.current_ylist[2]][self.current_xlist[0]].done is True: return
+                    if backgroundblock_group[self.current_ylist[0] + 1][self.current_xlist[3] + x].done is True:
+                        return
+                if backgroundblock_group[self.current_ylist[0]][self.current_xlist[3]].done is True:
+                    return
+                if backgroundblock_group[self.current_ylist[2]][self.current_xlist[0]].done is True:
+                    return
 
                 for i in range(0, 4):
                     self.currentBlockList[i].number = 0
@@ -616,9 +691,12 @@ class Block:
 
             elif self.state == 4:
                 for y in range(0, 3):
-                    if backgroundblock_group[self.current_ylist[3] + y][self.current_xlist[0] - 1].done is True: return
-                if backgroundblock_group[self.current_ylist[0]][self.current_xlist[2]].done is True: return
-                if backgroundblock_group[self.current_ylist[3]][self.current_xlist[0]].done is True: return
+                    if backgroundblock_group[self.current_ylist[3] + y][self.current_xlist[0] - 1].done is True:
+                        return
+                if backgroundblock_group[self.current_ylist[0]][self.current_xlist[2]].done is True:
+                    return
+                if backgroundblock_group[self.current_ylist[3]][self.current_xlist[0]].done is True:
+                    return
 
                 for i in range(0, 4):
                     self.currentBlockList[i].number = 0
@@ -681,11 +759,13 @@ def eraseLine(y_list):
             count += 1
             if count == 10: # A line is full
                 plusScore(max_y) # Let's add points, erase one line, and Drop on every other line
-                max_y+=1; min_y+=1
+                max_y+=1
+                min_y+=1
         max_y-=1
 
 def plusScore(y):
-    global score; erase_sound.play()
+    global score
+    erase_sound.play()
 
     for x in range(1, 11):
         backgroundblock_group[y][x].done = False # Change the status of the background blocks
@@ -733,15 +813,18 @@ if os.path.isfile(PATH) is not True:
     cur.execute("INSERT INTO HighestScore (Score, AverageTimeToPutABlock) VALUES (0, 0)") # and insert 0, 0
     con.commit() # Save (commit) the changes
 else:
-    con = sqlite3.connect("HighestScore.sqlite"); cur = con.cursor()
+    con = sqlite3.connect("HighestScore.sqlite")
+    cur = con.cursor()
 
 cur.execute("SELECT * FROM HighestScore ORDER BY Score DESC")
 score_list = cur.fetchall() # Fetches all (remaining) rows of a query result, returning a list
 
 pygame.key.set_repeat(120) # Control how held keys are repeated
 
-font = pygame.font.SysFont("consolas", 30); font2 = pygame.font.SysFont("ebrima", 100)
-font3 = pygame.font.SysFont("consolas", 20); font4 = pygame.font.SysFont("consolas", 15)
+font = pygame.font.SysFont("consolas", 30)
+font2 = pygame.font.SysFont("ebrima", 100)
+font3 = pygame.font.SysFont("consolas", 20)
+font4 = pygame.font.SysFont("consolas", 15)
 
 pygame.display.set_caption("Tetris") # Title
 screen = pygame.display.set_mode((672, 672)) # Full screen consisting of 21 x 21 blocks, the size of one block is 32 x 32
@@ -749,11 +832,15 @@ screen = pygame.display.set_mode((672, 672)) # Full screen consisting of 21 x 21
 clock = pygame.time.Clock() # Create an object to help track time
 
 mixer.init()
-mixer.music.load("resources/audio/580898__bloodpixelhero__in-game.wav"); mixer.music.set_volume(0.04)
+mixer.music.load("resources/audio/580898__bloodpixelhero__in-game.wav")
+mixer.music.set_volume(0.04)
 mixer.music.play()
-break_sound = mixer.Sound("resources/audio/202230__deraj__pop-sound.wav"); break_sound.set_volume(0.2)
-gameover_sound = mixer.Sound("resources/audio/42349__irrlicht__game-over.wav"); gameover_sound.set_volume(0.2)
-erase_sound = mixer.Sound("resources/audio/143607__dwoboyle__menu-interface-confirm-003.wav"); erase_sound.set_volume(0.15)
+break_sound = mixer.Sound("resources/audio/202230__deraj__pop-sound.wav")
+break_sound.set_volume(0.2)
+gameover_sound = mixer.Sound("resources/audio/42349__irrlicht__game-over.wav")
+gameover_sound.set_volume(0.2)
+erase_sound = mixer.Sound("resources/audio/143607__dwoboyle__menu-interface-confirm-003.wav")
+erase_sound.set_volume(0.15)
 
 backgroundblock_group = [[0 for j in range(0, 12)] for i in range(0, 21)] # Game screen consisting of 12 x 21 blocks
 for y in range(0, 21): # Create blocks that make up the game screen
@@ -769,7 +856,8 @@ running = True
 while running: # Main loop
     screen.fill((0, 0, 0)) # Paint the screen black before draw blocks on screen
     for event in pygame.event.get():
-        if event.type == pygame.QUIT: running = False
+        if event.type == pygame.QUIT:
+            running = False
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_UP:
                 if current_block.blockNumber != 4: # Square blocks do not rotate.
@@ -777,15 +865,21 @@ while running: # Main loop
             elif event.key == pygame.K_DOWN:
                 autotime_down = 0
                 checkAndGoDown()
-            elif event.key == pygame.K_LEFT: current_block.goLeft()
-            elif event.key == pygame.K_RIGHT: current_block.goRight()
+            elif event.key == pygame.K_LEFT:
+                current_block.goLeft()
+            elif event.key == pygame.K_RIGHT:
+                current_block.goRight()
 
     autotime_down += 1
-    if autotime_down % 30 == 0: checkAndGoDown() # The block automatically goes down If you don't press down key.
+    if autotime_down % 30 == 0:
+        checkAndGoDown() # The block automatically goes down If you don't press down key.
 
-    text = font.render("Score : " + str(score), True, (255, 255, 255)); screen.blit(text, (387, 15))
-    text2 = font4.render(f"Average time to put a block : {average_time_to_put_a_block:.2f}s", True, (255, 255, 255)); screen.blit(text2, (387, 55))
-    text3 = font3.render(f"Best : {score_list[0][0]} / {score_list[0][1]:.2f}", True, (255, 255, 255)); screen.blit(text3, (387, 635))
+    text = font.render("Score : " + str(score), True, (255, 255, 255))
+    screen.blit(text, (387, 15))
+    text2 = font4.render(f"Average time to put a block : {average_time_to_put_a_block:.2f}s", True, (255, 255, 255))
+    screen.blit(text2, (387, 55))
+    text3 = font3.render(f"Best : {score_list[0][0]} / {score_list[0][1]:.2f}", True, (255, 255, 255))
+    screen.blit(text3, (387, 635))
 
     pygame.draw.rect(screen, (211, 211, 211), pygame.Rect(32 * 14, 32 * 10, 32*5, 32*4), width = 3) # Border where the next block waits
 
@@ -797,24 +891,36 @@ while running: # Main loop
 
     for y in range(0, 21): # Color the blocks on the game screen
         for x in range(0, 12):
-            if backgroundblock_group[y][x].number == 1: colorTheBlock(screen, (80, 188, 223), x, y)
-            elif backgroundblock_group[y][x].number == 2: colorTheBlock(screen, (0, 0, 255), x, y)
-            elif backgroundblock_group[y][x].number == 3: colorTheBlock(screen, (255, 127, 0), x, y)
-            elif backgroundblock_group[y][x].number == 4: colorTheBlock(screen, (255, 212, 0), x, y)
-            elif backgroundblock_group[y][x].number == 5: colorTheBlock(screen, (129, 193, 71), x, y)
-            elif backgroundblock_group[y][x].number == 6: colorTheBlock(screen, (139, 0, 255), x, y)
-            elif backgroundblock_group[y][x].number == 7: colorTheBlock(screen, (255, 0, 0), x, y)
-            elif backgroundblock_group[y][x].number == 8: pygame.draw.rect(screen, (128, 128, 128), pygame.Rect(32 * x, 32 * y, 32, 32))
+            if backgroundblock_group[y][x].number == 1:
+                colorTheBlock(screen, (80, 188, 223), x, y)
+            elif backgroundblock_group[y][x].number == 2:
+                colorTheBlock(screen, (0, 0, 255), x, y)
+            elif backgroundblock_group[y][x].number == 3:
+                colorTheBlock(screen, (255, 127, 0), x, y)
+            elif backgroundblock_group[y][x].number == 4:
+                colorTheBlock(screen, (255, 212, 0), x, y)
+            elif backgroundblock_group[y][x].number == 5:
+                colorTheBlock(screen, (129, 193, 71), x, y)
+            elif backgroundblock_group[y][x].number == 6:
+                colorTheBlock(screen, (139, 0, 255), x, y)
+            elif backgroundblock_group[y][x].number == 7:
+                colorTheBlock(screen, (255, 0, 0), x, y)
+            elif backgroundblock_group[y][x].number == 8:
+                pygame.draw.rect(screen, (128, 128, 128), pygame.Rect(32 * x, 32 * y, 32, 32))
 
     if gameover is True:
         pygame.draw.rect(screen, (0, 0, 0), pygame.Rect(32 * 1, 32 * 3, 32 * 19, 32 * 15))
         pygame.draw.rect(screen, (255, 255, 255), pygame.Rect(32 * 1, 32 * 3, 32 * 19, 32 * 15), width = 3)
-        gameover_text = font2.render("GAME OVER!", True, (255, 255, 255)); screen.blit(gameover_text, (50, 220))
-        text = font.render("Score : " + str(score), True, (255, 255, 255)); screen.blit(text, (70, 360))
-        text2 = font4.render(f"Average time to put a block : {average_time_to_put_a_block:.2f}s", True, (255, 255, 255)); screen.blit(text2, (70, 400))
+        gameover_text = font2.render("GAME OVER!", True, (255, 255, 255))
+        screen.blit(gameover_text, (50, 220))
+        text = font.render("Score : " + str(score), True, (255, 255, 255))
+        screen.blit(text, (70, 360))
+        text2 = font4.render(f"Average time to put a block : {average_time_to_put_a_block:.2f}s", True, (255, 255, 255))
+        screen.blit(text2, (70, 400))
         gameover_sound.play()
         pygame.display.flip()
-        cur.execute(f"INSERT INTO HighestScore VALUES ({score}, {average_time_to_put_a_block})"); con.commit()
+        cur.execute(f"INSERT INTO HighestScore VALUES ({score}, {average_time_to_put_a_block})")
+        con.commit()
         pygame.time.wait(2000)
         running = False
 

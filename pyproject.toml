@@ -33,7 +33,6 @@ exclude = [
     "venv",
 ]
 
-# Same as Black.
 line-length = 120
 
 # Allow unused variables when underscore-prefixed.

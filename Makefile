@@ -3,3 +3,6 @@ requirements:
 
 run:
 	python tetris.py
+
+style:
+	ruff check . --fix

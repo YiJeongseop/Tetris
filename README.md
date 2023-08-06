@@ -37,3 +37,13 @@ make run
 * [Menu Interface - Confirm 003.wav](https://freesound.org/people/DWOBoyle/sounds/143607/)  
 * [Pop sound](https://freesound.org/people/deraj/sounds/202230/)  
 * [In game](https://freesound.org/people/BloodPixelHero/sounds/580898/)
+
+## Code style
+
+We use [ruff](https://beta.ruff.rs/docs/) as a linter, to format the code.
+
+You can run it with:
+
+```bash
+make style
+```

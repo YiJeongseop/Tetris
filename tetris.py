@@ -38,6 +38,11 @@ class Block:
         start_time = time.time()
         global gameover
 
+        def currentIter(blockNumber, blocks):
+            for block in iter(blocks):  # What if there are no other blocks where they will be?
+                block.number = blockNumber  # Create the blocks on the game screen
+                yield block
+
         self.nextBlockList.clear()
 
         if self.blockNumber == 1:
@@ -46,9 +51,7 @@ class Block:
             gameover = self.gameoverState()
             if gameover:
                 return
-            for block in blocks:  # What if there are no other blocks where they will be?
-                block.number = 1  # Create the blocks on the game screen
-                self.currentBlockList.append(block)
+            self.currentBlockList.extend(currentIter(self.blockNumber, blocks))
 
         elif self.blockNumber == 2:
             blocks = [
@@ -59,9 +62,7 @@ class Block:
             gameover = self.gameoverState()
             if gameover:
                 return
-            for block in blocks:
-                block.number = 2
-                self.currentBlockList.append(block)
+            self.currentBlockList.extend(currentIter(self.blockNumber, blocks))
 
         elif self.blockNumber == 3:
             blocks = [
@@ -72,9 +73,7 @@ class Block:
             gameover = self.gameoverState()
             if gameover:
                 return
-            for block in blocks:
-                block.number = 3
-                self.currentBlockList.append(block)
+            self.currentBlockList.extend(currentIter(self.blockNumber, blocks))
 
         elif self.blockNumber == 4:
             blocks = [block for blocks in backgroundblock_group[0:2] for block in blocks[5:7]]
@@ -82,9 +81,7 @@ class Block:
             gameover = self.gameoverState()
             if gameover:
                 return
-            for block in blocks:
-                block.number = 4
-                self.currentBlockList.append(block)
+            self.currentBlockList.extend(currentIter(self.blockNumber, blocks))
 
         elif self.blockNumber == 5:
             blocks = [
@@ -95,9 +92,7 @@ class Block:
             gameover = self.gameoverState()
             if gameover:
                 return
-            for block in blocks:
-                block.number = 5
-                self.currentBlockList.append(block)
+            self.currentBlockList.extend(currentIter(self.blockNumber, blocks))
 
         elif self.blockNumber == 6:
             blocks = [
@@ -108,9 +103,7 @@ class Block:
             gameover = self.gameoverState()
             if gameover:
                 return
-            for block in blocks:
-                block.number = 6
-                self.currentBlockList.append(block)
+            self.currentBlockList.extend(currentIter(self.blockNumber, blocks))
 
         elif self.blockNumber == 7:
             blocks = [
@@ -121,9 +114,7 @@ class Block:
             gameover = self.gameoverState()
             if gameover:
                 return
-            for block in blocks:
-                block.number = 7
-                self.currentBlockList.append(block)
+            self.currentBlockList.extend(currentIter(self.blockNumber, blocks))
 
     def goDown(self):
         global average_time_to_put_a_block, total_time

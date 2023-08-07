@@ -47,74 +47,45 @@ class Block:
 
         if self.blockNumber == 1:
             blocks = [block for block in backgroundblock_group[0][4:8]]  # Add background blocks where the first block will be placed.. in nextBlockList.
-            self.nextBlockList.extend(block.number for block in blocks)
-            gameover = self.gameoverState()
-            if gameover:
-                return
-            self.currentBlockList.extend(currentIter(self.blockNumber, blocks))
 
         elif self.blockNumber == 2:
             blocks = [
                 backgroundblock_group[0][4],
                 *backgroundblock_group[1][4:7],
             ]
-            self.nextBlockList.extend(block.number for block in blocks)
-            gameover = self.gameoverState()
-            if gameover:
-                return
-            self.currentBlockList.extend(currentIter(self.blockNumber, blocks))
 
         elif self.blockNumber == 3:
             blocks = [
                 *backgroundblock_group[1][4:7],
                 backgroundblock_group[0][6],
             ]
-            self.nextBlockList.extend(block.number for block in blocks)
-            gameover = self.gameoverState()
-            if gameover:
-                return
-            self.currentBlockList.extend(currentIter(self.blockNumber, blocks))
 
         elif self.blockNumber == 4:
             blocks = [block for blocks in backgroundblock_group[0:2] for block in blocks[5:7]]
-            self.nextBlockList.extend(block.number for block in blocks)
-            gameover = self.gameoverState()
-            if gameover:
-                return
-            self.currentBlockList.extend(currentIter(self.blockNumber, blocks))
 
         elif self.blockNumber == 5:
             blocks = [
                 *backgroundblock_group[1][4:6],
                 *backgroundblock_group[0][5:7],
             ]
-            self.nextBlockList.extend(block.number for block in blocks)
-            gameover = self.gameoverState()
-            if gameover:
-                return
-            self.currentBlockList.extend(currentIter(self.blockNumber, blocks))
 
         elif self.blockNumber == 6:
             blocks = [
                 backgroundblock_group[0][5],
                 *backgroundblock_group[1][4:7],
             ]
-            self.nextBlockList.extend(block.number for block in blocks)
-            gameover = self.gameoverState()
-            if gameover:
-                return
-            self.currentBlockList.extend(currentIter(self.blockNumber, blocks))
 
         elif self.blockNumber == 7:
             blocks = [
                 *backgroundblock_group[0][4:6],
                 *backgroundblock_group[1][5:7],
             ]
-            self.nextBlockList.extend(block.number for block in blocks)
-            gameover = self.gameoverState()
-            if gameover:
-                return
-            self.currentBlockList.extend(currentIter(self.blockNumber, blocks))
+
+        self.nextBlockList.extend(block.number for block in blocks)
+        gameover = self.gameoverState()
+        if gameover:
+            return
+        self.currentBlockList.extend(currentIter(self.blockNumber, blocks))
 
     def goDown(self):
         global average_time_to_put_a_block, total_time

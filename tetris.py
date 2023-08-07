@@ -46,7 +46,7 @@ class Block:
         self.nextBlockList.clear()
 
         if self.blockNumber == 1:
-            blocks = [block for block in backgroundblock_group[0][4:8]]  # Add background blocks where the first block will be placed.. in nextBlockList.
+            blocks = backgroundblock_group[0][4:8]  # Add background blocks where the first block will be placed.. in nextBlockList.
 
         elif self.blockNumber == 2:
             blocks = [

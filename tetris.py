@@ -27,6 +27,10 @@ class Block:
         self.current_xlist = []  # x-coordinate list of moving blocks
         self.state = 1  # You can turn the block four times. 1, 2, 3, 4
 
+    def gameoverState(self):
+        # What if there are other blocks where they will be?
+        return any(i in self.nextBlockList for i in range(1, 8))
+
     def start(self):
         global block_count
         block_count += 1
@@ -34,110 +38,83 @@ class Block:
         start_time = time.time()
         global gameover
 
+        def currentIter(blockNumber, blocks):
+            for block in iter(blocks):  # What if there are no other blocks where they will be?
+                block.number = blockNumber  # Create the blocks on the game screen
+                yield block
+
+        self.nextBlockList.clear()
+
         if self.blockNumber == 1:
-            self.nextBlockList.clear()
-            for x in range(4, 8):
-                self.nextBlockList.append(backgroundblock_group[0][x].number)  # Add background blocks where the first block will be placed.. in nextBlockList.
-            for i in range(1, 8):  # What if there are other blocks where they will be?
-                if i in self.nextBlockList:
-                    gameover = True
-                    return
-            for x in range(4, 8):  # What if there are no other blocks where they will be?
-                backgroundblock_group[0][x].number = 1  # Create the blocks on the game screen
-                self.currentBlockList.append(backgroundblock_group[0][x])
+            blocks = [block for block in backgroundblock_group[0][4:8]]  # Add background blocks where the first block will be placed.. in nextBlockList.
+            self.nextBlockList.extend(block.number for block in blocks)
+            gameover = self.gameoverState()
+            if gameover:
+                return
+            self.currentBlockList.extend(currentIter(self.blockNumber, blocks))
 
         elif self.blockNumber == 2:
-            self.nextBlockList.clear()
-            self.nextBlockList.append(backgroundblock_group[0][4].number)
-            for x in range(4, 7):
-                self.nextBlockList.append(backgroundblock_group[1][x].number)
-            for i in range(1, 8):
-                if i in self.nextBlockList:
-                    gameover = True
-                    return
-            backgroundblock_group[0][4].number = 2
-            self.currentBlockList.append(backgroundblock_group[0][4])
-            for x in range(4, 7):
-                backgroundblock_group[1][x].number = 2
-                self.currentBlockList.append(backgroundblock_group[1][x])
+            blocks = [
+                backgroundblock_group[0][4],
+                *backgroundblock_group[1][4:7],
+            ]
+            self.nextBlockList.extend(block.number for block in blocks)
+            gameover = self.gameoverState()
+            if gameover:
+                return
+            self.currentBlockList.extend(currentIter(self.blockNumber, blocks))
 
         elif self.blockNumber == 3:
-            self.nextBlockList.clear()
-            for x in range(4, 7):
-                self.nextBlockList.append(backgroundblock_group[1][x].number)
-            self.nextBlockList.append(backgroundblock_group[0][6].number)
-            for i in range(1, 8):
-                if i in self.nextBlockList:
-                    gameover = True
-                    return
-            for x in range(4, 7):
-                backgroundblock_group[1][x].number = 3
-                self.currentBlockList.append(backgroundblock_group[1][x])
-            backgroundblock_group[0][6].number = 3
-            self.currentBlockList.append(backgroundblock_group[0][6])
+            blocks = [
+                *backgroundblock_group[1][4:7],
+                backgroundblock_group[0][6],
+            ]
+            self.nextBlockList.extend(block.number for block in blocks)
+            gameover = self.gameoverState()
+            if gameover:
+                return
+            self.currentBlockList.extend(currentIter(self.blockNumber, blocks))
 
         elif self.blockNumber == 4:
-            self.nextBlockList.clear()
-            for y in range(0, 2):
-                for x in range(5, 7):
-                    self.nextBlockList.append(backgroundblock_group[y][x].number)
-            for i in range(1, 8):
-                if i in self.nextBlockList:
-                    gameover = True
-                    return
-            for y in range(0, 2):
-                for x in range(5, 7):
-                    backgroundblock_group[y][x].number = 4
-                    self.currentBlockList.append(backgroundblock_group[y][x])
+            blocks = [block for blocks in backgroundblock_group[0:2] for block in blocks[5:7]]
+            self.nextBlockList.extend(block.number for block in blocks)
+            gameover = self.gameoverState()
+            if gameover:
+                return
+            self.currentBlockList.extend(currentIter(self.blockNumber, blocks))
 
         elif self.blockNumber == 5:
-            self.nextBlockList.clear()
-            for x in range(4, 6):
-                self.nextBlockList.append(backgroundblock_group[1][x].number)
-            for x in range(5, 7):
-                self.nextBlockList.append(backgroundblock_group[0][x].number)
-            for i in range(1, 8):
-                if i in self.nextBlockList:
-                    gameover = True
-                    return
-            for x in range(4, 6):
-                backgroundblock_group[1][x].number = 5
-                self.currentBlockList.append(backgroundblock_group[1][x])
-            for x in range(5, 7):
-                backgroundblock_group[0][x].number = 5
-                self.currentBlockList.append(backgroundblock_group[0][x])
+            blocks = [
+                *backgroundblock_group[1][4:6],
+                *backgroundblock_group[0][5:7],
+            ]
+            self.nextBlockList.extend(block.number for block in blocks)
+            gameover = self.gameoverState()
+            if gameover:
+                return
+            self.currentBlockList.extend(currentIter(self.blockNumber, blocks))
 
         elif self.blockNumber == 6:
-            self.nextBlockList.clear()
-            self.nextBlockList.append(backgroundblock_group[0][5].number)
-            for x in range(4, 7):
-                self.nextBlockList.append(backgroundblock_group[1][x].number)
-            for i in range(1, 8):
-                if i in self.nextBlockList:
-                    gameover = True
-                    return
-            backgroundblock_group[0][5].number = 6
-            self.currentBlockList.append(backgroundblock_group[0][5])
-            for x in range(4, 7):
-                backgroundblock_group[1][x].number = 6
-                self.currentBlockList.append(backgroundblock_group[1][x])
+            blocks = [
+                backgroundblock_group[0][5],
+                *backgroundblock_group[1][4:7],
+            ]
+            self.nextBlockList.extend(block.number for block in blocks)
+            gameover = self.gameoverState()
+            if gameover:
+                return
+            self.currentBlockList.extend(currentIter(self.blockNumber, blocks))
 
         elif self.blockNumber == 7:
-            self.nextBlockList.clear()
-            for x in range(4, 6):
-                self.nextBlockList.append(backgroundblock_group[0][x].number)
-            for x in range(5, 7):
-                self.nextBlockList.append(backgroundblock_group[1][x].number)
-            for i in range(1, 8):
-                if i in self.nextBlockList:
-                    gameover = True
-                    return
-            for x in range(4, 6):
-                backgroundblock_group[0][x].number = 7
-                self.currentBlockList.append(backgroundblock_group[0][x])
-            for x in range(5, 7):
-                backgroundblock_group[1][x].number = 7
-                self.currentBlockList.append(backgroundblock_group[1][x])
+            blocks = [
+                *backgroundblock_group[0][4:6],
+                *backgroundblock_group[1][5:7],
+            ]
+            self.nextBlockList.extend(block.number for block in blocks)
+            gameover = self.gameoverState()
+            if gameover:
+                return
+            self.currentBlockList.extend(currentIter(self.blockNumber, blocks))
 
     def goDown(self):
         global average_time_to_put_a_block, total_time

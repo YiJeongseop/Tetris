@@ -133,3 +133,6 @@ dmypy.json
 
 # DB
 HighestScore.sqlite
+
+# ruff Python linter
+.ruff_cache/

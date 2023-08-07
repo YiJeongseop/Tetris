@@ -12,13 +12,13 @@ Tetris game!, made with Python :snake: and love :heart:.
 * Install the requirements lybraries with:
 
   ```bash
-  make requirements
+  make requirements (mingw32-make requirements)
   ```
 
 ## Run
 
 ```bash
-make run
+make run (mingw32-make run)
 ```
 
 
@@ -45,7 +45,7 @@ We use [ruff](https://beta.ruff.rs/docs/) as a linter, to format the code.
 You can run the check with:
 
 ```bash
-make style
+make style (mingw32-make style)
 ```
 
 # To Do

@@ -2,11 +2,14 @@ import os
 import random
 import sqlite3  # https://docs.python.org/3.8/library/sqlite3.html
 import time
+from enum import Enum
 
 import pygame  # https://www.pygame.org/docs/
 from pygame import mixer
 
 from settings import DB_PATH, DB_NAME
+
+Move = Enum("Move", ["LEFT", "RIGHT"])
 
 
 class BackgroundBlock:
@@ -89,25 +92,16 @@ class Block:
             self.currentBlockList[i] = self.nextBlockList[i]
             self.currentBlockList[i].number = self.blockNumber
 
-    def goLeft(self):
+    def go(self, move):
+        adjust = 0
+        if move == Move.LEFT:
+            adjust = -1
+        elif move == Move.RIGHT:
+            adjust = 1
+
         self.nextBlockList.clear()
         for i in range(0, 4):
-            self.nextBlockList.append(backgroundblock_group[self.currentBlockList[i].y//32][(self.currentBlockList[i].x//32)-1])
-            if self.nextBlockList[i].number in range(1, 9) and self.nextBlockList[i].done is True:
-                return
-
-        for i in range (0, 4):
-            self.currentBlockList[i].number = 0
-            pygame.draw.rect(screen, (0, 0, 0), pygame.Rect(self.currentBlockList[i].x, self.currentBlockList[i].y, 32, 32))
-
-        for i in range(0, 4):
-            self.currentBlockList[i] = self.nextBlockList[i]
-            self.currentBlockList[i].number = self.blockNumber
-
-    def goRight(self):
-        self.nextBlockList.clear()
-        for i in range(0, 4):
-            self.nextBlockList.append(backgroundblock_group[self.currentBlockList[i].y//32][(self.currentBlockList[i].x//32)+1])
+            self.nextBlockList.append(backgroundblock_group[self.currentBlockList[i].y//32][(self.currentBlockList[i].x//32)+adjust])
             if self.nextBlockList[i].number in range(1, 9) and self.nextBlockList[i].done is True:
                 return
 
@@ -798,9 +792,9 @@ while running:  # Main loop
                 autotime_down = 0
                 checkAndGoDown()
             elif event.key == pygame.K_LEFT:
-                current_block.goLeft()
+                current_block.go(Move.LEFT)
             elif event.key == pygame.K_RIGHT:
-                current_block.goRight()
+                current_block.go(Move.RIGHT)
 
     autotime_down += 1
     if autotime_down % 30 == 0:

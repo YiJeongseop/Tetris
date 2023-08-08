@@ -2,11 +2,14 @@ import os
 import random
 import sqlite3  # https://docs.python.org/3.8/library/sqlite3.html
 import time
+from enum import Enum
 
 import pygame  # https://www.pygame.org/docs/
 from pygame import mixer
 
 from settings import DB_PATH, DB_NAME
+
+Move = Enum("Move", ["LEFT", "RIGHT", "DOWN"])
 
 
 class BackgroundBlock:
@@ -63,55 +66,36 @@ class Block:
             return
         self.currentBlockList.extend(currentIter(self.blockNumber, blocks))
 
-    def goDown(self):
+    def go(self, move):
         global average_time_to_put_a_block, total_time
         self.nextBlockList.clear()
-        for i in range(0, 4):
-            self.nextBlockList.append(backgroundblock_group[(self.currentBlockList[i].y//32) + 1][(self.currentBlockList[i].x//32)])  # Add background blocks in where the blocks are moving
-            if self.nextBlockList[i].number in range(1, 9) and self.nextBlockList[i].done is True:  # If there are blocks down there, stop
-                y_list = []
-                for j in range(0, 4):
-                    self.currentBlockList[j].done = True
-                    y_list.append(self.currentBlockList[j].y)
-                self.currentBlockList.clear()
-                break_sound.play()
-                end_time = time.time() - start_time
-                total_time += end_time
-                average_time_to_put_a_block = total_time / block_count
-                eraseLine(y_list)
-                return y_list
 
-        for i in range(0, 4):  # The block can go down! Remove the background blocks color before moving.
-            self.currentBlockList[i].number = 0
-            pygame.draw.rect(screen, (0, 0, 0), pygame.Rect(self.currentBlockList[i].x, self.currentBlockList[i].y, 32, 32))
+        if move in (Move.LEFT, Move.RIGHT):
+            if move == Move.LEFT:
+                adjust = -1
+            else:
+                adjust = 1
+            for i in range(0, 4):
+                self.nextBlockList.append(backgroundblock_group[self.currentBlockList[i].y//32][(self.currentBlockList[i].x//32)+adjust])
+                if self.nextBlockList[i].number in range(1, 9) and self.nextBlockList[i].done:
+                    return
+        elif move == Move.DOWN:
+            for i in range(0, 4):
+                self.nextBlockList.append(backgroundblock_group[(self.currentBlockList[i].y//32) + 1][(self.currentBlockList[i].x//32)])  # Add background blocks in where the blocks are moving
+                if self.nextBlockList[i].number in range(1, 9) and self.nextBlockList[i].done:  # If there are blocks down there, stop
+                    y_list = []
+                    for j in range(0, 4):
+                        self.currentBlockList[j].done = True
+                        y_list.append(self.currentBlockList[j].y)
+                    self.currentBlockList.clear()
+                    break_sound.play()
+                    end_time = time.time() - start_time
+                    total_time += end_time
+                    average_time_to_put_a_block = total_time / block_count
+                    eraseLine(y_list)
+                    return y_list
 
-        for i in range(0, 4):
-            self.currentBlockList[i] = self.nextBlockList[i]
-            self.currentBlockList[i].number = self.blockNumber
-
-    def goLeft(self):
-        self.nextBlockList.clear()
-        for i in range(0, 4):
-            self.nextBlockList.append(backgroundblock_group[self.currentBlockList[i].y//32][(self.currentBlockList[i].x//32)-1])
-            if self.nextBlockList[i].number in range(1, 9) and self.nextBlockList[i].done is True:
-                return
-
-        for i in range (0, 4):
-            self.currentBlockList[i].number = 0
-            pygame.draw.rect(screen, (0, 0, 0), pygame.Rect(self.currentBlockList[i].x, self.currentBlockList[i].y, 32, 32))
-
-        for i in range(0, 4):
-            self.currentBlockList[i] = self.nextBlockList[i]
-            self.currentBlockList[i].number = self.blockNumber
-
-    def goRight(self):
-        self.nextBlockList.clear()
-        for i in range(0, 4):
-            self.nextBlockList.append(backgroundblock_group[self.currentBlockList[i].y//32][(self.currentBlockList[i].x//32)+1])
-            if self.nextBlockList[i].number in range(1, 9) and self.nextBlockList[i].done is True:
-                return
-
-        for i in range (0, 4):
+        for i in range(0, 4):  # The block is now moving! Remove the background blocks color beforehand.
             self.currentBlockList[i].number = 0
             pygame.draw.rect(screen, (0, 0, 0), pygame.Rect(self.currentBlockList[i].x, self.currentBlockList[i].y, 32, 32))
 
@@ -715,7 +699,7 @@ def plusScore(y):
 
 def checkAndGoDown():  # Check if the block can go down and go down if possible
     global current_block, next_block
-    if type(current_block.goDown()) == list:
+    if type(current_block.go(Move.DOWN)) == list:
         current_block = next_block
         next_block = Block(random.randint(1, 7))
         current_block.start()
@@ -798,9 +782,9 @@ while running:  # Main loop
                 autotime_down = 0
                 checkAndGoDown()
             elif event.key == pygame.K_LEFT:
-                current_block.goLeft()
+                current_block.go(Move.LEFT)
             elif event.key == pygame.K_RIGHT:
-                current_block.goRight()
+                current_block.go(Move.RIGHT)
 
     autotime_down += 1
     if autotime_down % 30 == 0:

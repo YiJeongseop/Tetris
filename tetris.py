@@ -45,42 +45,18 @@ class Block:
 
         self.nextBlockList.clear()
 
-        if self.blockNumber == 1:
-            blocks = [block for block in backgroundblock_group[0][4:8]]  # Add background blocks where the first block will be placed.. in nextBlockList.
-
-        elif self.blockNumber == 2:
-            blocks = [
-                backgroundblock_group[0][4],
-                *backgroundblock_group[1][4:7],
-            ]
-
-        elif self.blockNumber == 3:
-            blocks = [
-                *backgroundblock_group[1][4:7],
-                backgroundblock_group[0][6],
-            ]
-
-        elif self.blockNumber == 4:
-            blocks = [block for blocks in backgroundblock_group[0:2] for block in blocks[5:7]]
-
-        elif self.blockNumber == 5:
-            blocks = [
-                *backgroundblock_group[1][4:6],
-                *backgroundblock_group[0][5:7],
-            ]
-
-        elif self.blockNumber == 6:
-            blocks = [
-                backgroundblock_group[0][5],
-                *backgroundblock_group[1][4:7],
-            ]
-
-        elif self.blockNumber == 7:
-            blocks = [
-                *backgroundblock_group[0][4:6],
-                *backgroundblock_group[1][5:7],
-            ]
-
+        # A lazily-evaluated map of background blocks. Used to fetch and place one in nextBlockList.
+        fetch_blocks_map = [
+            lambda group: group[0][4:8],  # Block 1
+            lambda group: [group[0][4], *group[1][4:7]],  # Block 2
+            lambda group: [*group[1][4:7], group[0][6]],  # Block 3
+            lambda group: [block for blocks in group[0:2] for block in blocks[5:7]],  # Block 4
+            lambda group: [*group[1][4:6], *group[0][5:7]],  # Block 5
+            lambda group: [group[0][5], *group[1][4:7]],  # Block 6
+            lambda group: [*group[0][4:6], *group[1][5:7]],  # Block 7
+        ]
+        fetcher = fetch_blocks_map[self.blockNumber - 1]
+        blocks = fetcher(backgroundblock_group)
         self.nextBlockList.extend(block.number for block in blocks)
         gameover = self.gameoverState()
         if gameover:

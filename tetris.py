@@ -102,10 +102,10 @@ class Block:
         self.nextBlockList.clear()
         for i in range(0, 4):
             self.nextBlockList.append(backgroundblock_group[self.currentBlockList[i].y//32][(self.currentBlockList[i].x//32)+adjust])
-            if self.nextBlockList[i].number in range(1, 9) and self.nextBlockList[i].done is True:
+            if self.nextBlockList[i].number in range(1, 9) and self.nextBlockList[i].done:
                 return
 
-        for i in range (0, 4):
+        for i in range(0, 4):
             self.currentBlockList[i].number = 0
             pygame.draw.rect(screen, (0, 0, 0), pygame.Rect(self.currentBlockList[i].x, self.currentBlockList[i].y, 32, 32))
 

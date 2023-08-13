@@ -7,7 +7,7 @@ DB_NAME = "HighestScore.sqlite"
 DB_PATH = os.path.join(BASE_DIR, DB_NAME)
 
 SCREEN = pygame.display.set_mode((672, 672))  # Screen consisting of 21 x 21 blocks, the size of one block is 32 x 32
-SPEED = 20  # Adjust the descent speed. 1 = Drops fastest.
+DESCENT_SPEED = 20  # Adjust the descent speed. 1 = Drops fastest.
 
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)

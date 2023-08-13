@@ -1,11 +1,10 @@
-import os
 import random
-import sqlite3  # https://docs.python.org/3.8/library/sqlite3.html
 import time
 import pygame  # https://www.pygame.org/docs/
 from pygame import mixer
 from enum import Enum
-from settings import DB_PATH, DB_NAME, SCREEN, BLACK, WHITE, SKY_BLUE, BLUE, ORANGE, YELLOW, GREEN, PURPLE, RED, SPEED
+from settings import SCREEN, BLACK, WHITE, SKY_BLUE, BLUE, ORANGE, YELLOW, GREEN, PURPLE, RED, DESCENT_SPEED
+from db_and_time import DB
 
 Move = Enum("Move", ["LEFT", "RIGHT", "DOWN"])
 
@@ -744,18 +743,8 @@ def main():
 
     autotime_down = 0  # Variable to control block down speed
 
-    if os.path.isfile(DB_PATH) is not True:
-        con = sqlite3.connect(DB_NAME)  # Create Connection Object
-        cur = con.cursor()  # You must create a Cursor Object before execute()
-        cur.execute("CREATE TABLE HighestScore (Score, AverageTimeToPutABlock)")
-        cur.execute("INSERT INTO HighestScore (Score, AverageTimeToPutABlock) VALUES (0, 0)")  # and insert 0, 0
-        con.commit()  # Save (commit) the changes
-    else:
-        con = sqlite3.connect(DB_NAME)
-        cur = con.cursor()
-
-    cur.execute("SELECT * FROM HighestScore ORDER BY Score DESC")
-    score_list = cur.fetchall()  # Fetches all (remaining) rows of a query result, returning a list
+    db = DB()
+    score_list = db.fetch_highest_score()
 
     pygame.key.set_repeat(120)  # Control how held keys are repeated
 
@@ -789,7 +778,7 @@ def main():
                     current_block.go(Move.RIGHT)
 
         autotime_down += 1
-        if autotime_down % SPEED == 0:
+        if autotime_down % DESCENT_SPEED == 0:
             check_and_go_down()  # The block automatically goes down If you don't press down key.
 
         text = font_score.render("Score : " + str(score), True, WHITE)
@@ -837,8 +826,7 @@ def main():
             SCREEN.blit(text2, (70, 400))
             gameover_sound.play()
             pygame.display.flip()
-            cur.execute(f"INSERT INTO HighestScore VALUES ({score}, {avg_time})")
-            con.commit()
+            db.save_highest_score(score, avg_time)
             pygame.time.wait(2000)
             running = False
 

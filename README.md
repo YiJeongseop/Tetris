@@ -98,7 +98,7 @@ make style (mingw32-make style)
   or the alternative [pytest](https://docs.pytest.org/en/7.4.x/).
 * [ ] Reorganize the code in different files, for example, you could create a file for the utils functions, 
   another for the Block clases, and another for the main function.
-* [ ] The DB management could be defined in a class, to encapsulate the logic.
+* [X] The DB management could be defined in a class, to encapsulate the logic.
 * [ ] The time tracking could be defined in a class, to encapsulate the logic.
 * [X] Send to [settings.py](settings.py) the configs constant variables, maybe like the screen size, the colors, etc.
 * [X] Check the different [rules for the linter](https://beta.ruff.rs/docs//rules/), and add the ones that you 

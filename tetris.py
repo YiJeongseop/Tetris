@@ -11,7 +11,7 @@ Move = Enum("Move", ["LEFT", "RIGHT", "DOWN"])
 
 
 class BackgroundBlock:
-    def __init__(self, x, y, number, done):
+    def __init__(self, x: int, y: int, number: int, done: bool):
         super().__init__()
         self.x = x
         self.y = y
@@ -20,7 +20,7 @@ class BackgroundBlock:
 
 
 class Block:
-    def __init__(self, block_number):
+    def __init__(self, block_number: int):
         self.block_number = block_number
         self.next_block_list = []  # There will be the next block in the waiting area. It's a list of that background blocks.
         self.current_block_list = []  # List of moving blocks
@@ -64,7 +64,7 @@ class Block:
             return
         self.current_block_list.extend(currentIter(self.block_number, blocks))
 
-    def go(self, move):
+    def go(self, move: Enum):
         global average_time_to_put_a_block, total_time
         self.next_block_list.clear()
 
@@ -621,7 +621,7 @@ class Block:
                 self.state = 1
 
 
-def next_block_draw(block_number):
+def next_block_draw(block_number: int):
     if block_number == 1:
         for x in range(14, 18):
             pygame.draw.rect(SCREEN, SKY_BLUE, pygame.Rect(32 * x + 16, 32 * 12, 32, 32))
@@ -659,7 +659,7 @@ def next_block_draw(block_number):
             pygame.draw.rect(SCREEN, RED, pygame.Rect(32 * x, 32 * 12, 32, 32))
 
 
-def erase_line(y_list):
+def erase_line(y_list: list):
     max_y = max(y_list)//32  # Largest y-index of a placed block
     min_y = min(y_list)//32 - 1  # Smallest y-index of a placed block - 1
     while(max_y > min_y):
@@ -675,7 +675,7 @@ def erase_line(y_list):
         max_y -= 1
 
 
-def plus_score(y):
+def plus_score(y: int):
     global score
     erase_sound.play()
 
@@ -703,7 +703,7 @@ def check_and_go_down():  # Check if the block can go down and go down if possib
         current_block.start()
 
 
-def color_the_block(screen, coordinates, x, y):
+def color_the_block(screen, coordinates: tuple, x: int, y: int):
     pygame.draw.rect(screen, coordinates, pygame.Rect(32 * x, 32 * y, 32, 32))
     pygame.draw.rect(screen, BLACK, pygame.Rect(32 * x, 32 * y, 32, 32), width=1)
 
@@ -721,7 +721,7 @@ background_block_group = [[0 for j in range(0, 12)] for i in range(0, 21)]  # Ga
 for y in range(0, 21):  # Create blocks that make up the game SCREEN
     for x in range(0, 12):
         if x == 0 or x == 11 or y == 20:  # The blocks that make up the boundary
-           background_block_group[y][x] = BackgroundBlock(32 * x, 32 * y, 8, True)
+            background_block_group[y][x] = BackgroundBlock(32 * x, 32 * y, 8, True)
         else:
             background_block_group[y][x] = BackgroundBlock(32 * x, 32 * y, 0, False)
 

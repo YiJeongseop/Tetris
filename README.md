@@ -52,7 +52,7 @@ make style (mingw32-make style)
 
 * [X] Function and Argument names should be lowercase, with words separated by underscores as necessary 
   to improve readability (snake-case).
-* [ ] Max line length should be 120 characters, fix the lines that are longer than that.
+* [X] Max line length should be 120 characters, fix the lines that are longer than that.
 * [X] Add type hints to the functions, see [ref](https://docs.python.org/3/library/typing.html), 
   this is a good way to document the code defining the parameters types and the return type.
 * [ ] Add docstrings to the functions, see [ref](https://www.python.org/dev/peps/pep-0257/), 

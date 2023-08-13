@@ -50,7 +50,7 @@ make style (mingw32-make style)
 
 # To Do
 
-* [ ] Function and Argument names should be lowercase, with words separated by underscores as necessary 
+* [X] Function and Argument names should be lowercase, with words separated by underscores as necessary 
   to improve readability (snake-case).
 * [ ] Max line length should be 120 characters, fix the lines that are longer than that.
 * [ ] Add type hints to the functions, see [ref](https://docs.python.org/3/library/typing.html), 

@@ -718,34 +718,15 @@ total_time = 0  # Total time it took to put a block
 start_time = 0  # Time when the block was first created
 current_block = Block(random.randint(1, 7))  # Randomly select one of the seven types of blocks
 next_block = Block(random.randint(1, 7))
-autotime_down = 0  # Variable to control block down speed
-
-pygame.init()  # The coordinate (0, 0) is in the upper left.
-
-if os.path.isfile(DB_PATH) is not True:
-    con = sqlite3.connect(DB_NAME)  # Create Connection Object
-    cur = con.cursor()  # You must create a Cursor Object before execute() can be called.
-    cur.execute("CREATE TABLE HighestScore (Score, AverageTimeToPutABlock)")  # Since the file does not exist, create a table
-    cur.execute("INSERT INTO HighestScore (Score, AverageTimeToPutABlock) VALUES (0, 0)")  # and insert 0, 0
-    con.commit()  # Save (commit) the changes
-else:
-    con = sqlite3.connect(DB_NAME)
-    cur = con.cursor()
-
-cur.execute("SELECT * FROM HighestScore ORDER BY Score DESC")
-score_list = cur.fetchall()  # Fetches all (remaining) rows of a query result, returning a list
-
-pygame.key.set_repeat(120)  # Control how held keys are repeated
-
-font = pygame.font.SysFont("consolas", 30)
-font2 = pygame.font.SysFont("ebrima", 100)
-font3 = pygame.font.SysFont("consolas", 20)
-font4 = pygame.font.SysFont("consolas", 15)
-
-pygame.display.set_caption("Tetris")  # Title
 screen = pygame.display.set_mode((672, 672))  # Full screen consisting of 21 x 21 blocks, the size of one block is 32 x 32
 
-clock = pygame.time.Clock()  # Create an object to help track time
+backgroundblock_group = [[0 for j in range(0, 12)] for i in range(0, 21)]  # Game screen consisting of 12 x 21 blocks
+for y in range(0, 21):  # Create blocks that make up the game screen
+    for x in range(0, 12):
+        if x == 0 or x == 11 or y == 20:  # The blocks that make up the boundary
+           backgroundblock_group[y][x] = BackgroundBlock(32 * x, 32 * y, 8, True)
+        else:
+            backgroundblock_group[y][x] = BackgroundBlock(32 * x, 32 * y, 0, False)
 
 mixer.init()
 mixer.music.load("resources/audio/580898__bloodpixelhero__in-game.wav")
@@ -758,90 +739,115 @@ gameover_sound.set_volume(0.2)
 erase_sound = mixer.Sound("resources/audio/143607__dwoboyle__menu-interface-confirm-003.wav")
 erase_sound.set_volume(0.15)
 
-backgroundblock_group = [[0 for j in range(0, 12)] for i in range(0, 21)]  # Game screen consisting of 12 x 21 blocks
-for y in range(0, 21):  # Create blocks that make up the game screen
-    for x in range(0, 12):
-        if x == 0 or x == 11 or y == 20:  # The blocks that make up the boundary
-            backgroundblock_group[y][x] = BackgroundBlock(32 * x, 32 * y, 8, True)
-        else:
-            backgroundblock_group[y][x] = BackgroundBlock(32 * x, 32 * y, 0, False)
+def main():
+    pygame.init()  # The coordinate (0, 0) is in the upper left.
 
-current_block.start()  # First block appears on the game screen!
+    autotime_down = 0  # Variable to control block down speed
 
-running = True
-while running:  # Main loop
-    screen.fill((0, 0, 0))  # Paint the screen black before draw blocks on screen
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
-        elif event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_UP:
-                if current_block.blockNumber != 4:  # Square blocks do not rotate.
-                    current_block.turn()
-            elif event.key == pygame.K_DOWN:
-                autotime_down = 0
-                checkAndGoDown()
-            elif event.key == pygame.K_LEFT:
-                current_block.go(Move.LEFT)
-            elif event.key == pygame.K_RIGHT:
-                current_block.go(Move.RIGHT)
+    if os.path.isfile(DB_PATH) is not True:
+        con = sqlite3.connect(DB_NAME)  # Create Connection Object
+        cur = con.cursor()  # You must create a Cursor Object before execute() can be called.
+        cur.execute("CREATE TABLE HighestScore (Score, AverageTimeToPutABlock)")  # Since the file does not exist, create a table
+        cur.execute("INSERT INTO HighestScore (Score, AverageTimeToPutABlock) VALUES (0, 0)")  # and insert 0, 0
+        con.commit()  # Save (commit) the changes
+    else:
+        con = sqlite3.connect(DB_NAME)
+        cur = con.cursor()
 
-    autotime_down += 1
-    if autotime_down % 30 == 0:
-        checkAndGoDown()  # The block automatically goes down If you don't press down key.
+    cur.execute("SELECT * FROM HighestScore ORDER BY Score DESC")
+    score_list = cur.fetchall()  # Fetches all (remaining) rows of a query result, returning a list
 
-    text = font.render("Score : " + str(score), True, (255, 255, 255))
-    screen.blit(text, (387, 15))
-    text2 = font4.render(f"Average time to put a block : {average_time_to_put_a_block:.2f}s", True, (255, 255, 255))
-    screen.blit(text2, (387, 55))
-    text3 = font3.render(f"Best : {score_list[0][0]} / {score_list[0][1]:.2f}", True, (255, 255, 255))
-    screen.blit(text3, (387, 635))
+    pygame.key.set_repeat(120)  # Control how held keys are repeated
 
-    pygame.draw.rect(screen, (211, 211, 211), pygame.Rect(32 * 14, 32 * 10, 32*5, 32*4), width=3)  # Border where the next block waits
+    font = pygame.font.SysFont("consolas", 30)
+    font2 = pygame.font.SysFont("ebrima", 100)
+    font3 = pygame.font.SysFont("consolas", 20)
+    font4 = pygame.font.SysFont("consolas", 15)
 
-    nextBlockDraw(next_block.blockNumber)  # Draw the next block to come out in the waiting area
+    pygame.display.set_caption("Tetris")  # Title
 
-    for x in range(1, 11):  # Color the boundaries of the blocks on the game screen
-        for y in range(0, 20):
-            pygame.draw.rect(screen, (161, 145, 61), pygame.Rect(32 * x, 32 * y, 32, 32), width=1)
+    clock = pygame.time.Clock()  # Create an object to help track time
+    
+    current_block.start()  # First block appears on the game screen!
 
-    for y in range(0, 21):  # Color the blocks on the game screen
-        for x in range(0, 12):
-            if backgroundblock_group[y][x].number == 1:
-                colorTheBlock(screen, (80, 188, 223), x, y)
-            elif backgroundblock_group[y][x].number == 2:
-                colorTheBlock(screen, (0, 0, 255), x, y)
-            elif backgroundblock_group[y][x].number == 3:
-                colorTheBlock(screen, (255, 127, 0), x, y)
-            elif backgroundblock_group[y][x].number == 4:
-                colorTheBlock(screen, (255, 212, 0), x, y)
-            elif backgroundblock_group[y][x].number == 5:
-                colorTheBlock(screen, (129, 193, 71), x, y)
-            elif backgroundblock_group[y][x].number == 6:
-                colorTheBlock(screen, (139, 0, 255), x, y)
-            elif backgroundblock_group[y][x].number == 7:
-                colorTheBlock(screen, (255, 0, 0), x, y)
-            elif backgroundblock_group[y][x].number == 8:
-                pygame.draw.rect(screen, (128, 128, 128), pygame.Rect(32 * x, 32 * y, 32, 32))
+    running = True
+    while running:  # Main loop
+        screen.fill((0, 0, 0))  # Paint the screen black before draw blocks on screen
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_UP:
+                    if current_block.blockNumber != 4:  # Square blocks do not rotate.
+                        current_block.turn()
+                elif event.key == pygame.K_DOWN:
+                    autotime_down = 0
+                    checkAndGoDown()
+                elif event.key == pygame.K_LEFT:
+                    current_block.go(Move.LEFT)
+                elif event.key == pygame.K_RIGHT:
+                    current_block.go(Move.RIGHT)
 
-    if gameover is True:
-        pygame.draw.rect(screen, (0, 0, 0), pygame.Rect(32 * 1, 32 * 3, 32 * 19, 32 * 15))
-        pygame.draw.rect(screen, (255, 255, 255), pygame.Rect(32 * 1, 32 * 3, 32 * 19, 32 * 15), width=3)
-        gameover_text = font2.render("GAME OVER!", True, (255, 255, 255))
-        screen.blit(gameover_text, (50, 220))
+        autotime_down += 1
+        if autotime_down % 30 == 0:
+            checkAndGoDown()  # The block automatically goes down If you don't press down key.
+
         text = font.render("Score : " + str(score), True, (255, 255, 255))
-        screen.blit(text, (70, 360))
+        screen.blit(text, (387, 15))
         text2 = font4.render(f"Average time to put a block : {average_time_to_put_a_block:.2f}s", True, (255, 255, 255))
-        screen.blit(text2, (70, 400))
-        gameover_sound.play()
-        pygame.display.flip()
-        cur.execute(f"INSERT INTO HighestScore VALUES ({score}, {average_time_to_put_a_block})")
-        con.commit()
-        pygame.time.wait(2000)
-        running = False
+        screen.blit(text2, (387, 55))
+        text3 = font3.render(f"Best : {score_list[0][0]} / {score_list[0][1]:.2f}", True, (255, 255, 255))
+        screen.blit(text3, (387, 635))
 
-    pygame.display.flip()  # It makes the screen to be updated continuously
+        pygame.draw.rect(screen, (211, 211, 211), pygame.Rect(32 * 14, 32 * 10, 32*5, 32*4), width=3)  # Border where the next block waits
 
-    clock.tick(30)  # In main loop, it determine FPS
+        nextBlockDraw(next_block.blockNumber)  # Draw the next block to come out in the waiting area
 
-pygame.quit()
+        for x in range(1, 11):  # Color the boundaries of the blocks on the game screen
+            for y in range(0, 20):
+                pygame.draw.rect(screen, (161, 145, 61), pygame.Rect(32 * x, 32 * y, 32, 32), width=1)
+
+        for y in range(0, 21):  # Color the blocks on the game screen
+            for x in range(0, 12):
+                if backgroundblock_group[y][x].number == 1:
+                    colorTheBlock(screen, (80, 188, 223), x, y)
+                elif backgroundblock_group[y][x].number == 2:
+                    colorTheBlock(screen, (0, 0, 255), x, y)
+                elif backgroundblock_group[y][x].number == 3:
+                    colorTheBlock(screen, (255, 127, 0), x, y)
+                elif backgroundblock_group[y][x].number == 4:
+                    colorTheBlock(screen, (255, 212, 0), x, y)
+                elif backgroundblock_group[y][x].number == 5:
+                    colorTheBlock(screen, (129, 193, 71), x, y)
+                elif backgroundblock_group[y][x].number == 6:
+                    colorTheBlock(screen, (139, 0, 255), x, y)
+                elif backgroundblock_group[y][x].number == 7:
+                    colorTheBlock(screen, (255, 0, 0), x, y)
+                elif backgroundblock_group[y][x].number == 8:
+                    pygame.draw.rect(screen, (128, 128, 128), pygame.Rect(32 * x, 32 * y, 32, 32))
+
+        if gameover is True:
+            pygame.draw.rect(screen, (0, 0, 0), pygame.Rect(32 * 1, 32 * 3, 32 * 19, 32 * 15))
+            pygame.draw.rect(screen, (255, 255, 255), pygame.Rect(32 * 1, 32 * 3, 32 * 19, 32 * 15), width=3)
+            gameover_text = font2.render("GAME OVER!", True, (255, 255, 255))
+            screen.blit(gameover_text, (50, 220))
+            text = font.render("Score : " + str(score), True, (255, 255, 255))
+            screen.blit(text, (70, 360))
+            text2 = font4.render(f"Average time to put a block : {average_time_to_put_a_block:.2f}s", True, (255, 255, 255))
+            screen.blit(text2, (70, 400))
+            gameover_sound.play()
+            pygame.display.flip()
+            cur.execute(f"INSERT INTO HighestScore VALUES ({score}, {average_time_to_put_a_block})")
+            con.commit()
+            pygame.time.wait(2000)
+            running = False
+
+        pygame.display.flip()  # It makes the screen to be updated continuously
+
+        clock.tick(30)  # In main loop, it determine FPS
+
+    pygame.quit()
+
+
+if __name__ == "__main__":
+    main()

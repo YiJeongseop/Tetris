@@ -59,7 +59,7 @@ make style (mingw32-make style)
   in order to document the code.
 * [ ] Reduce the use of global variables, and use the parameters or attributes instead. 
   And if is really necessary to use global variables, define them in uppercase, and in the beginning of the file.
-* [ ] Create a main function, and move the code that is in the global scope to this function, 
+* [X] Create a main function, and move the code that is in the global scope to this function, 
   and call it at the end of the file.
 
   ```python

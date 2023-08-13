@@ -100,7 +100,7 @@ make style (mingw32-make style)
   another for the Block clases, and another for the main function.
 * [ ] The DB management could be defined in a class, to encapsulate the logic.
 * [ ] The time tracking could be defined in a class, to encapsulate the logic.
-* [ ] Send to [settings.py](settings.py) the configs constant variables, maybe like the screen size, the colors, etc.
+* [X] Send to [settings.py](settings.py) the configs constant variables, maybe like the screen size, the colors, etc.
 * [ ] Check the different [rules for the linter](https://beta.ruff.rs/docs//rules/), and add the ones that you 
   consider necessary to the [configuration file](pyproject.toml).
 

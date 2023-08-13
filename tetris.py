@@ -2,12 +2,10 @@ import os
 import random
 import sqlite3  # https://docs.python.org/3.8/library/sqlite3.html
 import time
-from enum import Enum
-
 import pygame  # https://www.pygame.org/docs/
 from pygame import mixer
-
-from settings import DB_PATH, DB_NAME
+from enum import Enum
+from settings import DB_PATH, DB_NAME, SCREEN, BLACK, WHITE, SKY_BLUE, BLUE, ORANGE, YELLOW, GREEN, PURPLE, RED, DESCENT_SPEED
 
 Move = Enum("Move", ["LEFT", "RIGHT", "DOWN"])
 
@@ -43,7 +41,7 @@ class Block:
 
         def currentIter(block_number, blocks):
             for block in iter(blocks):  # What if there are no other blocks where they will be?
-                block.number = block_number  # Create the blocks on the game screen
+                block.number = block_number  # Create the blocks on the game SCREEN
                 yield block
 
         self.next_block_list.clear()
@@ -97,7 +95,7 @@ class Block:
 
         for i in range(0, 4):  # The block is now moving! Remove the background blocks color beforehand.
             self.current_block_list[i].number = 0
-            pygame.draw.rect(screen, (0, 0, 0), pygame.Rect(self.current_block_list[i].x, self.current_block_list[i].y, 32, 32))
+            pygame.draw.rect(SCREEN, BLACK, pygame.Rect(self.current_block_list[i].x, self.current_block_list[i].y, 32, 32))
 
         for i in range(0, 4):
             self.current_block_list[i] = self.next_block_list[i]
@@ -124,7 +122,7 @@ class Block:
 
                 for i in range(0, 4):
                     self.current_block_list[i].number = 0
-                    pygame.draw.rect(screen, (0, 0, 0), pygame.Rect(self.current_block_list[i].x, self.current_block_list[i].y, 32, 32))
+                    pygame.draw.rect(SCREEN, BLACK, pygame.Rect(self.current_block_list[i].x, self.current_block_list[i].y, 32, 32))
 
                 for y in range(0, 4):
                     background_block_group[self.current_y_list[2] + 2 - y][self.current_x_list[2]].number = self.block_number
@@ -145,7 +143,7 @@ class Block:
 
                 for i in range(0, 4):
                     self.current_block_list[i].number = 0
-                    pygame.draw.rect(screen, (0, 0, 0), pygame.Rect(self.current_block_list[i].x, self.current_block_list[i].y, 32, 32))
+                    pygame.draw.rect(SCREEN, BLACK, pygame.Rect(self.current_block_list[i].x, self.current_block_list[i].y, 32, 32))
 
                 for x in range(0, 4):
                     background_block_group[self.current_y_list[1]][self.current_x_list[1] + 1 - x].number = self.block_number
@@ -164,7 +162,7 @@ class Block:
 
                 for i in range(0, 4):
                     self.current_block_list[i].number = 0
-                    pygame.draw.rect(screen, (0, 0, 0), pygame.Rect(self.current_block_list[i].x, self.current_block_list[i].y, 32, 32))
+                    pygame.draw.rect(SCREEN, BLACK, pygame.Rect(self.current_block_list[i].x, self.current_block_list[i].y, 32, 32))
 
                 for y in range(0, 4):
                     background_block_group[self.current_y_list[2] - 2 + y][self.current_x_list[2]].number = self.block_number
@@ -185,7 +183,7 @@ class Block:
 
                 for i in range(0, 4):
                     self.current_block_list[i].number = 0
-                    pygame.draw.rect(screen, (0, 0, 0), pygame.Rect(self.current_block_list[i].x, self.current_block_list[i].y, 32, 32))
+                    pygame.draw.rect(SCREEN, BLACK, pygame.Rect(self.current_block_list[i].x, self.current_block_list[i].y, 32, 32))
 
                 for x in range(0, 4):
                     background_block_group[self.current_y_list[1]][self.current_x_list[1] - 1 + x].number = self.block_number
@@ -204,7 +202,7 @@ class Block:
 
                 for i in range(0, 4):
                     self.current_block_list[i].number = 0
-                    pygame.draw.rect(screen, (0, 0, 0), pygame.Rect(self.current_block_list[i].x, self.current_block_list[i].y, 32, 32))
+                    pygame.draw.rect(SCREEN, BLACK, pygame.Rect(self.current_block_list[i].x, self.current_block_list[i].y, 32, 32))
 
                 background_block_group[self.current_y_list[0]][self.current_x_list[0] + 2].number = self.block_number
                 self.current_block_list[0] = background_block_group[self.current_y_list[0]][self.current_x_list[0] + 2]
@@ -224,7 +222,7 @@ class Block:
 
                 for i in range(0, 4):
                     self.current_block_list[i].number = 0
-                    pygame.draw.rect(screen, (0, 0, 0), pygame.Rect(self.current_block_list[i].x, self.current_block_list[i].y, 32, 32))
+                    pygame.draw.rect(SCREEN, BLACK, pygame.Rect(self.current_block_list[i].x, self.current_block_list[i].y, 32, 32))
 
                 background_block_group[self.current_y_list[0] + 2][self.current_x_list[0]].number = self.block_number
                 self.current_block_list[0] = background_block_group[self.current_y_list[0] + 2][self.current_x_list[0]]
@@ -244,7 +242,7 @@ class Block:
 
                 for i in range(0, 4):
                     self.current_block_list[i].number = 0
-                    pygame.draw.rect(screen, (0, 0, 0), pygame.Rect(self.current_block_list[i].x, self.current_block_list[i].y, 32, 32))
+                    pygame.draw.rect(SCREEN, BLACK, pygame.Rect(self.current_block_list[i].x, self.current_block_list[i].y, 32, 32))
 
                 background_block_group[self.current_y_list[0]][self.current_x_list[0] - 2].number = self.block_number
                 self.current_block_list[0] = background_block_group[self.current_y_list[0]][self.current_x_list[0] - 2]
@@ -264,7 +262,7 @@ class Block:
 
                 for i in range(0, 4):
                     self.current_block_list[i].number = 0
-                    pygame.draw.rect(screen, (0, 0, 0), pygame.Rect(self.current_block_list[i].x, self.current_block_list[i].y, 32, 32))
+                    pygame.draw.rect(SCREEN, BLACK, pygame.Rect(self.current_block_list[i].x, self.current_block_list[i].y, 32, 32))
 
                 background_block_group[self.current_y_list[0] - 2][self.current_x_list[0]].number = self.block_number
                 self.current_block_list[0] = background_block_group[self.current_y_list[0] - 2][self.current_x_list[0]]
@@ -285,7 +283,7 @@ class Block:
 
                 for i in range(0, 4):
                     self.current_block_list[i].number = 0
-                    pygame.draw.rect(screen, (0, 0, 0), pygame.Rect(self.current_block_list[i].x, self.current_block_list[i].y, 32, 32))
+                    pygame.draw.rect(SCREEN, BLACK, pygame.Rect(self.current_block_list[i].x, self.current_block_list[i].y, 32, 32))
 
                 for y in range(0, 3):
                     background_block_group[self.current_y_list[1] - 1 + y][self.current_x_list[1]].number = self.block_number
@@ -305,7 +303,7 @@ class Block:
 
                 for i in range(0, 4):
                     self.current_block_list[i].number = 0
-                    pygame.draw.rect(screen, (0, 0, 0), pygame.Rect(self.current_block_list[i].x, self.current_block_list[i].y, 32, 32))
+                    pygame.draw.rect(SCREEN, BLACK, pygame.Rect(self.current_block_list[i].x, self.current_block_list[i].y, 32, 32))
 
                 for x in range(0, 3):
                     background_block_group[self.current_y_list[1]][self.current_x_list[1] + 1 - x].number = self.block_number
@@ -325,7 +323,7 @@ class Block:
 
                 for i in range(0, 4):
                     self.current_block_list[i].number = 0
-                    pygame.draw.rect(screen, (0, 0, 0), pygame.Rect(self.current_block_list[i].x, self.current_block_list[i].y, 32, 32))
+                    pygame.draw.rect(SCREEN, BLACK, pygame.Rect(self.current_block_list[i].x, self.current_block_list[i].y, 32, 32))
 
                 for y in range(0, 3):
                     background_block_group[self.current_y_list[1] + 1 - y][self.current_x_list[1]].number = self.block_number
@@ -345,7 +343,7 @@ class Block:
 
                 for i in range(0, 4):
                     self.current_block_list[i].number = 0
-                    pygame.draw.rect(screen, (0, 0, 0), pygame.Rect(self.current_block_list[i].x, self.current_block_list[i].y, 32, 32))
+                    pygame.draw.rect(SCREEN, BLACK, pygame.Rect(self.current_block_list[i].x, self.current_block_list[i].y, 32, 32))
 
                 for x in range(0, 3):
                     background_block_group[self.current_y_list[1]][self.current_x_list[1] - 1 + x].number = self.block_number
@@ -369,7 +367,7 @@ class Block:
 
                 for i in range(0, 4):
                     self.current_block_list[i].number = 0
-                    pygame.draw.rect(screen, (0, 0, 0), pygame.Rect(self.current_block_list[i].x, self.current_block_list[i].y, 32, 32))
+                    pygame.draw.rect(SCREEN, BLACK, pygame.Rect(self.current_block_list[i].x, self.current_block_list[i].y, 32, 32))
 
                 for y in range(0, 2):
                     background_block_group[self.current_y_list[0] - 2 + y][self.current_x_list[0]].number = self.block_number
@@ -391,7 +389,7 @@ class Block:
 
                 for i in range(0, 4):
                     self.current_block_list[i].number = 0
-                    pygame.draw.rect(screen, (0, 0, 0), pygame.Rect(self.current_block_list[i].x, self.current_block_list[i].y, 32, 32))
+                    pygame.draw.rect(SCREEN, BLACK, pygame.Rect(self.current_block_list[i].x, self.current_block_list[i].y, 32, 32))
 
                 for x in range(0, 2):
                     background_block_group[self.current_y_list[0]][self.current_x_list[0] + 2 - x].number = self.block_number
@@ -413,7 +411,7 @@ class Block:
 
                 for i in range(0, 4):
                     self.current_block_list[i].number = 0
-                    pygame.draw.rect(screen, (0, 0, 0), pygame.Rect(self.current_block_list[i].x, self.current_block_list[i].y, 32, 32))
+                    pygame.draw.rect(SCREEN, BLACK, pygame.Rect(self.current_block_list[i].x, self.current_block_list[i].y, 32, 32))
 
                 for y in range(0, 2):
                     background_block_group[self.current_y_list[0] + 2 - y][self.current_x_list[0]].number = self.block_number
@@ -435,7 +433,7 @@ class Block:
 
                 for i in range(0, 4):
                     self.current_block_list[i].number = 0
-                    pygame.draw.rect(screen, (0, 0, 0), pygame.Rect(self.current_block_list[i].x, self.current_block_list[i].y, 32, 32))
+                    pygame.draw.rect(SCREEN, BLACK, pygame.Rect(self.current_block_list[i].x, self.current_block_list[i].y, 32, 32))
 
                 for x in range(0, 2):
                     background_block_group[self.current_y_list[0]][self.current_x_list[0] - 2 + x].number = self.block_number
@@ -458,7 +456,7 @@ class Block:
 
                 for i in range(0, 4):
                     self.current_block_list[i].number = 0
-                    pygame.draw.rect(screen, (0, 0, 0), pygame.Rect(self.current_block_list[i].x, self.current_block_list[i].y, 32, 32))
+                    pygame.draw.rect(SCREEN, BLACK, pygame.Rect(self.current_block_list[i].x, self.current_block_list[i].y, 32, 32))
 
                 background_block_group[self.current_y_list[3]][self.current_x_list[3]].number = self.block_number
                 self.current_block_list[0] = background_block_group[self.current_y_list[3]][self.current_x_list[3]]
@@ -479,7 +477,7 @@ class Block:
 
                 for i in range(0, 4):
                     self.current_block_list[i].number = 0
-                    pygame.draw.rect(screen, (0, 0, 0), pygame.Rect(self.current_block_list[i].x, self.current_block_list[i].y, 32, 32))
+                    pygame.draw.rect(SCREEN, BLACK, pygame.Rect(self.current_block_list[i].x, self.current_block_list[i].y, 32, 32))
 
                 background_block_group[self.current_y_list[3]][self.current_x_list[3]].number = self.block_number
                 self.current_block_list[0] = background_block_group[self.current_y_list[3]][self.current_x_list[3]]
@@ -500,7 +498,7 @@ class Block:
 
                 for i in range(0, 4):
                     self.current_block_list[i].number = 0
-                    pygame.draw.rect(screen, (0, 0, 0), pygame.Rect(self.current_block_list[i].x, self.current_block_list[i].y, 32, 32))
+                    pygame.draw.rect(SCREEN, BLACK, pygame.Rect(self.current_block_list[i].x, self.current_block_list[i].y, 32, 32))
 
                 background_block_group[self.current_y_list[3]][self.current_x_list[3]].number = self.block_number
                 self.current_block_list[0] = background_block_group[self.current_y_list[3]][self.current_x_list[3]]
@@ -521,7 +519,7 @@ class Block:
 
                 for i in range(0, 4):
                     self.current_block_list[i].number = 0
-                    pygame.draw.rect(screen, (0, 0, 0), pygame.Rect(self.current_block_list[i].x, self.current_block_list[i].y, 32, 32))
+                    pygame.draw.rect(SCREEN, BLACK, pygame.Rect(self.current_block_list[i].x, self.current_block_list[i].y, 32, 32))
 
                 background_block_group[self.current_y_list[3]][self.current_x_list[3]].number = self.block_number
                 self.current_block_list[0] = background_block_group[self.current_y_list[3]][self.current_x_list[3]]
@@ -545,7 +543,7 @@ class Block:
 
                 for i in range(0, 4):
                     self.current_block_list[i].number = 0
-                    pygame.draw.rect(screen, (0, 0, 0), pygame.Rect(self.current_block_list[i].x, self.current_block_list[i].y, 32, 32))
+                    pygame.draw.rect(SCREEN, BLACK, pygame.Rect(self.current_block_list[i].x, self.current_block_list[i].y, 32, 32))
 
                 for y in range(0, 2):
                     background_block_group[self.current_y_list[1] - 1 + y][self.current_x_list[1]].number = self.block_number
@@ -567,7 +565,7 @@ class Block:
 
                 for i in range(0, 4):
                     self.current_block_list[i].number = 0
-                    pygame.draw.rect(screen, (0, 0, 0), pygame.Rect(self.current_block_list[i].x, self.current_block_list[i].y, 32, 32))
+                    pygame.draw.rect(SCREEN, BLACK, pygame.Rect(self.current_block_list[i].x, self.current_block_list[i].y, 32, 32))
 
                 for x in range(0, 2):
                     background_block_group[self.current_y_list[1]][self.current_x_list[1] + 1 - x].number = self.block_number
@@ -589,7 +587,7 @@ class Block:
 
                 for i in range(0, 4):
                     self.current_block_list[i].number = 0
-                    pygame.draw.rect(screen, (0, 0, 0), pygame.Rect(self.current_block_list[i].x, self.current_block_list[i].y, 32, 32))
+                    pygame.draw.rect(SCREEN, BLACK, pygame.Rect(self.current_block_list[i].x, self.current_block_list[i].y, 32, 32))
 
                 for y in range(0, 2):
                     background_block_group[self.current_y_list[1] + 1 - y][self.current_x_list[1]].number = self.block_number
@@ -611,7 +609,7 @@ class Block:
 
                 for i in range(0, 4):
                     self.current_block_list[i].number = 0
-                    pygame.draw.rect(screen, (0, 0, 0), pygame.Rect(self.current_block_list[i].x, self.current_block_list[i].y, 32, 32))
+                    pygame.draw.rect(SCREEN, BLACK, pygame.Rect(self.current_block_list[i].x, self.current_block_list[i].y, 32, 32))
 
                 for x in range(0, 2):
                     background_block_group[self.current_y_list[1]][self.current_x_list[1] - 1 + x].number = self.block_number
@@ -626,39 +624,39 @@ class Block:
 def next_block_draw(block_number):
     if block_number == 1:
         for x in range(14, 18):
-            pygame.draw.rect(screen, (80, 188, 223), pygame.Rect(32 * x + 16, 32 * 12, 32, 32))
+            pygame.draw.rect(SCREEN, SKY_BLUE, pygame.Rect(32 * x + 16, 32 * 12, 32, 32))
 
     elif block_number == 2:
         for x in range(15, 18):
-            pygame.draw.rect(screen, (0, 0, 255), pygame.Rect(32 * x, 32 * 12, 32, 32))
-        pygame.draw.rect(screen, (0, 0, 255), pygame.Rect(32 * 15, 32 * 11, 32, 32))
+            pygame.draw.rect(SCREEN, BLUE, pygame.Rect(32 * x, 32 * 12, 32, 32))
+        pygame.draw.rect(SCREEN, BLUE, pygame.Rect(32 * 15, 32 * 11, 32, 32))
 
     elif block_number == 3:
         for x in range(15, 18):
-            pygame.draw.rect(screen, (255, 127, 0), pygame.Rect(32 * x, 32 * 12, 32, 32))
-        pygame.draw.rect(screen, (255, 127, 0), pygame.Rect(32 * 17, 32 * 11, 32, 32))
+            pygame.draw.rect(SCREEN, ORANGE, pygame.Rect(32 * x, 32 * 12, 32, 32))
+        pygame.draw.rect(SCREEN, ORANGE, pygame.Rect(32 * 17, 32 * 11, 32, 32))
 
     elif block_number == 4:
         for x in range(15, 17):
             for y in range(11, 13):
-                pygame.draw.rect(screen, (255, 212, 0), pygame.Rect(32 * x + 16, 32 * y, 32, 32))
+                pygame.draw.rect(SCREEN, YELLOW, pygame.Rect(32 * x + 16, 32 * y, 32, 32))
 
     elif block_number == 5:
         for x in range(16, 18):
-            pygame.draw.rect(screen, (129, 193, 71), pygame.Rect(32 * x, 32 * 11, 32, 32))
+            pygame.draw.rect(SCREEN, GREEN, pygame.Rect(32 * x, 32 * 11, 32, 32))
         for x in range(15, 17):
-            pygame.draw.rect(screen, (129, 193, 71), pygame.Rect(32 * x, 32 * 12, 32, 32))
+            pygame.draw.rect(SCREEN, GREEN, pygame.Rect(32 * x, 32 * 12, 32, 32))
 
     elif block_number == 6:
         for x in range(15, 18):
-            pygame.draw.rect(screen, (139, 0, 255), pygame.Rect(32 * x, 32 * 12, 32, 32))
-        pygame.draw.rect(screen, (139, 0, 255), pygame.Rect(32 * 16, 32 * 11, 32, 32))
+            pygame.draw.rect(SCREEN, PURPLE, pygame.Rect(32 * x, 32 * 12, 32, 32))
+        pygame.draw.rect(SCREEN, PURPLE, pygame.Rect(32 * 16, 32 * 11, 32, 32))
 
     elif block_number == 7:
         for x in range(15, 17):
-            pygame.draw.rect(screen, (255, 0, 0), pygame.Rect(32 * x, 32 * 11, 32, 32))
+            pygame.draw.rect(SCREEN, RED, pygame.Rect(32 * x, 32 * 11, 32, 32))
         for x in range(16, 18):
-            pygame.draw.rect(screen, (255, 0, 0), pygame.Rect(32 * x, 32 * 12, 32, 32))
+            pygame.draw.rect(SCREEN, RED, pygame.Rect(32 * x, 32 * 12, 32, 32))
 
 
 def erase_line(y_list):
@@ -684,7 +682,7 @@ def plus_score(y):
     for x in range(1, 11):
         background_block_group[y][x].done = False  # Change the status of the background blocks
         background_block_group[y][x].number = 0
-        pygame.draw.rect(screen, (0, 0, 0), pygame.Rect(background_block_group[y][x].x, background_block_group[y][x].y, 32, 32))
+        pygame.draw.rect(SCREEN, BLACK, pygame.Rect(background_block_group[y][x].x, background_block_group[y][x].y, 32, 32))
 
     for y2 in range(y, 0, -1):  # Drop on every other line
         for x in range(1, 11):
@@ -692,7 +690,7 @@ def plus_score(y):
             background_block_group[y2][x].number = background_block_group[y2-1][x].number
             background_block_group[y2-1][x].done = False
             background_block_group[y2-1][x].number = 0
-            pygame.draw.rect(screen, (0, 0, 0), pygame.Rect(background_block_group[y2-1][x].x, background_block_group[y2-1][x].y, 32, 32))
+            pygame.draw.rect(SCREEN, BLACK, pygame.Rect(background_block_group[y2-1][x].x, background_block_group[y2-1][x].y, 32, 32))
 
     score += 100
 
@@ -707,7 +705,7 @@ def check_and_go_down():  # Check if the block can go down and go down if possib
 
 def color_the_block(screen, coordinates, x, y):
     pygame.draw.rect(screen, coordinates, pygame.Rect(32 * x, 32 * y, 32, 32))
-    pygame.draw.rect(screen, (0, 0, 0), pygame.Rect(32 * x, 32 * y, 32, 32), width=1)
+    pygame.draw.rect(screen, BLACK, pygame.Rect(32 * x, 32 * y, 32, 32), width=1)
 
 
 score = 0
@@ -718,10 +716,9 @@ total_time = 0  # Total time it took to put a block
 start_time = 0  # Time when the block was first created
 current_block = Block(random.randint(1, 7))  # Randomly select one of the seven types of blocks
 next_block = Block(random.randint(1, 7))
-screen = pygame.display.set_mode((672, 672))  # Full screen consisting of 21 x 21 blocks, the size of one block is 32 x 32
 
-background_block_group = [[0 for j in range(0, 12)] for i in range(0, 21)]  # Game screen consisting of 12 x 21 blocks
-for y in range(0, 21):  # Create blocks that make up the game screen
+background_block_group = [[0 for j in range(0, 12)] for i in range(0, 21)]  # Game SCREEN consisting of 12 x 21 blocks
+for y in range(0, 21):  # Create blocks that make up the game SCREEN
     for x in range(0, 12):
         if x == 0 or x == 11 or y == 20:  # The blocks that make up the boundary
            background_block_group[y][x] = BackgroundBlock(32 * x, 32 * y, 8, True)
@@ -759,20 +756,20 @@ def main():
 
     pygame.key.set_repeat(120)  # Control how held keys are repeated
 
-    font = pygame.font.SysFont("consolas", 30)
-    font2 = pygame.font.SysFont("ebrima", 100)
-    font3 = pygame.font.SysFont("consolas", 20)
-    font4 = pygame.font.SysFont("consolas", 15)
+    font_score = pygame.font.SysFont("consolas", 30) # "Score"
+    font_game_over = pygame.font.SysFont("ebrima", 100) # "GAME OVER"
+    font_best = pygame.font.SysFont("consolas", 20) # "Best"
+    font_average_time = pygame.font.SysFont("consolas", 15) # "Average time to put a block"
 
     pygame.display.set_caption("Tetris")  # Title
 
     clock = pygame.time.Clock()  # Create an object to help track time
 
-    current_block.start()  # First block appears on the game screen!
+    current_block.start()  # First block appears on the game SCREEN!
 
     running = True
     while running:  # Main loop
-        screen.fill((0, 0, 0))  # Paint the screen black before draw blocks on screen
+        SCREEN.fill(BLACK)  # Paint the SCREEN black before draw blocks on SCREEN
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
@@ -789,52 +786,52 @@ def main():
                     current_block.go(Move.RIGHT)
 
         autotime_down += 1
-        if autotime_down % 30 == 0:
+        if autotime_down % DESCENT_SPEED == 0:
             check_and_go_down()  # The block automatically goes down If you don't press down key.
 
-        text = font.render("Score : " + str(score), True, (255, 255, 255))
-        screen.blit(text, (387, 15))
-        text2 = font4.render(f"Average time to put a block : {average_time_to_put_a_block:.2f}s", True, (255, 255, 255))
-        screen.blit(text2, (387, 55))
-        text3 = font3.render(f"Best : {score_list[0][0]} / {score_list[0][1]:.2f}", True, (255, 255, 255))
-        screen.blit(text3, (387, 635))
+        text = font_score.render("Score : " + str(score), True, WHITE)
+        SCREEN.blit(text, (387, 15))
+        text2 = font_average_time.render(f"Average time to put a block : {average_time_to_put_a_block:.2f}s", True, WHITE)
+        SCREEN.blit(text2, (387, 55))
+        text3 = font_best.render(f"Best : {score_list[0][0]} / {score_list[0][1]:.2f}", True, WHITE)
+        SCREEN.blit(text3, (387, 635))
 
-        pygame.draw.rect(screen, (211, 211, 211), pygame.Rect(32 * 14, 32 * 10, 32*5, 32*4), width=3)  # Border where the next block waits
+        pygame.draw.rect(SCREEN, (211, 211, 211), pygame.Rect(32 * 14, 32 * 10, 32*5, 32*4), width=3)  # Border where the next block waits
 
         next_block_draw(next_block.block_number)  # Draw the next block to come out in the waiting area
 
-        for x in range(1, 11):  # Color the boundaries of the blocks on the game screen
+        for x in range(1, 11):  # Color the boundaries of the blocks on the game SCREEN
             for y in range(0, 20):
-                pygame.draw.rect(screen, (161, 145, 61), pygame.Rect(32 * x, 32 * y, 32, 32), width=1)
+                pygame.draw.rect(SCREEN, (161, 145, 61), pygame.Rect(32 * x, 32 * y, 32, 32), width=1)
 
-        for y in range(0, 21):  # Color the blocks on the game screen
+        for y in range(0, 21):  # Color the blocks on the game SCREEN
             for x in range(0, 12):
                 if background_block_group[y][x].number == 1:
-                    color_the_block(screen, (80, 188, 223), x, y)
+                    color_the_block(SCREEN, SKY_BLUE, x, y)
                 elif background_block_group[y][x].number == 2:
-                    color_the_block(screen, (0, 0, 255), x, y)
+                    color_the_block(SCREEN, BLUE, x, y)
                 elif background_block_group[y][x].number == 3:
-                    color_the_block(screen, (255, 127, 0), x, y)
+                    color_the_block(SCREEN, ORANGE, x, y)
                 elif background_block_group[y][x].number == 4:
-                    color_the_block(screen, (255, 212, 0), x, y)
+                    color_the_block(SCREEN, YELLOW, x, y)
                 elif background_block_group[y][x].number == 5:
-                    color_the_block(screen, (129, 193, 71), x, y)
+                    color_the_block(SCREEN, GREEN, x, y)
                 elif background_block_group[y][x].number == 6:
-                    color_the_block(screen, (139, 0, 255), x, y)
+                    color_the_block(SCREEN, PURPLE, x, y)
                 elif background_block_group[y][x].number == 7:
-                    color_the_block(screen, (255, 0, 0), x, y)
+                    color_the_block(SCREEN, RED, x, y)
                 elif background_block_group[y][x].number == 8:
-                    pygame.draw.rect(screen, (128, 128, 128), pygame.Rect(32 * x, 32 * y, 32, 32))
+                    pygame.draw.rect(SCREEN, (128, 128, 128), pygame.Rect(32 * x, 32 * y, 32, 32))
 
         if gameover is True:
-            pygame.draw.rect(screen, (0, 0, 0), pygame.Rect(32 * 1, 32 * 3, 32 * 19, 32 * 15))
-            pygame.draw.rect(screen, (255, 255, 255), pygame.Rect(32 * 1, 32 * 3, 32 * 19, 32 * 15), width=3)
-            gameover_text = font2.render("GAME OVER!", True, (255, 255, 255))
-            screen.blit(gameover_text, (50, 220))
-            text = font.render("Score : " + str(score), True, (255, 255, 255))
-            screen.blit(text, (70, 360))
-            text2 = font4.render(f"Average time to put a block : {average_time_to_put_a_block:.2f}s", True, (255, 255, 255))
-            screen.blit(text2, (70, 400))
+            pygame.draw.rect(SCREEN, BLACK, pygame.Rect(32 * 1, 32 * 3, 32 * 19, 32 * 15))
+            pygame.draw.rect(SCREEN, WHITE, pygame.Rect(32 * 1, 32 * 3, 32 * 19, 32 * 15), width=3)
+            gameover_text = font_game_over.render("GAME OVER!", True, WHITE)
+            SCREEN.blit(gameover_text, (50, 220))
+            text = font_score.render("Score : " + str(score), True, WHITE)
+            SCREEN.blit(text, (70, 360))
+            text2 = font_average_time.render(f"Average time to put a block : {average_time_to_put_a_block:.2f}s", True, WHITE)
+            SCREEN.blit(text2, (70, 400))
             gameover_sound.play()
             pygame.display.flip()
             cur.execute(f"INSERT INTO HighestScore VALUES ({score}, {average_time_to_put_a_block})")
@@ -842,7 +839,7 @@ def main():
             pygame.time.wait(2000)
             running = False
 
-        pygame.display.flip()  # It makes the screen to be updated continuously
+        pygame.display.flip()  # It makes the SCREEN to be updated continuously
 
         clock.tick(30)  # In main loop, it determine FPS
 

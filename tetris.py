@@ -8,6 +8,11 @@ from db_and_time import DB, Time
 
 Move = Enum("Move", ["LEFT", "RIGHT", "DOWN"])
 
+score = 0
+gameover = False
+block_count = 0  # How many blocks were made?
+bg_block_list = [[0 for j in range(0, 12)] for i in range(0, 21)]  # Game SCREEN consisting of 12 x 21 blocks
+
 
 class BackgroundBlock:
     def __init__(self, x: int, y: int, number: int, done: bool):
@@ -62,7 +67,7 @@ class Block:
             return
         self.c_blocks.extend(currentIter(self.block_number, blocks))
 
-    def go(self, move: Enum, ti: Time):
+    def go(self, move: Enum, ti: Time, break_sound: mixer.Sound, erase_sound: mixer.Sound):
         self.next_blocks.clear()
 
         if move in (Move.LEFT, Move.RIGHT):
@@ -88,7 +93,7 @@ class Block:
                     self.c_blocks.clear()
                     break_sound.play()
                     ti.update_time(time.time(), block_count)
-                    erase_line(y_list)
+                    erase_line(y_list, erase_sound)
                     return y_list
 
         for i in range(0, 4):  # The block is now moving! Remove the background blocks color beforehand.
@@ -657,7 +662,7 @@ def next_block_draw(block_number: int):
             pygame.draw.rect(SCREEN, RED, pygame.Rect(32 * x, 32 * 12, 32, 32))
 
 
-def erase_line(y_list: list):
+def erase_line(y_list: list, erase_sound: mixer.Sound):
     max_y = max(y_list)//32  # Largest y-index of a placed block
     min_y = min(y_list)//32 - 1  # Smallest y-index of a placed block - 1
     while(max_y > min_y):
@@ -667,13 +672,13 @@ def erase_line(y_list: list):
                 break
             count += 1
             if count == 10:  # A line is full
-                plus_score(max_y)  # Let's add points, erase one line, and Drop on every other line
+                plus_score(max_y, erase_sound)  # Let's add points, erase one line, and Drop on every other line
                 max_y += 1
                 min_y += 1
         max_y -= 1
 
 
-def plus_score(y: int):
+def plus_score(y: int, erase_sound: mixer.Sound):
     global score
     erase_sound.play()
 
@@ -693,43 +698,19 @@ def plus_score(y: int):
     score += 100
 
 
-def check_and_go_down(ti: time):  # Check if the block can go down and go down if possible
-    global current_block, next_block
-    if type(current_block.go(Move.DOWN, ti)) == list:
+def check_and_go_down(ti: time, erase_sound: mixer.Sound, break_sound: mixer.Sound, current_block: Block, next_block: Block):  
+    # Check if the block can go down and go down if possible
+    if type(current_block.go(Move.DOWN, ti, erase_sound, break_sound)) == list:
         current_block = next_block
         next_block = Block(random.randint(1, 7))
         current_block.start(ti)
+    return current_block, next_block
 
 
 def color_the_block(screen, coordinates: tuple, x: int, y: int):
     pygame.draw.rect(screen, coordinates, pygame.Rect(32 * x, 32 * y, 32, 32))
     pygame.draw.rect(screen, BLACK, pygame.Rect(32 * x, 32 * y, 32, 32), width=1)
 
-
-score = 0
-gameover = False
-block_count = 0  # How many blocks were made?
-current_block = Block(random.randint(1, 7))  # Randomly select one of the seven types of blocks
-next_block = Block(random.randint(1, 7))
-
-bg_block_list = [[0 for j in range(0, 12)] for i in range(0, 21)]  # Game SCREEN consisting of 12 x 21 blocks
-for y in range(0, 21):  # Create blocks that make up the game SCREEN
-    for x in range(0, 12):
-        if x == 0 or x == 11 or y == 20:  # The blocks that make up the boundary
-            bg_block_list[y][x] = BackgroundBlock(32 * x, 32 * y, 8, True)
-        else:
-            bg_block_list[y][x] = BackgroundBlock(32 * x, 32 * y, 0, False)
-
-mixer.init()
-mixer.music.load("resources/audio/580898__bloodpixelhero__in-game.wav")
-mixer.music.set_volume(0.04)
-mixer.music.play()
-break_sound = mixer.Sound("resources/audio/202230__deraj__pop-sound.wav")
-break_sound.set_volume(0.2)
-gameover_sound = mixer.Sound("resources/audio/42349__irrlicht__game-over.wav")
-gameover_sound.set_volume(0.2)
-erase_sound = mixer.Sound("resources/audio/143607__dwoboyle__menu-interface-confirm-003.wav")
-erase_sound.set_volume(0.15)
 
 def main():
     pygame.init()  # The coordinate (0, 0) is in the upper left.
@@ -750,6 +731,27 @@ def main():
 
     pygame.display.set_caption("Tetris")  # Title
 
+    mixer.init()
+    mixer.music.load("resources/audio/580898__bloodpixelhero__in-game.wav")
+    mixer.music.set_volume(0.04)
+    mixer.music.play()
+    break_sound = mixer.Sound("resources/audio/202230__deraj__pop-sound.wav")
+    break_sound.set_volume(0.2)
+    gameover_sound = mixer.Sound("resources/audio/42349__irrlicht__game-over.wav")
+    gameover_sound.set_volume(0.2)
+    erase_sound = mixer.Sound("resources/audio/143607__dwoboyle__menu-interface-confirm-003.wav")
+    erase_sound.set_volume(0.15)
+
+    current_block = Block(random.randint(1, 7))  # Randomly select one of the seven types of blocks
+    next_block = Block(random.randint(1, 7))
+
+    for y in range(0, 21):  # Create blocks that make up the game SCREEN
+        for x in range(0, 12):
+            if x == 0 or x == 11 or y == 20:  # The blocks that make up the boundary
+                bg_block_list[y][x] = BackgroundBlock(32 * x, 32 * y, 8, True)
+            else:
+                bg_block_list[y][x] = BackgroundBlock(32 * x, 32 * y, 0, False)
+
     clock = pygame.time.Clock()  # Create an object to help track time
 
     current_block.start(ti)  # First block appears on the game SCREEN!
@@ -766,15 +768,16 @@ def main():
                         current_block.turn()
                 elif event.key == pygame.K_DOWN:
                     autotime_down = 0
-                    check_and_go_down(ti)
+                    current_block, next_block = check_and_go_down(ti, erase_sound, break_sound, current_block, next_block)
                 elif event.key == pygame.K_LEFT:
-                    current_block.go(Move.LEFT, ti)
+                    current_block.go(Move.LEFT, ti, erase_sound, break_sound)
                 elif event.key == pygame.K_RIGHT:
-                    current_block.go(Move.RIGHT, ti)
+                    current_block.go(Move.RIGHT, ti, erase_sound, break_sound)
 
         autotime_down += 1
         if autotime_down % DESCENT_SPEED == 0:
-            check_and_go_down(ti)  # The block automatically goes down If you don't press down key.
+            current_block, next_block = check_and_go_down(ti, erase_sound, break_sound, current_block, next_block)  
+            # The block automatically goes down If you don't press down key.
 
         text = font_score.render("Score : " + str(score), True, WHITE)
         SCREEN.blit(text, (387, 15))

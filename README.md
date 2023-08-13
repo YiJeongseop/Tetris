@@ -57,7 +57,7 @@ make style (mingw32-make style)
   this is a good way to document the code defining the parameters types and the return type.
 * [ ] Add docstrings to the functions, see [ref](https://www.python.org/dev/peps/pep-0257/), 
   in order to document the code.
-* [ ] Reduce the use of global variables, and use the parameters or attributes instead. 
+* [X] Reduce the use of global variables, and use the parameters or attributes instead. 
   And if is really necessary to use global variables, define them in uppercase, and in the beginning of the file.
 * [X] Create a main function, and move the code that is in the global scope to this function, 
   and call it at the end of the file.

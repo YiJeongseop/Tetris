@@ -1,6 +1,6 @@
 import random
 import time
-import pygame  # https://www.pygame.org/docs/
+import pygame
 from pygame import mixer
 from enum import Enum
 from settings import SCREEN, BLACK, WHITE, SKY_BLUE, BLUE, ORANGE, YELLOW, GREEN, PURPLE, RED, DESCENT_SPEED
@@ -11,16 +11,21 @@ Move = Enum("Move", ["LEFT", "RIGHT", "DOWN"])
 score = 0
 gameover = False
 block_count = 0  # How many blocks were made?
-bg_block_list = [[0 for j in range(0, 12)] for i in range(0, 21)]  # Game SCREEN consisting of 12 x 21 blocks
+bg_block_list = [[0 for j in range(0, 12)] for i in range(0, 21)]  # Game Screen consisting of 12 x 21 blocks
 
 
 class BackgroundBlock:
     def __init__(self, x: int, y: int, number: int, done: bool):
+        """
+        Every block has a number.
+        0 is not block, 1 to 7 is block, 8 is boundary.
+        Done shows whether this block is a boundary or an installed block.
+        """
         super().__init__()
         self.x = x
         self.y = y
-        self.number = number  # 0 - Not block   1~7 - Block   8 - Boundary
-        self.done = done  # Is this a boundary or installed blocks?
+        self.number = number 
+        self.done = done
 
 
 class Block:
@@ -37,10 +42,9 @@ class Block:
         return any(i in self.next_blocks for i in range(1, 8))
 
     def start(self, ti: Time):
-        global block_count
+        global block_count, gameover
         block_count += 1
         ti.start_time = time.time()
-        global gameover
 
         def currentIter(block_number, blocks):
             for block in iter(blocks):  # What if there are no other blocks where they will be?
@@ -104,7 +108,11 @@ class Block:
             self.c_blocks[i] = self.next_blocks[i]
             self.c_blocks[i].number = self.block_number
 
-    def turn(self):  # There are so many codes. I am sad that I am not able to reduce this.
+    def turn(self):
+        """
+        Blocks check if there are blocks around them based on their location.
+        Turn if there are no blocks around.
+        """
         self.c_y_list.clear()
         self.c_x_list.clear()
         for i in range(0, 4):
@@ -625,6 +633,11 @@ class Block:
 
 
 def next_block_draw(block_number: int):
+    """
+    Receive block_number as param.
+    This number determines what the block will look like.
+    Then, draw the next block in the waiting area.
+    """
     if block_number == 1:
         for x in range(14, 18):
             pygame.draw.rect(SCREEN, SKY_BLUE, pygame.Rect(32 * x + 16, 32 * 12, 32, 32))
@@ -663,31 +676,40 @@ def next_block_draw(block_number: int):
 
 
 def erase_line(y_list: list, erase_sound: mixer.Sound):
-    max_y = max(y_list)//32  # Largest y-index of a placed block
-    min_y = min(y_list)//32 - 1  # Smallest y-index of a placed block - 1
+    """
+    max_y is largest y-index of placed blocks.
+    min_y is smallest y-index of placed blocks minus 1.
+    Check that all horizontal lines are full.
+    """
+    max_y = max(y_list)//32 
+    min_y = min(y_list)//32 - 1 
     while(max_y > min_y):
         count = 0
         for x in range(1, 11):
-            if bg_block_list[max_y][x].done is False:  # If any of the 10 blocks is empty, leave the loop
+            if bg_block_list[max_y][x].done is False:  # If any of the 10 blocks is empty
                 break
             count += 1
-            if count == 10:  # A line is full
-                plus_score(max_y, erase_sound)  # Let's add points, erase one line, and Drop on every other line
+            if count == 10: 
+                plus_score(max_y, erase_sound)
                 max_y += 1
                 min_y += 1
         max_y -= 1
 
 
 def plus_score(y: int, erase_sound: mixer.Sound):
+    """
+    Change the status of the background blocks and drop on every other line.
+    Lastly, add 100 points.
+    """
     global score
     erase_sound.play()
 
     for x in range(1, 11):
-        bg_block_list[y][x].done = False  # Change the status of the background blocks
+        bg_block_list[y][x].done = False
         bg_block_list[y][x].number = 0
         pygame.draw.rect(SCREEN, BLACK, pygame.Rect(bg_block_list[y][x].x, bg_block_list[y][x].y, 32, 32))
 
-    for y2 in range(y, 0, -1):  # Drop on every other line
+    for y2 in range(y, 0, -1):
         for x in range(1, 11):
             bg_block_list[y2][x].done = bg_block_list[y2-1][x].done
             bg_block_list[y2][x].number = bg_block_list[y2-1][x].number
@@ -699,7 +721,11 @@ def plus_score(y: int, erase_sound: mixer.Sound):
 
 
 def check_and_go_down(ti: time, erase_sound: mixer.Sound, break_sound: mixer.Sound, current_block: Block, next_block: Block):  
-    # Check if the block can go down and go down if possible
+    """
+    Check if the block can go down and go down if possible.
+    Return current_block and next_block,
+    Because these are not global variables, they need to be updated.
+    """
     if type(current_block.go(Move.DOWN, ti, erase_sound, break_sound)) == list:
         current_block = next_block
         next_block = Block(random.randint(1, 7))
@@ -724,10 +750,10 @@ def main():
 
     pygame.key.set_repeat(120)  # Control how held keys are repeated
 
-    font_score = pygame.font.SysFont("consolas", 30)  # "Score"
-    font_game_over = pygame.font.SysFont("ebrima", 100)  # "GAME OVER"
-    font_best = pygame.font.SysFont("consolas", 20)  # "Best"
-    font_average_time = pygame.font.SysFont("consolas", 15)  # "Average time to put a block"
+    font_score = pygame.font.SysFont("consolas", 30)  
+    font_game_over = pygame.font.SysFont("ebrima", 100)  
+    font_best = pygame.font.SysFont("consolas", 20) 
+    font_average_time = pygame.font.SysFont("consolas", 15)  
 
     pygame.display.set_caption("Tetris")  # Title
 
@@ -745,7 +771,7 @@ def main():
     current_block = Block(random.randint(1, 7))  # Randomly select one of the seven types of blocks
     next_block = Block(random.randint(1, 7))
 
-    for y in range(0, 21):  # Create blocks that make up the game SCREEN
+    for y in range(0, 21):  # Create blocks that make up the game screen
         for x in range(0, 12):
             if x == 0 or x == 11 or y == 20:  # The blocks that make up the boundary
                 bg_block_list[y][x] = BackgroundBlock(32 * x, 32 * y, 8, True)
@@ -754,17 +780,17 @@ def main():
 
     clock = pygame.time.Clock()  # Create an object to help track time
 
-    current_block.start(ti)  # First block appears on the game SCREEN!
+    current_block.start(ti)  # First block appears on the game screen
 
     running = True
-    while running:  # Main loop
+    while running:
         SCREEN.fill(BLACK)  # Paint the SCREEN black before draw blocks on SCREEN
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_UP:
-                    if current_block.block_number != 4:  # Square blocks do not rotate.
+                    if current_block.block_number != 4:  # Square block do not rotate.
                         current_block.turn()
                 elif event.key == pygame.K_DOWN:
                     autotime_down = 0
@@ -790,11 +816,11 @@ def main():
 
         next_block_draw(next_block.block_number)  # Draw the next block to come out in the waiting area
 
-        for x in range(1, 11):  # Color the boundaries of the blocks on the game SCREEN
+        for x in range(1, 11):  # Color the boundaries of the blocks on the game screen
             for y in range(0, 20):
                 pygame.draw.rect(SCREEN, (161, 145, 61), pygame.Rect(32 * x, 32 * y, 32, 32), width=1)
 
-        for y in range(0, 21):  # Color the blocks on the game SCREEN
+        for y in range(0, 21):  # Color the blocks on the game screen
             for x in range(0, 12):
                 if bg_block_list[y][x].number == 1:
                     color_the_block(SCREEN, SKY_BLUE, x, y)
@@ -828,7 +854,7 @@ def main():
             pygame.time.wait(2000)
             running = False
 
-        pygame.display.flip()  # It makes the SCREEN to be updated continuously
+        pygame.display.flip()  # It makes the screen to be updated continuously
 
         clock.tick(30)  # In main loop, it determine FPS
 

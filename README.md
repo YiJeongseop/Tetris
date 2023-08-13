@@ -55,7 +55,7 @@ make style (mingw32-make style)
 * [X] Max line length should be 120 characters, fix the lines that are longer than that.
 * [X] Add type hints to the functions, see [ref](https://docs.python.org/3/library/typing.html), 
   this is a good way to document the code defining the parameters types and the return type.
-* [ ] Add docstrings to the functions, see [ref](https://www.python.org/dev/peps/pep-0257/), 
+* [X] Add docstrings to the functions, see [ref](https://www.python.org/dev/peps/pep-0257/), 
   in order to document the code.
 * [X] Reduce the use of global variables, and use the parameters or attributes instead. 
   And if is really necessary to use global variables, define them in uppercase, and in the beginning of the file.

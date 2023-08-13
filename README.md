@@ -99,7 +99,7 @@ make style (mingw32-make style)
 * [ ] Reorganize the code in different files, for example, you could create a file for the utils functions, 
   another for the Block clases, and another for the main function.
 * [X] The DB management could be defined in a class, to encapsulate the logic.
-* [ ] The time tracking could be defined in a class, to encapsulate the logic.
+* [X] The time tracking could be defined in a class, to encapsulate the logic.
 * [X] Send to [settings.py](settings.py) the configs constant variables, maybe like the screen size, the colors, etc.
 * [X] Check the different [rules for the linter](https://beta.ruff.rs/docs//rules/), and add the ones that you 
   consider necessary to the [configuration file](pyproject.toml).

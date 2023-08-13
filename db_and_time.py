@@ -22,5 +22,16 @@ class DB:
         self.cur.execute(f"INSERT INTO HighestScore VALUES ({score}, {avg_time})")
         self.con.commit()
 
+class Time:
+    def __init__(self):
+        self.avg_time = 0
+        self.total_time = 0  # Total time it took to put a block
+        self.start_time = 0  # Time when the block was first created
+
+    def update_time(self, time: float, block_count: int):
+        self.total_time += (time - self.start_time)
+        self.avg_time = self.total_time / block_count
+
+
 
     

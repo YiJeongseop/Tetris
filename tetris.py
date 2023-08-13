@@ -4,7 +4,7 @@ import pygame  # https://www.pygame.org/docs/
 from pygame import mixer
 from enum import Enum
 from settings import SCREEN, BLACK, WHITE, SKY_BLUE, BLUE, ORANGE, YELLOW, GREEN, PURPLE, RED, DESCENT_SPEED
-from db_and_time import DB
+from db_and_time import DB, Time
 
 Move = Enum("Move", ["LEFT", "RIGHT", "DOWN"])
 
@@ -31,11 +31,10 @@ class Block:
         # What if there are other blocks where they will be?
         return any(i in self.next_blocks for i in range(1, 8))
 
-    def start(self):
+    def start(self, ti: Time):
         global block_count
         block_count += 1
-        global start_time
-        start_time = time.time()
+        ti.start_time = time.time()
         global gameover
 
         def currentIter(block_number, blocks):
@@ -63,8 +62,7 @@ class Block:
             return
         self.c_blocks.extend(currentIter(self.block_number, blocks))
 
-    def go(self, move: Enum):
-        global avg_time, total_time
+    def go(self, move: Enum, ti: Time):
         self.next_blocks.clear()
 
         if move in (Move.LEFT, Move.RIGHT):
@@ -89,9 +87,7 @@ class Block:
                         y_list.append(self.c_blocks[j].y)
                     self.c_blocks.clear()
                     break_sound.play()
-                    end_time = time.time() - start_time
-                    total_time += end_time
-                    avg_time = total_time / block_count
+                    ti.update_time(time.time(), block_count)
                     erase_line(y_list)
                     return y_list
 
@@ -697,12 +693,12 @@ def plus_score(y: int):
     score += 100
 
 
-def check_and_go_down():  # Check if the block can go down and go down if possible
+def check_and_go_down(ti: time):  # Check if the block can go down and go down if possible
     global current_block, next_block
-    if type(current_block.go(Move.DOWN)) == list:
+    if type(current_block.go(Move.DOWN, ti)) == list:
         current_block = next_block
         next_block = Block(random.randint(1, 7))
-        current_block.start()
+        current_block.start(ti)
 
 
 def color_the_block(screen, coordinates: tuple, x: int, y: int):
@@ -712,10 +708,7 @@ def color_the_block(screen, coordinates: tuple, x: int, y: int):
 
 score = 0
 gameover = False
-avg_time = 0
 block_count = 0  # How many blocks were made?
-total_time = 0  # Total time it took to put a block
-start_time = 0  # Time when the block was first created
 current_block = Block(random.randint(1, 7))  # Randomly select one of the seven types of blocks
 next_block = Block(random.randint(1, 7))
 
@@ -746,6 +739,8 @@ def main():
     db = DB()
     score_list = db.fetch_highest_score()
 
+    ti = Time()
+
     pygame.key.set_repeat(120)  # Control how held keys are repeated
 
     font_score = pygame.font.SysFont("consolas", 30)  # "Score"
@@ -757,7 +752,7 @@ def main():
 
     clock = pygame.time.Clock()  # Create an object to help track time
 
-    current_block.start()  # First block appears on the game SCREEN!
+    current_block.start(ti)  # First block appears on the game SCREEN!
 
     running = True
     while running:  # Main loop
@@ -771,19 +766,19 @@ def main():
                         current_block.turn()
                 elif event.key == pygame.K_DOWN:
                     autotime_down = 0
-                    check_and_go_down()
+                    check_and_go_down(ti)
                 elif event.key == pygame.K_LEFT:
-                    current_block.go(Move.LEFT)
+                    current_block.go(Move.LEFT, ti)
                 elif event.key == pygame.K_RIGHT:
-                    current_block.go(Move.RIGHT)
+                    current_block.go(Move.RIGHT, ti)
 
         autotime_down += 1
         if autotime_down % DESCENT_SPEED == 0:
-            check_and_go_down()  # The block automatically goes down If you don't press down key.
+            check_and_go_down(ti)  # The block automatically goes down If you don't press down key.
 
         text = font_score.render("Score : " + str(score), True, WHITE)
         SCREEN.blit(text, (387, 15))
-        text2 = font_average_time.render(f"Average time to put a block : {avg_time:.2f}s", True, WHITE)
+        text2 = font_average_time.render(f"Average time to put a block : {ti.avg_time:.2f}s", True, WHITE)
         SCREEN.blit(text2, (387, 55))
         text3 = font_best.render(f"Best : {score_list[0][0]} / {score_list[0][1]:.2f}", True, WHITE)
         SCREEN.blit(text3, (387, 635))
@@ -822,11 +817,11 @@ def main():
             SCREEN.blit(gameover_text, (50, 220))
             text = font_score.render("Score : " + str(score), True, WHITE)
             SCREEN.blit(text, (70, 360))
-            text2 = font_average_time.render(f"Average time to put a block : {avg_time:.2f}s", True, WHITE)
+            text2 = font_average_time.render(f"Average time to put a block : {ti.avg_time:.2f}s", True, WHITE)
             SCREEN.blit(text2, (70, 400))
             gameover_sound.play()
             pygame.display.flip()
-            db.save_highest_score(score, avg_time)
+            db.save_highest_score(score, ti.avg_time)
             pygame.time.wait(2000)
             running = False
 

@@ -31,15 +31,15 @@ class BackgroundBlock:
 class Block:
     def __init__(self, block_number: int):
         self.block_number = block_number
-        self.next_blocks = []  # There will be the next block in the waiting area. List of that background blocks.
-        self.c_blocks = []  # List of moving blocks
+        self.n_blocks = []  # The background blocks where moving blocks will be placed.
+        self.c_blocks = []  # The background blocks where moving blocks are placed.
         self.c_y_list = []  # y-coordinate list of moving blocks
         self.c_x_list = []  # x-coordinate list of moving blocks
         self.state = 1  # You can turn the block four times. 1, 2, 3, 4
 
     def gameover_state(self):
         # What if there are other blocks where they will be?
-        return any(i in self.next_blocks for i in range(1, 8))
+        return any(i in self.n_blocks for i in range(1, 8))
 
     def start(self, ti: Time):
         global block_count, gameover
@@ -51,9 +51,9 @@ class Block:
                 block.number = block_number  # Create the blocks on the game SCREEN
                 yield block
 
-        self.next_blocks.clear()
+        self.n_blocks.clear()
 
-        # A lazily-evaluated map of background blocks. Used to fetch and place one in next_blocks.
+        # A lazily-evaluated map of background blocks. Used to fetch and place one in n_blocks.
         fetch_blocks_map = [
             lambda group: group[0][4:8],  # Block 1
             lambda group: [group[0][4], *group[1][4:7]],  # Block 2
@@ -65,14 +65,14 @@ class Block:
         ]
         fetcher = fetch_blocks_map[self.block_number - 1]
         blocks = fetcher(bg_block_list)
-        self.next_blocks.extend(block.number for block in blocks)
+        self.n_blocks.extend(block.number for block in blocks)
         gameover = self.gameover_state()
         if gameover:
             return
         self.c_blocks.extend(currentIter(self.block_number, blocks))
 
     def go(self, move: Enum, ti: Time, break_sound: mixer.Sound, erase_sound: mixer.Sound):
-        self.next_blocks.clear()
+        self.n_blocks.clear()
 
         if move in (Move.LEFT, Move.RIGHT):
             if move == Move.LEFT:
@@ -80,15 +80,15 @@ class Block:
             else:
                 adjust = 1
             for i in range(0, 4):
-                self.next_blocks.append(bg_block_list[self.c_blocks[i].y//32][(self.c_blocks[i].x//32)+adjust])
-                if self.next_blocks[i].number in range(1, 9) and self.next_blocks[i].done:
+                self.n_blocks.append(bg_block_list[self.c_blocks[i].y//32][(self.c_blocks[i].x//32)+adjust])
+                if self.n_blocks[i].number in range(1, 9) and self.n_blocks[i].done:
                     return
         elif move == Move.DOWN:
             for i in range(0, 4):
-                self.next_blocks.append(bg_block_list[(self.c_blocks[i].y//32) + 1][(self.c_blocks[i].x//32)])  
+                self.n_blocks.append(bg_block_list[(self.c_blocks[i].y//32) + 1][(self.c_blocks[i].x//32)])  
                 # Add background blocks in where the blocks are moving
                 
-                if self.next_blocks[i].number in range(1, 9) and self.next_blocks[i].done:  
+                if self.n_blocks[i].number in range(1, 9) and self.n_blocks[i].done:  
                     # If there are blocks down there, stop
                     y_list = []
                     for j in range(0, 4):
@@ -105,7 +105,7 @@ class Block:
             pygame.draw.rect(SCREEN, BLACK, pygame.Rect(self.c_blocks[i].x, self.c_blocks[i].y, 32, 32))
 
         for i in range(0, 4):
-            self.c_blocks[i] = self.next_blocks[i]
+            self.c_blocks[i] = self.n_blocks[i]
             self.c_blocks[i].number = self.block_number
 
     def turn(self):

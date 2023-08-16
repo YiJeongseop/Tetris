@@ -70,7 +70,7 @@ make style (mingw32-make style)
   if __name__ == "__main__":
       main()
   ```
-* [ ] Instead of using block numbers to identify the different block shapes, you could create a class for each 
+* [X] Instead of using block numbers to identify the different block shapes, you could create a class for each 
   piece shape, that inherits from a base class. Something like:
    
   ```python

@@ -100,13 +100,15 @@ class Block:
                     erase_line(y_list, erase_sound)
                     return y_list
 
-        for i in range(0, 4):  # The block is now moving! Remove the background blocks color beforehand.
-            self.c_blocks[i].number = 0
-            pygame.draw.rect(SCREEN, BLACK, pygame.Rect(self.c_blocks[i].x, self.c_blocks[i].y, 32, 32))
-
+        self.clear() # The block is now moving! Remove the background blocks color beforehand.
         for i in range(0, 4):
             self.c_blocks[i] = self.n_blocks[i]
             self.c_blocks[i].number = self.block_number
+
+    def clear(self):
+        for i in range(0, 4):
+            self.c_blocks[i].number = 0
+            pygame.draw.rect(SCREEN, BLACK, pygame.Rect(self.c_blocks[i].x, self.c_blocks[i].y, 32, 32))
 
     def turn(self):
         """
@@ -131,10 +133,7 @@ class Block:
                     if bg_block_list[self.c_y_list[0] + 2][self.c_x_list[0] + x].done is True:
                         return
 
-                for i in range(0, 4):
-                    self.c_blocks[i].number = 0
-                    pygame.draw.rect(SCREEN, BLACK, pygame.Rect(self.c_blocks[i].x, self.c_blocks[i].y, 32, 32))
-
+                self.clear()
                 for y in range(0, 4):
                     bg_block_list[self.c_y_list[2] + 2 - y][self.c_x_list[2]].number = self.block_number
                     self.c_blocks[y] = bg_block_list[self.c_y_list[2] + 2 - y][self.c_x_list[2]]
@@ -152,10 +151,7 @@ class Block:
                     if bg_block_list[self.c_y_list[3] + y][self.c_x_list[0] - 2].done is True:
                         return
 
-                for i in range(0, 4):
-                    self.c_blocks[i].number = 0
-                    pygame.draw.rect(SCREEN, BLACK, pygame.Rect(self.c_blocks[i].x, self.c_blocks[i].y, 32, 32))
-
+                self.clear()
                 for x in range(0, 4):
                     bg_block_list[self.c_y_list[1]][self.c_x_list[1] + 1 - x].number = self.block_number
                     self.c_blocks[x] = bg_block_list[self.c_y_list[1]][self.c_x_list[1] + 1 - x]
@@ -171,10 +167,7 @@ class Block:
                     if bg_block_list[self.c_y_list[0] - 2][self.c_x_list[0] - x].done is True:
                         return
 
-                for i in range(0, 4):
-                    self.c_blocks[i].number = 0
-                    pygame.draw.rect(SCREEN, BLACK, pygame.Rect(self.c_blocks[i].x, self.c_blocks[i].y, 32, 32))
-
+                self.clear()
                 for y in range(0, 4):
                     bg_block_list[self.c_y_list[2] - 2 + y][self.c_x_list[2]].number = self.block_number
                     self.c_blocks[y] = bg_block_list[self.c_y_list[2] - 2 + y][self.c_x_list[2]]
@@ -192,10 +185,7 @@ class Block:
                     if bg_block_list[self.c_y_list[0] + y][self.c_x_list[0] + 2].done is True:
                         return
 
-                for i in range(0, 4):
-                    self.c_blocks[i].number = 0
-                    pygame.draw.rect(SCREEN, BLACK, pygame.Rect(self.c_blocks[i].x, self.c_blocks[i].y, 32, 32))
-
+                self.clear()
                 for x in range(0, 4):
                     bg_block_list[self.c_y_list[1]][self.c_x_list[1] - 1 + x].number = self.block_number
                     self.c_blocks[x] = bg_block_list[self.c_y_list[1]][self.c_x_list[1] - 1 + x]
@@ -211,10 +201,7 @@ class Block:
                     if bg_block_list[self.c_y_list[0]][self.c_x_list[0] + 1 + x].done is True:
                         return
 
-                for i in range(0, 4):
-                    self.c_blocks[i].number = 0
-                    pygame.draw.rect(SCREEN, BLACK, pygame.Rect(self.c_blocks[i].x, self.c_blocks[i].y, 32, 32))
-
+                self.clear()
                 bg_block_list[self.c_y_list[0]][self.c_x_list[0] + 2].number = self.block_number
                 self.c_blocks[0] = bg_block_list[self.c_y_list[0]][self.c_x_list[0] + 2]
                 for y in range(0, 3):
@@ -231,10 +218,7 @@ class Block:
                     if bg_block_list[self.c_y_list[0] + 1 + y][self.c_x_list[0]].done is True:
                         return
 
-                for i in range(0, 4):
-                    self.c_blocks[i].number = 0
-                    pygame.draw.rect(SCREEN, BLACK, pygame.Rect(self.c_blocks[i].x, self.c_blocks[i].y, 32, 32))
-
+                self.clear()
                 bg_block_list[self.c_y_list[0] + 2][self.c_x_list[0]].number = self.block_number
                 self.c_blocks[0] = bg_block_list[self.c_y_list[0] + 2][self.c_x_list[0]]
                 for x in range(0, 3):
@@ -251,10 +235,7 @@ class Block:
                     if bg_block_list[self.c_y_list[0]][self.c_x_list[0] - 1 + x].done is True:
                         return
 
-                for i in range(0, 4):
-                    self.c_blocks[i].number = 0
-                    pygame.draw.rect(SCREEN, BLACK, pygame.Rect(self.c_blocks[i].x, self.c_blocks[i].y, 32, 32))
-
+                self.clear()
                 bg_block_list[self.c_y_list[0]][self.c_x_list[0] - 2].number = self.block_number
                 self.c_blocks[0] = bg_block_list[self.c_y_list[0]][self.c_x_list[0] - 2]
                 for y in range(0, 3):
@@ -271,10 +252,7 @@ class Block:
                     if bg_block_list[self.c_y_list[0] - 2 + y][self.c_x_list[0]].done is True:
                         return
 
-                for i in range(0, 4):
-                    self.c_blocks[i].number = 0
-                    pygame.draw.rect(SCREEN, BLACK, pygame.Rect(self.c_blocks[i].x, self.c_blocks[i].y, 32, 32))
-
+                self.clear()
                 bg_block_list[self.c_y_list[0] - 2][self.c_x_list[0]].number = self.block_number
                 self.c_blocks[0] = bg_block_list[self.c_y_list[0] - 2][self.c_x_list[0]]
                 for x in range(0, 3):
@@ -292,10 +270,7 @@ class Block:
                     if bg_block_list[self.c_y_list[3]][self.c_x_list[3] - 2 + x].done is True:
                         return
 
-                for i in range(0, 4):
-                    self.c_blocks[i].number = 0
-                    pygame.draw.rect(SCREEN, BLACK, pygame.Rect(self.c_blocks[i].x, self.c_blocks[i].y, 32, 32))
-
+                self.clear()
                 for y in range(0, 3):
                     bg_block_list[self.c_y_list[1] - 1 + y][self.c_x_list[1]].number = self.block_number
                     self.c_blocks[y] = bg_block_list[self.c_y_list[1] - 1 + y][self.c_x_list[1]]
@@ -312,10 +287,7 @@ class Block:
                     if bg_block_list[self.c_y_list[0] + y][self.c_x_list[0] + 1].done is True:
                         return
 
-                for i in range(0, 4):
-                    self.c_blocks[i].number = 0
-                    pygame.draw.rect(SCREEN, BLACK, pygame.Rect(self.c_blocks[i].x, self.c_blocks[i].y, 32, 32))
-
+                self.clear()
                 for x in range(0, 3):
                     bg_block_list[self.c_y_list[1]][self.c_x_list[1] + 1 - x].number = self.block_number
                     self.c_blocks[x] = bg_block_list[self.c_y_list[1]][self.c_x_list[1] + 1 - x]
@@ -332,10 +304,7 @@ class Block:
                     if bg_block_list[self.c_y_list[3]][self.c_x_list[3] + 1 + x].done is True:
                         return
 
-                for i in range(0, 4):
-                    self.c_blocks[i].number = 0
-                    pygame.draw.rect(SCREEN, BLACK, pygame.Rect(self.c_blocks[i].x, self.c_blocks[i].y, 32, 32))
-
+                self.clear()
                 for y in range(0, 3):
                     bg_block_list[self.c_y_list[1] + 1 - y][self.c_x_list[1]].number = self.block_number
                     self.c_blocks[y] = bg_block_list[self.c_y_list[1] + 1 - y][self.c_x_list[1]]
@@ -352,10 +321,7 @@ class Block:
                     if bg_block_list[self.c_y_list[3] + 1 + y][self.c_x_list[3]].done is True:
                         return
 
-                for i in range(0, 4):
-                    self.c_blocks[i].number = 0
-                    pygame.draw.rect(SCREEN, BLACK, pygame.Rect(self.c_blocks[i].x, self.c_blocks[i].y, 32, 32))
-
+                self.clear()
                 for x in range(0, 3):
                     bg_block_list[self.c_y_list[1]][self.c_x_list[1] - 1 + x].number = self.block_number
                     self.c_blocks[x] = bg_block_list[self.c_y_list[1]][self.c_x_list[1] - 1 + x]
@@ -376,10 +342,7 @@ class Block:
                 if bg_block_list[self.c_y_list[1]][self.c_x_list[1] + 1].done is True:
                     return
 
-                for i in range(0, 4):
-                    self.c_blocks[i].number = 0
-                    pygame.draw.rect(SCREEN, BLACK, pygame.Rect(self.c_blocks[i].x, self.c_blocks[i].y, 32, 32))
-
+                self.clear()
                 for y in range(0, 2):
                     bg_block_list[self.c_y_list[0] - 2 + y][self.c_x_list[0]].number = self.block_number
                     self.c_blocks[y] = bg_block_list[self.c_y_list[0] - 2 + y][self.c_x_list[0]]
@@ -398,10 +361,7 @@ class Block:
                 if bg_block_list[self.c_y_list[2] - 1][self.c_x_list[2]].done is True:
                     return
 
-                for i in range(0, 4):
-                    self.c_blocks[i].number = 0
-                    pygame.draw.rect(SCREEN, BLACK, pygame.Rect(self.c_blocks[i].x, self.c_blocks[i].y, 32, 32))
-
+                self.clear()
                 for x in range(0, 2):
                     bg_block_list[self.c_y_list[0]][self.c_x_list[0] + 2 - x].number = self.block_number
                     self.c_blocks[x] = bg_block_list[self.c_y_list[0]][self.c_x_list[0] + 2 - x]
@@ -420,10 +380,7 @@ class Block:
                 if bg_block_list[self.c_y_list[2]][self.c_x_list[0]].done is True:
                     return
 
-                for i in range(0, 4):
-                    self.c_blocks[i].number = 0
-                    pygame.draw.rect(SCREEN, BLACK, pygame.Rect(self.c_blocks[i].x, self.c_blocks[i].y, 32, 32))
-
+                self.clear()
                 for y in range(0, 2):
                     bg_block_list[self.c_y_list[0] + 2 - y][self.c_x_list[0]].number = self.block_number
                     self.c_blocks[y] = bg_block_list[self.c_y_list[0] + 2 - y][self.c_x_list[0]]
@@ -442,10 +399,7 @@ class Block:
                 if bg_block_list[self.c_y_list[2] + 1][self.c_x_list[2]].done is True:
                     return
 
-                for i in range(0, 4):
-                    self.c_blocks[i].number = 0
-                    pygame.draw.rect(SCREEN, BLACK, pygame.Rect(self.c_blocks[i].x, self.c_blocks[i].y, 32, 32))
-
+                self.clear()
                 for x in range(0, 2):
                     bg_block_list[self.c_y_list[0]][self.c_x_list[0] - 2 + x].number = self.block_number
                     self.c_blocks[x] = bg_block_list[self.c_y_list[0]][self.c_x_list[0] - 2 + x]
@@ -465,10 +419,7 @@ class Block:
                 if bg_block_list[self.c_y_list[0]][self.c_x_list[3]].done is True:
                     return
 
-                for i in range(0, 4):
-                    self.c_blocks[i].number = 0
-                    pygame.draw.rect(SCREEN, BLACK, pygame.Rect(self.c_blocks[i].x, self.c_blocks[i].y, 32, 32))
-
+                self.clear()
                 bg_block_list[self.c_y_list[3]][self.c_x_list[3]].number = self.block_number
                 self.c_blocks[0] = bg_block_list[self.c_y_list[3]][self.c_x_list[3]]
                 for y in range(0, 3):
@@ -486,10 +437,7 @@ class Block:
                 if bg_block_list[self.c_y_list[0] + 1][self.c_x_list[0]].done is True:
                     return
 
-                for i in range(0, 4):
-                    self.c_blocks[i].number = 0
-                    pygame.draw.rect(SCREEN, BLACK, pygame.Rect(self.c_blocks[i].x, self.c_blocks[i].y, 32, 32))
-
+                self.clear()
                 bg_block_list[self.c_y_list[3]][self.c_x_list[3]].number = self.block_number
                 self.c_blocks[0] = bg_block_list[self.c_y_list[3]][self.c_x_list[3]]
                 for x in range(0, 3):
@@ -507,10 +455,7 @@ class Block:
                 if bg_block_list[self.c_y_list[0]][self.c_x_list[0] + 1].done is True:
                     return
 
-                for i in range(0, 4):
-                    self.c_blocks[i].number = 0
-                    pygame.draw.rect(SCREEN, BLACK, pygame.Rect(self.c_blocks[i].x, self.c_blocks[i].y, 32, 32))
-
+                self.clear()
                 bg_block_list[self.c_y_list[3]][self.c_x_list[3]].number = self.block_number
                 self.c_blocks[0] = bg_block_list[self.c_y_list[3]][self.c_x_list[3]]
                 for y in range(0, 3):
@@ -528,10 +473,7 @@ class Block:
                 if bg_block_list[self.c_y_list[0] + 1][self.c_x_list[0]].done is True:
                     return
 
-                for i in range(0, 4):
-                    self.c_blocks[i].number = 0
-                    pygame.draw.rect(SCREEN, BLACK, pygame.Rect(self.c_blocks[i].x, self.c_blocks[i].y, 32, 32))
-
+                self.clear()
                 bg_block_list[self.c_y_list[3]][self.c_x_list[3]].number = self.block_number
                 self.c_blocks[0] = bg_block_list[self.c_y_list[3]][self.c_x_list[3]]
                 for x in range(0, 3):
@@ -552,10 +494,7 @@ class Block:
                 if bg_block_list[self.c_y_list[2]][self.c_x_list[0]].done is True:
                     return
 
-                for i in range(0, 4):
-                    self.c_blocks[i].number = 0
-                    pygame.draw.rect(SCREEN, BLACK, pygame.Rect(self.c_blocks[i].x, self.c_blocks[i].y, 32, 32))
-
+                self.clear()
                 for y in range(0, 2):
                     bg_block_list[self.c_y_list[1] - 1 + y][self.c_x_list[1]].number = self.block_number
                     self.c_blocks[y] = bg_block_list[self.c_y_list[1] - 1 + y][self.c_x_list[1]]
@@ -574,10 +513,7 @@ class Block:
                 if bg_block_list[self.c_y_list[3]][self.c_x_list[0]].done is True:
                     return
 
-                for i in range(0, 4):
-                    self.c_blocks[i].number = 0
-                    pygame.draw.rect(SCREEN, BLACK, pygame.Rect(self.c_blocks[i].x, self.c_blocks[i].y, 32, 32))
-
+                self.clear()
                 for x in range(0, 2):
                     bg_block_list[self.c_y_list[1]][self.c_x_list[1] + 1 - x].number = self.block_number
                     self.c_blocks[x] = bg_block_list[self.c_y_list[1]][self.c_x_list[1] + 1 - x]
@@ -596,10 +532,7 @@ class Block:
                 if bg_block_list[self.c_y_list[2]][self.c_x_list[0]].done is True:
                     return
 
-                for i in range(0, 4):
-                    self.c_blocks[i].number = 0
-                    pygame.draw.rect(SCREEN, BLACK, pygame.Rect(self.c_blocks[i].x, self.c_blocks[i].y, 32, 32))
-
+                self.clear()
                 for y in range(0, 2):
                     bg_block_list[self.c_y_list[1] + 1 - y][self.c_x_list[1]].number = self.block_number
                     self.c_blocks[y] = bg_block_list[self.c_y_list[1] + 1 - y][self.c_x_list[1]]
@@ -618,10 +551,7 @@ class Block:
                 if bg_block_list[self.c_y_list[3]][self.c_x_list[0]].done is True:
                     return
 
-                for i in range(0, 4):
-                    self.c_blocks[i].number = 0
-                    pygame.draw.rect(SCREEN, BLACK, pygame.Rect(self.c_blocks[i].x, self.c_blocks[i].y, 32, 32))
-
+                self.clear()
                 for x in range(0, 2):
                     bg_block_list[self.c_y_list[1]][self.c_x_list[1] - 1 + x].number = self.block_number
                     self.c_blocks[x] = bg_block_list[self.c_y_list[1]][self.c_x_list[1] - 1 + x]

@@ -94,7 +94,7 @@ make style (mingw32-make style)
       def turn(self): 
         pass 
   ```
-* [ ] Create unit tests for the functions, see [unittest](https://docs.python.org/3/library/unittest.html), 
+* [X] Create unit tests for the functions, see [unittest](https://docs.python.org/3/library/unittest.html), 
   or the alternative [pytest](https://docs.pytest.org/en/7.4.x/).
 * [X] Reorganize the code in different files, for example, you could create a file for the utils functions, 
   another for the Block classes, and another for the main function.

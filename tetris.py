@@ -239,6 +239,12 @@ class Block1(Tetris):
                 self.current_blocks[x] = background_blocks[self.current_y_list[1]][self.current_x_list[1] - 1 + x]
 
         self.state += 1
+
+    @staticmethod
+    def draw():
+        """Draw the block in the waiting area."""
+        for x in range(14, 18):
+            pygame.draw.rect(SCREEN, SKY_BLUE, pygame.Rect(32 * x + 16, 32 * 12, 32, 32))
         
 
 class Block2(Tetris):
@@ -310,6 +316,13 @@ class Block2(Tetris):
 
         self.state += 1
 
+    @staticmethod
+    def draw():
+        """Draw the block in the waiting area."""
+        for x in range(15, 18):
+            pygame.draw.rect(SCREEN, BLUE, pygame.Rect(32 * x, 32 * 12, 32, 32))
+        pygame.draw.rect(SCREEN, BLUE, pygame.Rect(32 * 15, 32 * 11, 32, 32))
+
         
 class Block3(Tetris):
     def __init__(self):
@@ -379,12 +392,26 @@ class Block3(Tetris):
             self.current_blocks[3] = background_blocks[self.current_y_list[2]][self.current_x_list[2] + 1]
 
         self.state += 1
-    
+
+    @staticmethod
+    def draw():
+        """Draw the block in the waiting area."""
+        for x in range(15, 18):
+            pygame.draw.rect(SCREEN, ORANGE, pygame.Rect(32 * x, 32 * 12, 32, 32))
+        pygame.draw.rect(SCREEN, ORANGE, pygame.Rect(32 * 17, 32 * 11, 32, 32))
+
 
 class Block4(Tetris):
     def __init__(self):
         super().__init__(4)
-        
+
+    @staticmethod
+    def draw():
+        """Draw the block in the waiting area."""
+        for x in range(15, 17):
+            for y in range(11, 13):
+                pygame.draw.rect(SCREEN, YELLOW, pygame.Rect(32 * x + 16, 32 * y, 32, 32))
+
 
 class Block5(Tetris):
     def __init__(self):
@@ -464,7 +491,15 @@ class Block5(Tetris):
                 self.current_blocks[x + 2] = background_blocks[self.current_y_list[1]][self.current_x_list[1] - 1 + x]
 
         self.state += 1
-        
+
+    @staticmethod
+    def draw():
+        """Draw the block in the waiting area."""
+        for x in range(16, 18):
+            pygame.draw.rect(SCREEN, GREEN, pygame.Rect(32 * x, 32 * 11, 32, 32))
+        for x in range(15, 17):
+            pygame.draw.rect(SCREEN, GREEN, pygame.Rect(32 * x, 32 * 12, 32, 32))
+
 
 class Block6(Tetris):
     def __init__(self):
@@ -539,6 +574,13 @@ class Block6(Tetris):
 
         self.state += 1
         
+    @staticmethod
+    def draw():
+        """Draw the block in the waiting area."""
+        for x in range(15, 18):
+            pygame.draw.rect(SCREEN, PURPLE, pygame.Rect(32 * x, 32 * 12, 32, 32))
+        pygame.draw.rect(SCREEN, PURPLE, pygame.Rect(32 * 16, 32 * 11, 32, 32))
+
 
 class Block7(Tetris):
     def __init__(self):
@@ -619,44 +661,9 @@ class Block7(Tetris):
 
         self.state += 1
 
-
-def draw_block_to_wait(block_number: int):
-    """
-    Receive block_number as param.
-    This number determines what the block will look like.
-    Then, draw the next block in the waiting area.
-    """
-    if block_number == 1:
-        for x in range(14, 18):
-            pygame.draw.rect(SCREEN, SKY_BLUE, pygame.Rect(32 * x + 16, 32 * 12, 32, 32))
-
-    elif block_number == 2:
-        for x in range(15, 18):
-            pygame.draw.rect(SCREEN, BLUE, pygame.Rect(32 * x, 32 * 12, 32, 32))
-        pygame.draw.rect(SCREEN, BLUE, pygame.Rect(32 * 15, 32 * 11, 32, 32))
-
-    elif block_number == 3:
-        for x in range(15, 18):
-            pygame.draw.rect(SCREEN, ORANGE, pygame.Rect(32 * x, 32 * 12, 32, 32))
-        pygame.draw.rect(SCREEN, ORANGE, pygame.Rect(32 * 17, 32 * 11, 32, 32))
-
-    elif block_number == 4:
-        for x in range(15, 17):
-            for y in range(11, 13):
-                pygame.draw.rect(SCREEN, YELLOW, pygame.Rect(32 * x + 16, 32 * y, 32, 32))
-
-    elif block_number == 5:
-        for x in range(16, 18):
-            pygame.draw.rect(SCREEN, GREEN, pygame.Rect(32 * x, 32 * 11, 32, 32))
-        for x in range(15, 17):
-            pygame.draw.rect(SCREEN, GREEN, pygame.Rect(32 * x, 32 * 12, 32, 32))
-
-    elif block_number == 6:
-        for x in range(15, 18):
-            pygame.draw.rect(SCREEN, PURPLE, pygame.Rect(32 * x, 32 * 12, 32, 32))
-        pygame.draw.rect(SCREEN, PURPLE, pygame.Rect(32 * 16, 32 * 11, 32, 32))
-
-    elif block_number == 7:
+    @staticmethod
+    def draw():
+        """Draw the block in the waiting area."""
         for x in range(15, 17):
             pygame.draw.rect(SCREEN, RED, pygame.Rect(32 * x, 32 * 11, 32, 32))
         for x in range(16, 18):
@@ -754,7 +761,7 @@ def main():
 
         pygame.draw.rect(SCREEN, (211, 211, 211), pygame.Rect(32 * 14, 32 * 10, 32*5, 32*4), width=3)  # Border
 
-        draw_block_to_wait(next_block.block_number)  # Draw the next block to come out in the waiting area
+        next_block.draw()  # Draw the next block to come out in the waiting area
 
         for x in range(1, 11):  # Color the boundaries of the blocks on the game screen
             for y in range(0, 20):

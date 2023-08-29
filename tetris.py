@@ -1,10 +1,12 @@
 import random
 import time
+from enum import Enum
+
 import pygame
 from pygame import mixer
-from enum import Enum
-from settings import SCREEN, BLACK, WHITE, SKY_BLUE, BLUE, ORANGE, YELLOW, GREEN, PURPLE, RED, DESCENT_SPEED
+
 from db_and_time import DB, Time
+from settings import SCREEN, BLACK, WHITE, SKY_BLUE, BLUE, ORANGE, YELLOW, GREEN, PURPLE, RED, DESCENT_SPEED
 
 Move = Enum("Move", ["LEFT", "RIGHT", "DOWN"])
 

@@ -54,6 +54,12 @@ make style (mingw32-make style)
 make test (mingw32-make test)
 ```
 
+## Technical details
+
+![](resources/images/tetris_blocks.webp)
+
+Each block have an associated name, and is represented with a Class.
+
 ## To Do
 
 * [X] Function and Argument names should be lowercase, with words separated by underscores as necessary 

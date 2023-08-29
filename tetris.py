@@ -145,7 +145,7 @@ class Tetris:
         while(max_y > min_y):
             count = 0
             for x in range(1, 11):
-                if background_blocks[max_y][x].not_block is False:  # If any of the 10 blocks is empty
+                if not background_blocks[max_y][x].not_block:  # If any of the 10 blocks is empty
                     break
                 count += 1
                 if count == 10: 

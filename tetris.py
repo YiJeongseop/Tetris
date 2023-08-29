@@ -6,11 +6,18 @@ import pygame
 from pygame import mixer
 
 from db_and_time import DB, Time
-from settings import SCREEN, BLACK, WHITE, SKY_BLUE, BLUE, ORANGE, YELLOW, GREEN, PURPLE, RED, DESCENT_SPEED
+from settings import (
+    SCREEN, BLACK, WHITE, SKY_BLUE, BLUE, ORANGE, YELLOW, GREEN, PURPLE, RED, DESCENT_SPEED, X_LENGTH, Y_LENGTH
+)
 
-Move = Enum("Move", ["LEFT", "RIGHT", "DOWN"])
 
-background_blocks = [[0 for j in range(12)] for i in range(21)]  # Game Screen consisting of 12 x 21 blocks
+class Move(Enum):
+    LEFT = 1
+    RIGHT = 2
+    DOWN = 3
+
+
+background_blocks = [[0 for j in range(X_LENGTH)] for i in range(Y_LENGTH)]  # Game Screen consisting of 12 × 21 blocks
 
 
 class BackgroundBlock:
@@ -77,7 +84,7 @@ class Tetris:
         Tetris.number_of_blocks += 1
         ti.start_time = time.time()
 
-        def currentIter(block_number, blocks):
+        def current_iter(block_number, blocks):
             for block in iter(blocks):  # What if there are no other blocks where they will be?
                 block.number = block_number  # Create the blocks on the game screen
                 yield block
@@ -100,7 +107,7 @@ class Tetris:
         Tetris.gameover = self.gameover_state()
         if Tetris.gameover:
             return
-        self.current_blocks.extend(currentIter(self.block_number, blocks))
+        self.current_blocks.extend(current_iter(self.block_number, blocks))
 
     def go(self, move: Enum, ti: Time, break_sound: mixer.Sound, erase_sound: mixer.Sound):
         self.next_blocks.clear()
@@ -152,7 +159,8 @@ class Tetris:
             self.current_y_list.append(self.current_blocks[i].y//32)
             self.current_x_list.append(self.current_blocks[i].x//32)
     
-    def erase_line_plus_score(self, y_list: list, erase_sound: mixer.Sound):
+    @staticmethod
+    def erase_line_plus_score(y_list: list, erase_sound: mixer.Sound):
         """
         max_y is largest y-index of placed blocks.
         min_y is smallest y-index of placed blocks minus 1.
@@ -160,7 +168,7 @@ class Tetris:
         """
         max_y = max(y_list)//32 
         min_y = min(y_list)//32 - 1 
-        while(max_y > min_y):
+        while max_y > min_y:
             count = 0
             for x in range(1, 11):
                 if not background_blocks[max_y][x].not_block:  # If any of the 10 blocks is empty
@@ -734,9 +742,9 @@ def main():
     erase_sound = mixer.Sound("resources/audio/143607__dwoboyle__menu-interface-confirm-003.wav")
     erase_sound.set_volume(0.15)
 
-    for y in range(21):  # Create blocks that make up the game screen
-        for x in range(12):
-            if x == 0 or x == 11 or y == 20:  # The blocks that make up the boundary
+    for y in range(Y_LENGTH):  # Create blocks that make up the game screen
+        for x in range(X_LENGTH):
+            if x in [0, 11] or y == 20:  # The blocks that make up the boundary
                 background_blocks[y][x] = BackgroundBlock(32 * x, 32 * y, 8, True)
             else:
                 background_blocks[y][x] = BackgroundBlock(32 * x, 32 * y, 0, False)
@@ -785,8 +793,8 @@ def main():
             for y in range(20):
                 pygame.draw.rect(SCREEN, (161, 145, 61), pygame.Rect(32 * x, 32 * y, 32, 32), width=1)
 
-        for y in range(21):  # Color the blocks on the game screen
-            for x in range(12):
+        for y in range(Y_LENGTH):  # Color the blocks on the game screen
+            for x in range(X_LENGTH):
                 if background_blocks[y][x].number in range(1, 8):
                     color_the_block(SCREEN, background_blocks[y][x].color, x, y)
                 elif background_blocks[y][x].number == 8:

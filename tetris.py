@@ -10,7 +10,7 @@ from settings import SCREEN, BLACK, WHITE, SKY_BLUE, BLUE, ORANGE, YELLOW, GREEN
 
 Move = Enum("Move", ["LEFT", "RIGHT", "DOWN"])
 
-background_blocks = [[0 for j in range(0, 12)] for i in range(0, 21)]  # Game Screen consisting of 12 x 21 blocks
+background_blocks = [[0 for j in range(12)] for i in range(21)]  # Game Screen consisting of 12 x 21 blocks
 
 
 class BackgroundBlock:
@@ -110,19 +110,19 @@ class Tetris:
                 adjust = -1
             else:
                 adjust = 1
-            for i in range(0, 4):
+            for i in range(4):
                 self.next_blocks.append(background_blocks[self.current_blocks[i].y//32][(self.current_blocks[i].x//32)+adjust])
                 if self.next_blocks[i].number in range(1, 9) and self.next_blocks[i].not_block:
                     return
         elif move == Move.DOWN:
-            for i in range(0, 4):
+            for i in range(4):
                 self.next_blocks.append(background_blocks[(self.current_blocks[i].y//32) + 1][(self.current_blocks[i].x//32)])  
                 # Add background blocks in where the blocks are moving
                 
                 if self.next_blocks[i].number in range(1, 9) and self.next_blocks[i].not_block:  
                     # If there are blocks down there, stop
                     y_list = []
-                    for j in range(0, 4):
+                    for j in range(4):
                         self.current_blocks[j].not_block = True
                         y_list.append(self.current_blocks[j].y)
                     self.current_blocks.clear()
@@ -132,12 +132,12 @@ class Tetris:
                     return y_list
 
         self.clear()  # The block is now moving! Remove the background blocks color beforehand.
-        for i in range(0, 4):
+        for i in range(4):
             self.current_blocks[i] = self.next_blocks[i]
             self.current_blocks[i].number = self.block_number
 
     def clear(self):
-        for i in range(0, 4):
+        for i in range(4):
             self.current_blocks[i].number = 0
             pygame.draw.rect(SCREEN, BLACK, pygame.Rect(self.current_blocks[i].x, self.current_blocks[i].y, 32, 32))
 
@@ -148,7 +148,7 @@ class Tetris:
         """
         self.current_y_list.clear()
         self.current_x_list.clear()
-        for i in range(0, 4):
+        for i in range(4):
             self.current_y_list.append(self.current_blocks[i].y//32)
             self.current_x_list.append(self.current_blocks[i].x//32)
     
@@ -197,7 +197,7 @@ class Block1(Tetris):
         if self.state == 1:
             if self.current_y_list[0] == 0:
                 return
-            for x in range(0, 4):
+            for x in range(4):
                 if background_blocks[self.current_y_list[0] - 1][self.current_x_list[0] + x].not_block:
                     return
                 if background_blocks[self.current_y_list[0] + 1][self.current_x_list[0] + x].not_block:
@@ -206,28 +206,28 @@ class Block1(Tetris):
                     return
 
             self.clear()
-            for y in range(0, 4):
+            for y in range(4):
                 background_blocks[self.current_y_list[2] + 2 - y][self.current_x_list[2]].number = self.block_number
                 self.current_blocks[y] = background_blocks[self.current_y_list[2] + 2 - y][self.current_x_list[2]]
 
         elif self.state == 2:
-            for y in range(0, 4):
+            for y in range(4):
                 if background_blocks[self.current_y_list[3] + y][self.current_x_list[0] - 1].not_block:
                     return
-            for y in range(0, 4):
+            for y in range(4):
                 if background_blocks[self.current_y_list[3] + y][self.current_x_list[0] + 1].not_block:
                     return
-            for y in range(0, 4):
+            for y in range(4):
                 if background_blocks[self.current_y_list[3] + y][self.current_x_list[0] - 2].not_block:
                     return
 
             self.clear()
-            for x in range(0, 4):
+            for x in range(4):
                 background_blocks[self.current_y_list[1]][self.current_x_list[1] + 1 - x].number = self.block_number
                 self.current_blocks[x] = background_blocks[self.current_y_list[1]][self.current_x_list[1] + 1 - x]
 
         elif self.state == 3:
-            for x in range(0, 4):
+            for x in range(4):
                 if background_blocks[self.current_y_list[0] + 1][self.current_x_list[0] - x].not_block:
                     return
                 if background_blocks[self.current_y_list[0] - 1][self.current_x_list[0] - x].not_block:
@@ -236,23 +236,23 @@ class Block1(Tetris):
                     return
 
             self.clear()
-            for y in range(0, 4):
+            for y in range(4):
                 background_blocks[self.current_y_list[2] - 2 + y][self.current_x_list[2]].number = self.block_number
                 self.current_blocks[y] = background_blocks[self.current_y_list[2] - 2 + y][self.current_x_list[2]]
 
         elif self.state == 4:
-            for y in range(0, 4):
+            for y in range(4):
                 if background_blocks[self.current_y_list[0] + y][self.current_x_list[0] - 1].not_block:
                     return
-            for y in range(0, 4):
+            for y in range(4):
                 if background_blocks[self.current_y_list[0] + y][self.current_x_list[0] + 1].not_block:
                     return
-            for y in range(0, 4):
+            for y in range(4):
                 if background_blocks[self.current_y_list[0] + y][self.current_x_list[0] + 2].not_block:
                     return
 
             self.clear()
-            for x in range(0, 4):
+            for x in range(4):
                 background_blocks[self.current_y_list[1]][self.current_x_list[1] - 1 + x].number = self.block_number
                 self.current_blocks[x] = background_blocks[self.current_y_list[1]][self.current_x_list[1] - 1 + x]
 
@@ -273,62 +273,62 @@ class Block2(Tetris):
         super().turn()
 
         if self.state == 1:
-            for x in range(0, 3):
+            for x in range(3):
                 if background_blocks[self.current_y_list[1] + 1][self.current_x_list[1] + x].not_block:
                     return
-            for x in range(0, 2):
+            for x in range(2):
                 if background_blocks[self.current_y_list[0]][self.current_x_list[0] + 1 + x].not_block:
                     return
 
             self.clear()
             background_blocks[self.current_y_list[0]][self.current_x_list[0] + 2].number = self.block_number
             self.current_blocks[0] = background_blocks[self.current_y_list[0]][self.current_x_list[0] + 2]
-            for y in range(0, 3):
+            for y in range(3):
                 background_blocks[self.current_y_list[2] - 1 + y][self.current_x_list[2]].number = self.block_number
                 self.current_blocks[y + 1] = background_blocks[self.current_y_list[2] - 1 + y][self.current_x_list[2]]
 
         elif self.state == 2:
-            for y in range(0, 3):
+            for y in range(3):
                 if background_blocks[self.current_y_list[1] + y][self.current_x_list[1] - 1].not_block:
                     return
-            for x in range(0, 2):
+            for x in range(2):
                 if background_blocks[self.current_y_list[0] + 1 + y][self.current_x_list[0]].not_block:
                     return
 
             self.clear()
             background_blocks[self.current_y_list[0] + 2][self.current_x_list[0]].number = self.block_number
             self.current_blocks[0] = background_blocks[self.current_y_list[0] + 2][self.current_x_list[0]]
-            for x in range(0, 3):
+            for x in range(3):
                 background_blocks[self.current_y_list[0] + 1][self.current_x_list[0] - x].number = self.block_number
                 self.current_blocks[x + 1] = background_blocks[self.current_y_list[0] + 1][self.current_x_list[0] - x]
 
         elif self.state == 3:
-            for x in range(0, 3):
+            for x in range(3):
                 if background_blocks[self.current_y_list[1] - 1][self.current_x_list[1] - x].not_block:
                     return
-            for x in range(0, 2):
+            for x in range(2):
                 if background_blocks[self.current_y_list[0]][self.current_x_list[0] - 1 + x].not_block:
                     return
 
             self.clear()
             background_blocks[self.current_y_list[0]][self.current_x_list[0] - 2].number = self.block_number
             self.current_blocks[0] = background_blocks[self.current_y_list[0]][self.current_x_list[0] - 2]
-            for y in range(0, 3):
+            for y in range(3):
                 background_blocks[self.current_y_list[2] + 1 - y][self.current_x_list[2]].number = self.block_number
                 self.current_blocks[y + 1] = background_blocks[self.current_y_list[2] + 1 - y][self.current_x_list[2]]
 
         elif self.state == 4:
-            for y in range(0, 3):
+            for y in range(3):
                 if background_blocks[self.current_y_list[3] + y][self.current_x_list[1] + 1].not_block:
                     return
-            for x in range(0, 2):
+            for x in range(2):
                 if background_blocks[self.current_y_list[0] - 2 + y][self.current_x_list[0]].not_block:
                     return
 
             self.clear()
             background_blocks[self.current_y_list[0] - 2][self.current_x_list[0]].number = self.block_number
             self.current_blocks[0] = background_blocks[self.current_y_list[0] - 2][self.current_x_list[0]]
-            for x in range(0, 3):
+            for x in range(3):
                 background_blocks[self.current_y_list[0] - 1][self.current_x_list[0] + x].number = self.block_number
                 self.current_blocks[x + 1] = background_blocks[self.current_y_list[0] - 1][self.current_x_list[0] + x]
 
@@ -350,60 +350,60 @@ class Block3(Tetris):
         super().turn()
 
         if self.state == 1:
-            for x in range(0, 3):
+            for x in range(3):
                 if background_blocks[self.current_y_list[0] + 1][self.current_x_list[0] + x].not_block:
                     return
-            for x in range(0, 2):
+            for x in range(2):
                 if background_blocks[self.current_y_list[3]][self.current_x_list[3] - 2 + x].not_block:
                     return
 
             self.clear()
-            for y in range(0, 3):
+            for y in range(3):
                 background_blocks[self.current_y_list[1] - 1 + y][self.current_x_list[1]].number = self.block_number
                 self.current_blocks[y] = background_blocks[self.current_y_list[1] - 1 + y][self.current_x_list[1]]
             background_blocks[self.current_y_list[2] + 1][self.current_x_list[2]].number = self.block_number
             self.current_blocks[3] = background_blocks[self.current_y_list[2] + 1][self.current_x_list[2]]
 
         elif self.state == 2:
-            for y in range(0, 3):
+            for y in range(3):
                 if background_blocks[self.current_y_list[0] + y][self.current_x_list[0] - 1].not_block:
                      return
-            for y in range(0, 2):
+            for y in range(2):
                 if background_blocks[self.current_y_list[0] + y][self.current_x_list[0] + 1].not_block:
                     return
 
             self.clear()
-            for x in range(0, 3):
+            for x in range(3):
                 background_blocks[self.current_y_list[1]][self.current_x_list[1] + 1 - x].number = self.block_number
                 self.current_blocks[x] = background_blocks[self.current_y_list[1]][self.current_x_list[1] + 1 - x]
             background_blocks[self.current_y_list[2]][self.current_x_list[2] - 1].number = self.block_number
             self.current_blocks[3] = background_blocks[self.current_y_list[2]][self.current_x_list[2] - 1]
 
         elif self.state == 3:
-            for x in range(0, 3):
+            for x in range(3):
                 if background_blocks[self.current_y_list[2] - 1][self.current_x_list[2] + x].not_block:
                     return
-            for x in range(0, 2):
+            for x in range(2):
                 if background_blocks[self.current_y_list[3]][self.current_x_list[3] + 1 + x].not_block:
                     return
 
             self.clear()
-            for y in range(0, 3):
+            for y in range(3):
                 background_blocks[self.current_y_list[1] + 1 - y][self.current_x_list[1]].number = self.block_number
                 self.current_blocks[y] = background_blocks[self.current_y_list[1] + 1 - y][self.current_x_list[1]]
             background_blocks[self.current_y_list[2] - 1][self.current_x_list[2]].number = self.block_number
             self.current_blocks[3] = background_blocks[self.current_y_list[2] - 1][self.current_x_list[2]]
 
         elif self.state == 4:
-            for y in range(0, 3):
+            for y in range(3):
                 if background_blocks[self.current_y_list[2] + y][self.current_x_list[0] + 1].not_block:
                     return
-            for y in range(0, 2):
+            for y in range(2):
                 if background_blocks[self.current_y_list[3] + 1 + y][self.current_x_list[3]].not_block:
                     return
 
             self.clear()
-            for x in range(0, 3):
+            for x in range(3):
                 background_blocks[self.current_y_list[1]][self.current_x_list[1] - 1 + x].number = self.block_number
                 self.current_blocks[x] = background_blocks[self.current_y_list[1]][self.current_x_list[1] - 1 + x]
             background_blocks[self.current_y_list[2]][self.current_x_list[2] + 1].number = self.block_number
@@ -441,7 +441,7 @@ class Block5(Tetris):
         if self.state == 1:
             if self.current_y_list[2] == 0:
                 return
-            for x in range(0, 3):
+            for x in range(3):
                 if background_blocks[self.current_y_list[2] - 1][self.current_x_list[0] + x].not_block:
                     return
             if background_blocks[self.current_y_list[0] - 1][self.current_x_list[0]].not_block:
@@ -450,15 +450,15 @@ class Block5(Tetris):
                 return
 
             self.clear()
-            for y in range(0, 2):
+            for y in range(2):
                 background_blocks[self.current_y_list[0] - 2 + y][self.current_x_list[0]].number = self.block_number
                 self.current_blocks[y] = background_blocks[self.current_y_list[0] - 2 + y][self.current_x_list[0]]
-            for y in range(0, 2):
+            for y in range(2):
                 background_blocks[self.current_y_list[1] - 1 + y][self.current_x_list[1]].number = self.block_number
                 self.current_blocks[y + 2] = background_blocks[self.current_y_list[1] - 1 + y][self.current_x_list[1]]
 
         elif self.state == 2:
-            for y in range(0, 3):
+            for y in range(3):
                 if background_blocks[self.current_y_list[0] + y][self.current_x_list[2] + 1].not_block:
                     return
             if background_blocks[self.current_y_list[1] + 1][self.current_x_list[1]].not_block:
@@ -467,15 +467,15 @@ class Block5(Tetris):
                 return
 
             self.clear()
-            for x in range(0, 2):
+            for x in range(2):
                 background_blocks[self.current_y_list[0]][self.current_x_list[0] + 2 - x].number = self.block_number
                 self.current_blocks[x] = background_blocks[self.current_y_list[0]][self.current_x_list[0] + 2 - x]
-            for x in range(0, 2):
+            for x in range(2):
                 background_blocks[self.current_y_list[1]][self.current_x_list[1] + 1 - x].number = self.block_number
                 self.current_blocks[x + 2] = background_blocks[self.current_y_list[1]][self.current_x_list[1] + 1 - x]
 
         elif self.state == 3:
-            for x in range(0, 3):
+            for x in range(3):
                 if background_blocks[self.current_y_list[2] + 1][self.current_x_list[3] + x].not_block:
                     return
             if background_blocks[self.current_y_list[0]][self.current_x_list[0] - 2].not_block:
@@ -484,15 +484,15 @@ class Block5(Tetris):
                 return
 
             self.clear()
-            for y in range(0, 2):
+            for y in range(2):
                 background_blocks[self.current_y_list[0] + 2 - y][self.current_x_list[0]].number = self.block_number
                 self.current_blocks[y] = background_blocks[self.current_y_list[0] + 2 - y][self.current_x_list[0]]
-            for y in range(0, 2):
+            for y in range(2):
                 background_blocks[self.current_y_list[1] + 1 - y][self.current_x_list[1]].number = self.block_number
                 self.current_blocks[y + 2] = background_blocks[self.current_y_list[1] + 1 - y][self.current_x_list[1]]
 
         elif self.state == 4:
-            for y in range(0, 3):
+            for y in range(3):
                 if background_blocks[self.current_y_list[0] - y][self.current_x_list[2] - 1].not_block:
                     return
             if background_blocks[self.current_y_list[1] - 1][self.current_x_list[1]].not_block:
@@ -501,10 +501,10 @@ class Block5(Tetris):
                 return
 
             self.clear()
-            for x in range(0, 2):
+            for x in range(2):
                 background_blocks[self.current_y_list[0]][self.current_x_list[0] - 2 + x].number = self.block_number
                 self.current_blocks[x] = background_blocks[self.current_y_list[0]][self.current_x_list[0] - 2 + x]
-            for x in range(0, 2):
+            for x in range(2):
                 background_blocks[self.current_y_list[1]][self.current_x_list[1] - 1 + x].number = self.block_number
                 self.current_blocks[x + 2] = background_blocks[self.current_y_list[1]][self.current_x_list[1] - 1 + x]
 
@@ -527,7 +527,7 @@ class Block6(Tetris):
         super().turn()
 
         if self.state == 1:
-            for x in range(0, 3):
+            for x in range(3):
                 if background_blocks[self.current_y_list[1] + 1][self.current_x_list[1] + x].not_block:
                     return
             if background_blocks[self.current_y_list[0]][self.current_x_list[1]].not_block:
@@ -538,12 +538,12 @@ class Block6(Tetris):
             self.clear()
             background_blocks[self.current_y_list[3]][self.current_x_list[3]].number = self.block_number
             self.current_blocks[0] = background_blocks[self.current_y_list[3]][self.current_x_list[3]]
-            for y in range(0, 3):
+            for y in range(3):
                 background_blocks[self.current_y_list[0] + y][self.current_x_list[0]].number = self.block_number
                 self.current_blocks[y + 1] = background_blocks[self.current_y_list[0] + y][self.current_x_list[0]]
 
         elif self.state == 2:
-            for y in range(0, 3):
+            for y in range(3):
                 if background_blocks[self.current_y_list[1] + y][self.current_x_list[1] - 1].not_block:
                     return
             if background_blocks[self.current_y_list[0] - 1][self.current_x_list[0]].not_block:
@@ -554,12 +554,12 @@ class Block6(Tetris):
             self.clear()
             background_blocks[self.current_y_list[3]][self.current_x_list[3]].number = self.block_number
             self.current_blocks[0] = background_blocks[self.current_y_list[3]][self.current_x_list[3]]
-            for x in range(0, 3):
+            for x in range(3):
                 background_blocks[self.current_y_list[0]][self.current_x_list[0] - x].number = self.block_number
                 self.current_blocks[x + 1] = background_blocks[self.current_y_list[0]][self.current_x_list[0] - x]
 
         elif self.state == 3:
-            for x in range(0, 3):
+            for x in range(3):
                 if background_blocks[self.current_y_list[1] - 1][self.current_x_list[3] + x].not_block:
                     return
             if background_blocks[self.current_y_list[0]][self.current_x_list[0] - 1].not_block:
@@ -570,12 +570,12 @@ class Block6(Tetris):
             self.clear()
             background_blocks[self.current_y_list[3]][self.current_x_list[3]].number = self.block_number
             self.current_blocks[0] = background_blocks[self.current_y_list[3]][self.current_x_list[3]]
-            for y in range(0, 3):
+            for y in range(3):
                 background_blocks[self.current_y_list[2] + 1 - y][self.current_x_list[0]].number = self.block_number
                 self.current_blocks[y + 1] = background_blocks[self.current_y_list[2] + 1 - y][self.current_x_list[0]]
 
         elif self.state == 4:
-            for y in range(0, 3):
+            for y in range(3):
                 if background_blocks[self.current_y_list[3] + y][self.current_x_list[1] + 1].not_block:
                     return
             if background_blocks[self.current_y_list[0] - 1][self.current_x_list[0]].not_block:
@@ -586,7 +586,7 @@ class Block6(Tetris):
             self.clear()
             background_blocks[self.current_y_list[3]][self.current_x_list[3]].number = self.block_number
             self.current_blocks[0] = background_blocks[self.current_y_list[3]][self.current_x_list[3]]
-            for x in range(0, 3):
+            for x in range(3):
                 background_blocks[self.current_y_list[0]][self.current_x_list[0] + x].number = self.block_number
                 self.current_blocks[x + 1] = background_blocks[self.current_y_list[0]][self.current_x_list[0] + x]
 
@@ -610,7 +610,7 @@ class Block7(Tetris):
         if self.state == 1:
             if self.current_y_list[0] == 0:
                 return
-            for x in range(0, 3):
+            for x in range(3):
                 if background_blocks[self.current_y_list[0] - 1][self.current_x_list[0] + x].not_block:
                     return
             if background_blocks[self.current_y_list[0]][self.current_x_list[3]].not_block:
@@ -619,15 +619,15 @@ class Block7(Tetris):
                 return
 
             self.clear()
-            for y in range(0, 2):
+            for y in range(2):
                 background_blocks[self.current_y_list[1] - 1 + y][self.current_x_list[1]].number = self.block_number
                 self.current_blocks[y] = background_blocks[self.current_y_list[1] - 1 + y][self.current_x_list[1]]
-            for y in range(0, 2):
+            for y in range(2):
                 background_blocks[self.current_y_list[0] + y][self.current_x_list[0]].number = self.block_number
                 self.current_blocks[y + 2] = background_blocks[self.current_y_list[0] + y][self.current_x_list[0]]
 
         elif self.state == 2:
-            for y in range(0, 3):
+            for y in range(3):
                 if background_blocks[self.current_y_list[0] + y][self.current_x_list[0] + 1].not_block:
                     return
             if background_blocks[self.current_y_list[0]][self.current_x_list[2]].not_block:
@@ -636,15 +636,15 @@ class Block7(Tetris):
                 return
 
             self.clear()
-            for x in range(0, 2):
+            for x in range(2):
                 background_blocks[self.current_y_list[1]][self.current_x_list[1] + 1 - x].number = self.block_number
                 self.current_blocks[x] = background_blocks[self.current_y_list[1]][self.current_x_list[1] + 1 - x]
-            for x in range(0, 2):
+            for x in range(2):
                 background_blocks[self.current_y_list[0]][self.current_x_list[0] - x].number = self.block_number
                 self.current_blocks[x + 2] = background_blocks[self.current_y_list[0]][self.current_x_list[0] - x]
 
         elif self.state == 3:
-            for x in range(0, 3):
+            for x in range(3):
                 if background_blocks[self.current_y_list[0] + 1][self.current_x_list[3] + x].not_block:
                     return
             if background_blocks[self.current_y_list[0]][self.current_x_list[3]].not_block:
@@ -653,15 +653,15 @@ class Block7(Tetris):
                 return
 
             self.clear()
-            for y in range(0, 2):
+            for y in range(2):
                 background_blocks[self.current_y_list[1] + 1 - y][self.current_x_list[1]].number = self.block_number
                 self.current_blocks[y] = background_blocks[self.current_y_list[1] + 1 - y][self.current_x_list[1]]
-            for y in range(0, 2):
+            for y in range(2):
                 background_blocks[self.current_y_list[0] - y][self.current_x_list[0]].number = self.block_number
                 self.current_blocks[y + 2] = background_blocks[self.current_y_list[0] - y][self.current_x_list[0]]
 
         elif self.state == 4:
-            for y in range(0, 3):
+            for y in range(3):
                 if background_blocks[self.current_y_list[3] + y][self.current_x_list[0] - 1].not_block:
                     return
             if background_blocks[self.current_y_list[0]][self.current_x_list[2]].not_block:
@@ -670,10 +670,10 @@ class Block7(Tetris):
                 return
 
             self.clear()
-            for x in range(0, 2):
+            for x in range(2):
                 background_blocks[self.current_y_list[1]][self.current_x_list[1] - 1 + x].number = self.block_number
                 self.current_blocks[x] = background_blocks[self.current_y_list[1]][self.current_x_list[1] - 1 + x]
-            for x in range(0, 2):
+            for x in range(2):
                 background_blocks[self.current_y_list[0]][self.current_x_list[0] + x].number = self.block_number
                 self.current_blocks[x + 2] = background_blocks[self.current_y_list[0]][self.current_x_list[0] + x]
 
@@ -734,8 +734,8 @@ def main():
     erase_sound = mixer.Sound("resources/audio/143607__dwoboyle__menu-interface-confirm-003.wav")
     erase_sound.set_volume(0.15)
 
-    for y in range(0, 21):  # Create blocks that make up the game screen
-        for x in range(0, 12):
+    for y in range(21):  # Create blocks that make up the game screen
+        for x in range(12):
             if x == 0 or x == 11 or y == 20:  # The blocks that make up the boundary
                 background_blocks[y][x] = BackgroundBlock(32 * x, 32 * y, 8, True)
             else:
@@ -782,11 +782,11 @@ def main():
         next_block.draw()  # Draw the next block to come out in the waiting area
 
         for x in range(1, 11):  # Color the boundaries of the blocks on the game screen
-            for y in range(0, 20):
+            for y in range(20):
                 pygame.draw.rect(SCREEN, (161, 145, 61), pygame.Rect(32 * x, 32 * y, 32, 32), width=1)
 
-        for y in range(0, 21):  # Color the blocks on the game screen
-            for x in range(0, 12):
+        for y in range(21):  # Color the blocks on the game screen
+            for x in range(12):
                 if background_blocks[y][x].number in range(1, 8):
                     color_the_block(SCREEN, background_blocks[y][x].color, x, y)
                 elif background_blocks[y][x].number == 8:

@@ -111,7 +111,7 @@ class Tetris:
                     self.erase_line_plus_score(y_list, erase_sound)
                     return y_list
 
-        self.clear() # The block is now moving! Remove the background blocks color beforehand.
+        self.clear()  # The block is now moving! Remove the background blocks color beforehand.
         for i in range(0, 4):
             self.current_blocks[i] = self.next_blocks[i]
             self.current_blocks[i].number = self.block_number

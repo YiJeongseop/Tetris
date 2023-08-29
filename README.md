@@ -48,7 +48,13 @@ You can run the check with:
 make style (mingw32-make style)
 ```
 
-# To Do
+## Tests
+
+```bash
+make test (mingw32-make test)
+```
+
+## To Do
 
 * [X] Function and Argument names should be lowercase, with words separated by underscores as necessary 
   to improve readability (snake-case).

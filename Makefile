@@ -6,3 +6,6 @@ run:
 
 style:
 	ruff check . --fix
+
+test:
+	python test.py

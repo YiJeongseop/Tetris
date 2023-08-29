@@ -178,11 +178,11 @@ class Block1(Tetris):
             if self.current_y_list[0] == 0:
                 return
             for x in range(0, 4):
-                if background_blocks[self.current_y_list[0] - 1][self.current_x_list[0] + x].not_block is True:
+                if background_blocks[self.current_y_list[0] - 1][self.current_x_list[0] + x].not_block:
                     return
-                if background_blocks[self.current_y_list[0] + 1][self.current_x_list[0] + x].not_block is True:
+                if background_blocks[self.current_y_list[0] + 1][self.current_x_list[0] + x].not_block:
                     return
-                if background_blocks[self.current_y_list[0] + 2][self.current_x_list[0] + x].not_block is True:
+                if background_blocks[self.current_y_list[0] + 2][self.current_x_list[0] + x].not_block:
                     return
 
             self.clear()
@@ -192,13 +192,13 @@ class Block1(Tetris):
 
         elif self.state == 2:
             for y in range(0, 4):
-                if background_blocks[self.current_y_list[3] + y][self.current_x_list[0] - 1].not_block is True:
+                if background_blocks[self.current_y_list[3] + y][self.current_x_list[0] - 1].not_block:
                     return
             for y in range(0, 4):
-                if background_blocks[self.current_y_list[3] + y][self.current_x_list[0] + 1].not_block is True:
+                if background_blocks[self.current_y_list[3] + y][self.current_x_list[0] + 1].not_block:
                     return
             for y in range(0, 4):
-                if background_blocks[self.current_y_list[3] + y][self.current_x_list[0] - 2].not_block is True:
+                if background_blocks[self.current_y_list[3] + y][self.current_x_list[0] - 2].not_block:
                     return
 
             self.clear()
@@ -208,11 +208,11 @@ class Block1(Tetris):
 
         elif self.state == 3:
             for x in range(0, 4):
-                if background_blocks[self.current_y_list[0] + 1][self.current_x_list[0] - x].not_block is True:
+                if background_blocks[self.current_y_list[0] + 1][self.current_x_list[0] - x].not_block:
                     return
-                if background_blocks[self.current_y_list[0] - 1][self.current_x_list[0] - x].not_block is True:
+                if background_blocks[self.current_y_list[0] - 1][self.current_x_list[0] - x].not_block:
                     return
-                if background_blocks[self.current_y_list[0] - 2][self.current_x_list[0] - x].not_block is True:
+                if background_blocks[self.current_y_list[0] - 2][self.current_x_list[0] - x].not_block:
                     return
 
             self.clear()
@@ -222,13 +222,13 @@ class Block1(Tetris):
 
         elif self.state == 4:
             for y in range(0, 4):
-                if background_blocks[self.current_y_list[0] + y][self.current_x_list[0] - 1].not_block is True:
+                if background_blocks[self.current_y_list[0] + y][self.current_x_list[0] - 1].not_block:
                     return
             for y in range(0, 4):
-                if background_blocks[self.current_y_list[0] + y][self.current_x_list[0] + 1].not_block is True:
+                if background_blocks[self.current_y_list[0] + y][self.current_x_list[0] + 1].not_block:
                     return
             for y in range(0, 4):
-                if background_blocks[self.current_y_list[0] + y][self.current_x_list[0] + 2].not_block is True:
+                if background_blocks[self.current_y_list[0] + y][self.current_x_list[0] + 2].not_block:
                     return
 
             self.clear()
@@ -248,10 +248,10 @@ class Block2(Tetris):
 
         if self.state == 1:
             for x in range(0, 3):
-                if background_blocks[self.current_y_list[1] + 1][self.current_x_list[1] + x].not_block is True:
+                if background_blocks[self.current_y_list[1] + 1][self.current_x_list[1] + x].not_block:
                     return
             for x in range(0, 2):
-                if background_blocks[self.current_y_list[0]][self.current_x_list[0] + 1 + x].not_block is True:
+                if background_blocks[self.current_y_list[0]][self.current_x_list[0] + 1 + x].not_block:
                     return
 
             self.clear()
@@ -263,10 +263,10 @@ class Block2(Tetris):
 
         elif self.state == 2:
             for y in range(0, 3):
-                if background_blocks[self.current_y_list[1] + y][self.current_x_list[1] - 1].not_block is True:
+                if background_blocks[self.current_y_list[1] + y][self.current_x_list[1] - 1].not_block:
                     return
             for x in range(0, 2):
-                if background_blocks[self.current_y_list[0] + 1 + y][self.current_x_list[0]].not_block is True:
+                if background_blocks[self.current_y_list[0] + 1 + y][self.current_x_list[0]].not_block:
                     return
 
             self.clear()
@@ -278,10 +278,10 @@ class Block2(Tetris):
 
         elif self.state == 3:
             for x in range(0, 3):
-                if background_blocks[self.current_y_list[1] - 1][self.current_x_list[1] - x].not_block is True:
+                if background_blocks[self.current_y_list[1] - 1][self.current_x_list[1] - x].not_block:
                     return
             for x in range(0, 2):
-                if background_blocks[self.current_y_list[0]][self.current_x_list[0] - 1 + x].not_block is True:
+                if background_blocks[self.current_y_list[0]][self.current_x_list[0] - 1 + x].not_block:
                     return
 
             self.clear()
@@ -293,10 +293,10 @@ class Block2(Tetris):
 
         elif self.state == 4:
             for y in range(0, 3):
-                if background_blocks[self.current_y_list[3] + y][self.current_x_list[1] + 1].not_block is True:
+                if background_blocks[self.current_y_list[3] + y][self.current_x_list[1] + 1].not_block:
                     return
             for x in range(0, 2):
-                if background_blocks[self.current_y_list[0] - 2 + y][self.current_x_list[0]].not_block is True:
+                if background_blocks[self.current_y_list[0] - 2 + y][self.current_x_list[0]].not_block:
                     return
 
             self.clear()
@@ -318,10 +318,10 @@ class Block3(Tetris):
 
         if self.state == 1:
             for x in range(0, 3):
-                if background_blocks[self.current_y_list[0] + 1][self.current_x_list[0] + x].not_block is True:
+                if background_blocks[self.current_y_list[0] + 1][self.current_x_list[0] + x].not_block:
                     return
             for x in range(0, 2):
-                if background_blocks[self.current_y_list[3]][self.current_x_list[3] - 2 + x].not_block is True:
+                if background_blocks[self.current_y_list[3]][self.current_x_list[3] - 2 + x].not_block:
                     return
 
             self.clear()
@@ -333,10 +333,10 @@ class Block3(Tetris):
 
         elif self.state == 2:
             for y in range(0, 3):
-                if background_blocks[self.current_y_list[0] + y][self.current_x_list[0] - 1].not_block is True:
+                if background_blocks[self.current_y_list[0] + y][self.current_x_list[0] - 1].not_block:
                      return
             for y in range(0, 2):
-                if background_blocks[self.current_y_list[0] + y][self.current_x_list[0] + 1].not_block is True:
+                if background_blocks[self.current_y_list[0] + y][self.current_x_list[0] + 1].not_block:
                     return
 
             self.clear()
@@ -348,10 +348,10 @@ class Block3(Tetris):
 
         elif self.state == 3:
             for x in range(0, 3):
-                if background_blocks[self.current_y_list[2] - 1][self.current_x_list[2] + x].not_block is True:
+                if background_blocks[self.current_y_list[2] - 1][self.current_x_list[2] + x].not_block:
                     return
             for x in range(0, 2):
-                if background_blocks[self.current_y_list[3]][self.current_x_list[3] + 1 + x].not_block is True:
+                if background_blocks[self.current_y_list[3]][self.current_x_list[3] + 1 + x].not_block:
                     return
 
             self.clear()
@@ -363,10 +363,10 @@ class Block3(Tetris):
 
         elif self.state == 4:
             for y in range(0, 3):
-                if background_blocks[self.current_y_list[2] + y][self.current_x_list[0] + 1].not_block is True:
+                if background_blocks[self.current_y_list[2] + y][self.current_x_list[0] + 1].not_block:
                     return
             for y in range(0, 2):
-                if background_blocks[self.current_y_list[3] + 1 + y][self.current_x_list[3]].not_block is True:
+                if background_blocks[self.current_y_list[3] + 1 + y][self.current_x_list[3]].not_block:
                     return
 
             self.clear()
@@ -395,11 +395,11 @@ class Block5(Tetris):
             if self.current_y_list[2] == 0:
                 return
             for x in range(0, 3):
-                if background_blocks[self.current_y_list[2] - 1][self.current_x_list[0] + x].not_block is True:
+                if background_blocks[self.current_y_list[2] - 1][self.current_x_list[0] + x].not_block:
                     return
-            if background_blocks[self.current_y_list[0] - 1][self.current_x_list[0]].not_block is True:
+            if background_blocks[self.current_y_list[0] - 1][self.current_x_list[0]].not_block:
                 return
-            if background_blocks[self.current_y_list[1]][self.current_x_list[1] + 1].not_block is True:
+            if background_blocks[self.current_y_list[1]][self.current_x_list[1] + 1].not_block:
                 return
 
             self.clear()
@@ -412,11 +412,11 @@ class Block5(Tetris):
 
         elif self.state == 2:
             for y in range(0, 3):
-                if background_blocks[self.current_y_list[0] + y][self.current_x_list[2] + 1].not_block is True:
+                if background_blocks[self.current_y_list[0] + y][self.current_x_list[2] + 1].not_block:
                     return
-            if background_blocks[self.current_y_list[1] + 1][self.current_x_list[1]].not_block is True:
+            if background_blocks[self.current_y_list[1] + 1][self.current_x_list[1]].not_block:
                 return
-            if background_blocks[self.current_y_list[2] - 1][self.current_x_list[2]].not_block is True:
+            if background_blocks[self.current_y_list[2] - 1][self.current_x_list[2]].not_block:
                 return
 
             self.clear()
@@ -429,11 +429,11 @@ class Block5(Tetris):
 
         elif self.state == 3:
             for x in range(0, 3):
-                if background_blocks[self.current_y_list[2] + 1][self.current_x_list[3] + x].not_block is True:
+                if background_blocks[self.current_y_list[2] + 1][self.current_x_list[3] + x].not_block:
                     return
-            if background_blocks[self.current_y_list[0]][self.current_x_list[0] - 2].not_block is True:
+            if background_blocks[self.current_y_list[0]][self.current_x_list[0] - 2].not_block:
                 return
-            if background_blocks[self.current_y_list[2]][self.current_x_list[0]].not_block is True:
+            if background_blocks[self.current_y_list[2]][self.current_x_list[0]].not_block:
                 return
 
             self.clear()
@@ -446,11 +446,11 @@ class Block5(Tetris):
 
         elif self.state == 4:
             for y in range(0, 3):
-                if background_blocks[self.current_y_list[0] - y][self.current_x_list[2] - 1].not_block is True:
+                if background_blocks[self.current_y_list[0] - y][self.current_x_list[2] - 1].not_block:
                     return
-            if background_blocks[self.current_y_list[1] - 1][self.current_x_list[1]].not_block is True:
+            if background_blocks[self.current_y_list[1] - 1][self.current_x_list[1]].not_block:
                 return
-            if background_blocks[self.current_y_list[2] + 1][self.current_x_list[2]].not_block is True:
+            if background_blocks[self.current_y_list[2] + 1][self.current_x_list[2]].not_block:
                 return
 
             self.clear()
@@ -473,11 +473,11 @@ class Block6(Tetris):
 
         if self.state == 1:
             for x in range(0, 3):
-                if background_blocks[self.current_y_list[1] + 1][self.current_x_list[1] + x].not_block is True:
+                if background_blocks[self.current_y_list[1] + 1][self.current_x_list[1] + x].not_block:
                     return
-            if background_blocks[self.current_y_list[0]][self.current_x_list[1]].not_block is True:
+            if background_blocks[self.current_y_list[0]][self.current_x_list[1]].not_block:
                 return
-            if background_blocks[self.current_y_list[0]][self.current_x_list[3]].not_block is True:
+            if background_blocks[self.current_y_list[0]][self.current_x_list[3]].not_block:
                 return
 
             self.clear()
@@ -489,11 +489,11 @@ class Block6(Tetris):
 
         elif self.state == 2:
             for y in range(0, 3):
-                if background_blocks[self.current_y_list[1] + y][self.current_x_list[1] - 1].not_block is True:
+                if background_blocks[self.current_y_list[1] + y][self.current_x_list[1] - 1].not_block:
                     return
-            if background_blocks[self.current_y_list[0] - 1][self.current_x_list[0]].not_block is True:
+            if background_blocks[self.current_y_list[0] - 1][self.current_x_list[0]].not_block:
                 return
-            if background_blocks[self.current_y_list[0] + 1][self.current_x_list[0]].not_block is True:
+            if background_blocks[self.current_y_list[0] + 1][self.current_x_list[0]].not_block:
                 return
 
             self.clear()
@@ -505,11 +505,11 @@ class Block6(Tetris):
 
         elif self.state == 3:
             for x in range(0, 3):
-                if background_blocks[self.current_y_list[1] - 1][self.current_x_list[3] + x].not_block is True:
+                if background_blocks[self.current_y_list[1] - 1][self.current_x_list[3] + x].not_block:
                     return
-            if background_blocks[self.current_y_list[0]][self.current_x_list[0] - 1].not_block is True:
+            if background_blocks[self.current_y_list[0]][self.current_x_list[0] - 1].not_block:
                 return
-            if background_blocks[self.current_y_list[0]][self.current_x_list[0] + 1].not_block is True:
+            if background_blocks[self.current_y_list[0]][self.current_x_list[0] + 1].not_block:
                 return
 
             self.clear()
@@ -521,11 +521,11 @@ class Block6(Tetris):
 
         elif self.state == 4:
             for y in range(0, 3):
-                if background_blocks[self.current_y_list[3] + y][self.current_x_list[1] + 1].not_block is True:
+                if background_blocks[self.current_y_list[3] + y][self.current_x_list[1] + 1].not_block:
                     return
-            if background_blocks[self.current_y_list[0] - 1][self.current_x_list[0]].not_block is True:
+            if background_blocks[self.current_y_list[0] - 1][self.current_x_list[0]].not_block:
                 return
-            if background_blocks[self.current_y_list[0] + 1][self.current_x_list[0]].not_block is True:
+            if background_blocks[self.current_y_list[0] + 1][self.current_x_list[0]].not_block:
                 return
 
             self.clear()
@@ -549,11 +549,11 @@ class Block7(Tetris):
             if self.current_y_list[0] == 0:
                 return
             for x in range(0, 3):
-                if background_blocks[self.current_y_list[0] - 1][self.current_x_list[0] + x].not_block is True:
+                if background_blocks[self.current_y_list[0] - 1][self.current_x_list[0] + x].not_block:
                     return
-            if background_blocks[self.current_y_list[0]][self.current_x_list[3]].not_block is True:
+            if background_blocks[self.current_y_list[0]][self.current_x_list[3]].not_block:
                 return
-            if background_blocks[self.current_y_list[2]][self.current_x_list[0]].not_block is True:
+            if background_blocks[self.current_y_list[2]][self.current_x_list[0]].not_block:
                 return
 
             self.clear()
@@ -566,11 +566,11 @@ class Block7(Tetris):
 
         elif self.state == 2:
             for y in range(0, 3):
-                if background_blocks[self.current_y_list[0] + y][self.current_x_list[0] + 1].not_block is True:
+                if background_blocks[self.current_y_list[0] + y][self.current_x_list[0] + 1].not_block:
                     return
-            if background_blocks[self.current_y_list[0]][self.current_x_list[2]].not_block is True:
+            if background_blocks[self.current_y_list[0]][self.current_x_list[2]].not_block:
                 return
-            if background_blocks[self.current_y_list[3]][self.current_x_list[0]].not_block is True:
+            if background_blocks[self.current_y_list[3]][self.current_x_list[0]].not_block:
                 return
 
             self.clear()
@@ -583,11 +583,11 @@ class Block7(Tetris):
 
         elif self.state == 3:
             for x in range(0, 3):
-                if background_blocks[self.current_y_list[0] + 1][self.current_x_list[3] + x].not_block is True:
+                if background_blocks[self.current_y_list[0] + 1][self.current_x_list[3] + x].not_block:
                     return
-            if background_blocks[self.current_y_list[0]][self.current_x_list[3]].not_block is True:
+            if background_blocks[self.current_y_list[0]][self.current_x_list[3]].not_block:
                 return
-            if background_blocks[self.current_y_list[2]][self.current_x_list[0]].not_block is True:
+            if background_blocks[self.current_y_list[2]][self.current_x_list[0]].not_block:
                 return
 
             self.clear()
@@ -600,11 +600,11 @@ class Block7(Tetris):
 
         elif self.state == 4:
             for y in range(0, 3):
-                if background_blocks[self.current_y_list[3] + y][self.current_x_list[0] - 1].not_block is True:
+                if background_blocks[self.current_y_list[3] + y][self.current_x_list[0] - 1].not_block:
                     return
-            if background_blocks[self.current_y_list[0]][self.current_x_list[2]].not_block is True:
+            if background_blocks[self.current_y_list[0]][self.current_x_list[2]].not_block:
                 return
-            if background_blocks[self.current_y_list[3]][self.current_x_list[0]].not_block is True:
+            if background_blocks[self.current_y_list[3]][self.current_x_list[0]].not_block:
                 return
 
             self.clear()
@@ -777,7 +777,7 @@ def main():
                 elif background_blocks[y][x].number == 8:
                     pygame.draw.rect(SCREEN, (128, 128, 128), pygame.Rect(32 * x, 32 * y, 32, 32))
 
-        if Tetris.gameover is True:
+        if Tetris.gameover:
             pygame.draw.rect(SCREEN, BLACK, pygame.Rect(32 * 1, 32 * 3, 32 * 19, 32 * 15))
             pygame.draw.rect(SCREEN, WHITE, pygame.Rect(32 * 1, 32 * 3, 32 * 19, 32 * 15), width=3)
             gameover_text = font_game_over.render("GAME OVER!", True, WHITE)

@@ -26,6 +26,24 @@ class BackgroundBlock:
         self.number = number 
         self.not_block = not_block
 
+    @property
+    def color(self):
+        """Return the color of the block."""
+        if self.number == 1:
+            return SKY_BLUE
+        elif self.number == 2:
+            return BLUE
+        elif self.number == 3:
+            return ORANGE
+        elif self.number == 4:
+            return YELLOW
+        elif self.number == 5:
+            return GREEN
+        elif self.number == 6:
+            return PURPLE
+        elif self.number == 7:
+            return RED
+
 
 class Tetris:
     score = 0
@@ -246,11 +264,6 @@ class Block1(Tetris):
         for x in range(14, 18):
             pygame.draw.rect(SCREEN, SKY_BLUE, pygame.Rect(32 * x + 16, 32 * 12, 32, 32))
 
-    @property
-    def color(self):
-        """Return the color of the block."""
-        return SKY_BLUE
-
 
 class Block2(Tetris):
     def __init__(self):
@@ -327,11 +340,6 @@ class Block2(Tetris):
         for x in range(15, 18):
             pygame.draw.rect(SCREEN, BLUE, pygame.Rect(32 * x, 32 * 12, 32, 32))
         pygame.draw.rect(SCREEN, BLUE, pygame.Rect(32 * 15, 32 * 11, 32, 32))
-
-    @property
-    def color(self):
-        """Return the color of the block."""
-        return BLUE
 
         
 class Block3(Tetris):
@@ -410,11 +418,6 @@ class Block3(Tetris):
             pygame.draw.rect(SCREEN, ORANGE, pygame.Rect(32 * x, 32 * 12, 32, 32))
         pygame.draw.rect(SCREEN, ORANGE, pygame.Rect(32 * 17, 32 * 11, 32, 32))
 
-    @property
-    def color(self):
-        """Return the color of the block."""
-        return ORANGE
-
 
 class Block4(Tetris):
     def __init__(self):
@@ -426,11 +429,6 @@ class Block4(Tetris):
         for x in range(15, 17):
             for y in range(11, 13):
                 pygame.draw.rect(SCREEN, YELLOW, pygame.Rect(32 * x + 16, 32 * y, 32, 32))
-
-    @property
-    def color(self):
-        """Return the color of the block."""
-        return YELLOW
 
 
 class Block5(Tetris):
@@ -520,11 +518,6 @@ class Block5(Tetris):
         for x in range(15, 17):
             pygame.draw.rect(SCREEN, GREEN, pygame.Rect(32 * x, 32 * 12, 32, 32))
 
-    @property
-    def color(self):
-        """Return the color of the block."""
-        return GREEN
-
 
 class Block6(Tetris):
     def __init__(self):
@@ -605,11 +598,6 @@ class Block6(Tetris):
         for x in range(15, 18):
             pygame.draw.rect(SCREEN, PURPLE, pygame.Rect(32 * x, 32 * 12, 32, 32))
         pygame.draw.rect(SCREEN, PURPLE, pygame.Rect(32 * 16, 32 * 11, 32, 32))
-
-    @property
-    def color(self):
-        """Return the color of the block."""
-        return PURPLE
 
 
 class Block7(Tetris):
@@ -698,11 +686,6 @@ class Block7(Tetris):
             pygame.draw.rect(SCREEN, RED, pygame.Rect(32 * x, 32 * 11, 32, 32))
         for x in range(16, 18):
             pygame.draw.rect(SCREEN, RED, pygame.Rect(32 * x, 32 * 12, 32, 32))
-
-    @property
-    def color(self):
-        """Return the color of the block."""
-        return RED
 
 
 def color_the_block(screen, coordinates: tuple, x: int, y: int):

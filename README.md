@@ -9,7 +9,7 @@ Tetris game!, made with Python :snake: and love :heart:.
 ## Prerequisites
 
 * It is recommended to create and activate a Python virtual environment
-* Install the requirements lybraries with:
+* Install the requirements libraries with:
 
   ```bash
   make requirements (mingw32-make requirements)

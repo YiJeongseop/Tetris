@@ -35,7 +35,7 @@ class BackgroundBlock:
 
     @property
     def color(self):
-        """Return the color of the block."""
+        """Return the color related with each block."""
         if self.number == 1:
             return SKY_BLUE
         elif self.number == 2:

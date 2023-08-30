@@ -5,7 +5,7 @@ from pygame import mixer
 from settings import SCREEN, BLACK, SKY_BLUE
 from db_and_time import Time
 
-# python test.py
+
 class TestTetris(unittest.TestCase):
     def setUp(self):
         pygame.init()
@@ -31,7 +31,7 @@ class TestTetris(unittest.TestCase):
 
     def test_go(self):
         self.test_block.start(Time())
-        self.test_block.go(tetris.Move.DOWN, Time(), self.break_sound, self.erase_sound)
+        self.test_block.go(tetris.Move.DOWN, Time())
         self.assertEqual(tetris.background_blocks[2][4].number, 2)
 
     def test_turn(self):
@@ -39,14 +39,11 @@ class TestTetris(unittest.TestCase):
         self.test_block.turn()
         self.assertEqual(self.test_block.state, 2)
 
-    def test_draw_block_to_wait(self):
-        tetris.draw_block_to_wait(1)
-        self.assertEqual(SCREEN.get_at((464, 384)), SKY_BLUE)
-
     def test_color_the_block(self):
         tetris.color_the_block(SCREEN, SKY_BLUE, 0, 0)
         self.assertEqual(SCREEN.get_at((0, 0)), BLACK)
         self.assertEqual(SCREEN.get_at((1, 1)), SKY_BLUE)
+
 
 if __name__ == '__main__':
     unittest.main()

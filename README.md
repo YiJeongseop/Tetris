@@ -9,7 +9,7 @@ Tetris game!, made with Python :snake: and love :heart:.
 ## Prerequisites
 
 * It is recommended to create and activate a Python virtual environment
-* Install the requirements lybraries with:
+* Install the requirements libraries with:
 
   ```bash
   make requirements (mingw32-make requirements)
@@ -48,7 +48,27 @@ You can run the check with:
 make style (mingw32-make style)
 ```
 
-# To Do
+## Tests
+
+To run the Test Suite, you could run the next command:
+
+```bash
+make test (mingw32-make test)
+```
+
+To see a Coverage Report, you could run the next command:
+
+```bash
+make coverage
+```
+
+## Technical Details
+
+![](resources/images/tetris_blocks.webp)
+
+Each block have an associated name, and is represented with a Class.
+
+## To Do
 
 * [X] Function and Argument names should be lowercase, with words separated by underscores as necessary 
   to improve readability (snake-case).
@@ -103,6 +123,17 @@ make style (mingw32-make style)
 * [X] Send to [settings.py](settings.py) the configs constant variables, maybe like the screen size, the colors, etc.
 * [X] Check the different [rules for the linter](https://beta.ruff.rs/docs//rules/), and add the ones that you 
   consider necessary to the [configuration file](pyproject.toml).
+* [ ] Subdivide the [db_and_time.py](db_and_time.py) file in two files, one for the DB management, and another for 
+  the time tracking.
+* [ ] Maybe a `Block` must not inherit from a `Tetris`, in order to decrease the dependency between those classes.
+* [ ] Exist the Class `BackgroundBlock` and the function `color_the_block`, 
+      maybe those elements are related and is better to be together in the same class?
+      The idea is relate the "same things", and unrelate the "things that are different".
+* [ ] Maybe rename the `Block` classes, to a little more representative name as: `BlockO`, `BlockL`, etc. 
+      Taking into account the different block type defined in [#technical-details](#technical-details).
+* [ ] Increase the code coverage  of the test suite, you could run `make coverage` 
+      and see which lines are not covered by the test suite:
+      ![img.png](resources/images/img.png)
 
 ## License
 

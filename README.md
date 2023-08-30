@@ -117,6 +117,15 @@ Each block have an associated name, and is represented with a Class.
   consider necessary to the [configuration file](pyproject.toml).
 * [ ] Subdivide the [db_and_time.py](db_and_time.py) file in two files, one for the DB management, and another for 
   the time tracking.
+* [ ] Maybe a `Block` must not inherit from a `Tetris`, in order to decrease the dependency between those classes.
+* [ ] Exist the Class `BackgroundBlock` and the function `color_the_block`, 
+      maybe those elements are related and is better to be together in the same class?
+      The idea is relate the "same things", and unrelate the "things that are different".
+* [ ] Maybe rename the `Block` classes, to a little more representative name as: `BlockO`, `BlockL`, etc. 
+      Taking into account the different block type defined in [#technical-details](#technical-details).
+* [ ] Increase the code coverage  of the test suite, you could run `make coverage` 
+      and see which lines are not covered by the test suite:
+      ![img.png](resources/images/img.png)
 
 ## License
 

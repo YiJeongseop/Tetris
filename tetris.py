@@ -1,6 +1,7 @@
 import random
 import time
 from enum import Enum
+from typing import Protocol
 
 import pygame
 from pygame import mixer
@@ -15,6 +16,24 @@ class Move(Enum):
     LEFT = 1
     RIGHT = 2
     DOWN = 3
+
+
+class Block(Protocol):
+
+    def turn(self) -> None:
+        """Perform a turn action of the block in the game.
+
+        The function checks if the current block can rotate without colliding with any other blocks.
+        If it can, the function updates the positions of the current blocks accordingly.
+
+        The position of the block depends also on the state of the block.
+        """
+        ...
+
+    @staticmethod
+    def draw() -> None:
+        """Draw the block in the waiting area."""
+        ...
 
 
 background_blocks = [[0 for j in range(X_LENGTH)] for i in range(Y_LENGTH)]  # Game Screen consisting of 12 × 21 blocks
@@ -195,18 +214,11 @@ class Tetris:
             max_y -= 1
 
 
-class Block1(Tetris):
+class Block1(Tetris, Block):
     def __init__(self):
         super().__init__(1)
 
     def turn(self):
-        """Perform a turn action of the block in the game.
-
-        The function checks if the current block can rotate without colliding with any other blocks.
-        If it can, the function updates the positions of the current blocks accordingly.
-
-        The position of the block depends also on the state of the block.
-        """
         super().turn()
 
         if self.state == 1:
@@ -275,23 +287,15 @@ class Block1(Tetris):
 
     @staticmethod
     def draw():
-        """Draw the block in the waiting area."""
         for x in range(14, 18):
             pygame.draw.rect(SCREEN, SKY_BLUE, pygame.Rect(32 * x + 16, 32 * 12, 32, 32))
 
 
-class Block2(Tetris):
+class Block2(Tetris, Block):
     def __init__(self):
         super().__init__(2)
 
     def turn(self):
-        """Perform a turn action of the block in the game.
-
-        The function checks if the current block can rotate without colliding with any other blocks.
-        If it can, the function updates the positions of the current blocks accordingly.
-
-        The position of the block depends also on the state of the block.
-        """
         super().turn()
 
         if self.state == 1:
@@ -358,24 +362,16 @@ class Block2(Tetris):
 
     @staticmethod
     def draw():
-        """Draw the block in the waiting area."""
         for x in range(15, 18):
             pygame.draw.rect(SCREEN, BLUE, pygame.Rect(32 * x, 32 * 12, 32, 32))
         pygame.draw.rect(SCREEN, BLUE, pygame.Rect(32 * 15, 32 * 11, 32, 32))
 
         
-class Block3(Tetris):
+class Block3(Tetris, Block):
     def __init__(self):
         super().__init__(3)
 
     def turn(self):
-        """Perform a turn action of the block in the game.
-
-        The function checks if the current block can rotate without colliding with any other blocks.
-        If it can, the function updates the positions of the current blocks accordingly.
-
-        The position of the block depends also on the state of the block.
-        """
         super().turn()
 
         if self.state == 1:
@@ -442,43 +438,30 @@ class Block3(Tetris):
 
     @staticmethod
     def draw():
-        """Draw the block in the waiting area."""
         for x in range(15, 18):
             pygame.draw.rect(SCREEN, ORANGE, pygame.Rect(32 * x, 32 * 12, 32, 32))
         pygame.draw.rect(SCREEN, ORANGE, pygame.Rect(32 * 17, 32 * 11, 32, 32))
 
 
-class Block4(Tetris):
+class Block4(Tetris, Block):
     def __init__(self):
         super().__init__(4)
 
     def turn(self):
-        """Perform a turn action of the block in the game.
-
-        The rotation of the Square block is always the same position.
-        """
         pass
 
     @staticmethod
     def draw():
-        """Draw the block in the waiting area."""
         for x in range(15, 17):
             for y in range(11, 13):
                 pygame.draw.rect(SCREEN, YELLOW, pygame.Rect(32 * x + 16, 32 * y, 32, 32))
 
 
-class Block5(Tetris):
+class Block5(Tetris, Block):
     def __init__(self):
         super().__init__(5)
 
     def turn(self):
-        """Perform a turn action of the block in the game.
-
-        The function checks if the current block can rotate without colliding with any other blocks.
-        If it can, the function updates the positions of the current blocks accordingly.
-
-        The position of the block depends also on the state of the block.
-        """
         super().turn()
 
         if self.state == 1:
@@ -555,25 +538,17 @@ class Block5(Tetris):
 
     @staticmethod
     def draw():
-        """Draw the block in the waiting area."""
         for x in range(16, 18):
             pygame.draw.rect(SCREEN, GREEN, pygame.Rect(32 * x, 32 * 11, 32, 32))
         for x in range(15, 17):
             pygame.draw.rect(SCREEN, GREEN, pygame.Rect(32 * x, 32 * 12, 32, 32))
 
 
-class Block6(Tetris):
+class Block6(Tetris, Block):
     def __init__(self):
         super().__init__(6)
 
     def turn(self):
-        """Perform a turn action of the block in the game.
-
-        The function checks if the current block can rotate without colliding with any other blocks.
-        If it can, the function updates the positions of the current blocks accordingly.
-
-        The position of the block depends also on the state of the block.
-        """
         super().turn()
 
         if self.state == 1:
@@ -644,24 +619,16 @@ class Block6(Tetris):
         
     @staticmethod
     def draw():
-        """Draw the block in the waiting area."""
         for x in range(15, 18):
             pygame.draw.rect(SCREEN, PURPLE, pygame.Rect(32 * x, 32 * 12, 32, 32))
         pygame.draw.rect(SCREEN, PURPLE, pygame.Rect(32 * 16, 32 * 11, 32, 32))
 
 
-class Block7(Tetris):
+class Block7(Tetris, Block):
     def __init__(self):
         super().__init__(7)
 
     def turn(self):
-        """Perform a turn action of the block in the game.
-
-        The function checks if the current block can rotate without colliding with any other blocks.
-        If it can, the function updates the positions of the current blocks accordingly.
-
-        The position of the block depends also on the state of the block.
-        """
         super().turn()
 
         if self.state == 1:
@@ -738,7 +705,6 @@ class Block7(Tetris):
 
     @staticmethod
     def draw():
-        """Draw the block in the waiting area."""
         for x in range(15, 17):
             pygame.draw.rect(SCREEN, RED, pygame.Rect(32 * x, 32 * 11, 32, 32))
         for x in range(16, 18):
@@ -753,7 +719,7 @@ def color_the_block(screen, coordinates: tuple, x: int, y: int):
 def main():
     block_shape_list = [Block1, Block2, Block3, Block4, Block5, Block6, Block7]
 
-    def check_and_go_down(ti: time, erase_sound: mixer.Sound, break_sound: mixer.Sound, current_block, next_block):  
+    def check_and_go_down(ti: Time, erase_sound: mixer.Sound, break_sound: mixer.Sound, current_block, next_block):
         """
         Check if the block can go down and go down if possible.
         Return current_block and next_block,

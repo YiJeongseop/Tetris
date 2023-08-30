@@ -9,3 +9,7 @@ style:
 
 test:
 	python test.py
+
+coverage:
+	python -m coverage run -m unittest
+	python -m coverage report -m --omit test.py --skip-covered

@@ -50,11 +50,19 @@ make style (mingw32-make style)
 
 ## Tests
 
+To run the Test Suite, you could run the next command:
+
 ```bash
 make test (mingw32-make test)
 ```
 
-## Technical details
+To see a Coverage Report, you could run the next command:
+
+```bash
+make coverage
+```
+
+## Technical Details
 
 ![](resources/images/tetris_blocks.webp)
 

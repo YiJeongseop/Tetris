@@ -778,12 +778,12 @@ def main():
             current_block, next_block = check_and_go_down(ti, erase_sound, break_sound, current_block, next_block)  
             # The block automatically goes down If you don't press down key.
 
-        text = font_score.render("Score : " + str(Tetris.score), True, WHITE)
-        SCREEN.blit(text, (387, 15))
-        text2 = font_average_time.render(f"Average time to put a block : {ti.avg_time:.2f}s", True, WHITE)
-        SCREEN.blit(text2, (387, 55))
-        text3 = font_best.render(f"Best : {score_list[0][0]} / {score_list[0][1]:.2f}", True, WHITE)
-        SCREEN.blit(text3, (387, 635))
+        score_info = font_score.render("Score : " + str(Tetris.score), True, WHITE)
+        SCREEN.blit(score_info, (387, 15))
+        avg_time_info = font_average_time.render(f"Average time to put a block : {ti.avg_time:.2f}s", True, WHITE)
+        SCREEN.blit(avg_time_info, (387, 55))
+        best_time_info = font_best.render(f"Best : {score_list[0][0]} / {score_list[0][1]:.2f}", True, WHITE)
+        SCREEN.blit(best_time_info, (387, 635))
 
         pygame.draw.rect(SCREEN, (211, 211, 211), pygame.Rect(32 * 14, 32 * 10, 32*5, 32*4), width=3)  # Border
 
@@ -805,10 +805,10 @@ def main():
             pygame.draw.rect(SCREEN, WHITE, pygame.Rect(32 * 1, 32 * 3, 32 * 19, 32 * 15), width=3)
             gameover_text = font_game_over.render("GAME OVER!", True, WHITE)
             SCREEN.blit(gameover_text, (50, 220))
-            text = font_score.render("Score : " + str(Tetris.score), True, WHITE)
-            SCREEN.blit(text, (70, 360))
-            text2 = font_average_time.render(f"Average time to put a block : {ti.avg_time:.2f}s", True, WHITE)
-            SCREEN.blit(text2, (70, 400))
+            score_info = font_score.render("Score : " + str(Tetris.score), True, WHITE)
+            SCREEN.blit(score_info, (70, 360))
+            avg_time_info = font_average_time.render(f"Average time to put a block : {ti.avg_time:.2f}s", True, WHITE)
+            SCREEN.blit(avg_time_info, (70, 400))
             gameover_sound.play()
             pygame.display.flip()
             db.save_highest_score(Tetris.score, ti.avg_time)

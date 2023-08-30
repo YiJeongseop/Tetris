@@ -200,6 +200,13 @@ class Block1(Tetris):
         super().__init__(1)
 
     def turn(self):
+        """Perform a turn action of the block in the game.
+
+        The function checks if the current block can rotate without colliding with any other blocks.
+        If it can, the function updates the positions of the current blocks accordingly.
+
+        The position of the block depends also on the state of the block.
+        """
         super().turn()
 
         if self.state == 1:
@@ -278,6 +285,13 @@ class Block2(Tetris):
         super().__init__(2)
 
     def turn(self):
+        """Perform a turn action of the block in the game.
+
+        The function checks if the current block can rotate without colliding with any other blocks.
+        If it can, the function updates the positions of the current blocks accordingly.
+
+        The position of the block depends also on the state of the block.
+        """
         super().turn()
 
         if self.state == 1:
@@ -355,6 +369,13 @@ class Block3(Tetris):
         super().__init__(3)
 
     def turn(self):
+        """Perform a turn action of the block in the game.
+
+        The function checks if the current block can rotate without colliding with any other blocks.
+        If it can, the function updates the positions of the current blocks accordingly.
+
+        The position of the block depends also on the state of the block.
+        """
         super().turn()
 
         if self.state == 1:
@@ -444,6 +465,13 @@ class Block5(Tetris):
         super().__init__(5)
 
     def turn(self):
+        """Perform a turn action of the block in the game.
+
+        The function checks if the current block can rotate without colliding with any other blocks.
+        If it can, the function updates the positions of the current blocks accordingly.
+
+        The position of the block depends also on the state of the block.
+        """
         super().turn()
 
         if self.state == 1:
@@ -532,6 +560,13 @@ class Block6(Tetris):
         super().__init__(6)
 
     def turn(self):
+        """Perform a turn action of the block in the game.
+
+        The function checks if the current block can rotate without colliding with any other blocks.
+        If it can, the function updates the positions of the current blocks accordingly.
+
+        The position of the block depends also on the state of the block.
+        """
         super().turn()
 
         if self.state == 1:
@@ -613,6 +648,13 @@ class Block7(Tetris):
         super().__init__(7)
 
     def turn(self):
+        """Perform a turn action of the block in the game.
+
+        The function checks if the current block can rotate without colliding with any other blocks.
+        If it can, the function updates the positions of the current blocks accordingly.
+
+        The position of the block depends also on the state of the block.
+        """
         super().turn()
 
         if self.state == 1:

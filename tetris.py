@@ -452,6 +452,13 @@ class Block4(Tetris):
     def __init__(self):
         super().__init__(4)
 
+    def turn(self):
+        """Perform a turn action of the block in the game.
+
+        The rotation of the Square block is always the same position.
+        """
+        pass
+
     @staticmethod
     def draw():
         """Draw the block in the waiting area."""
@@ -805,8 +812,7 @@ def main():
                 running = False
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_UP:
-                    if current_block.block_number != 4:  # Square block do not rotate.
-                        current_block.turn()
+                    current_block.turn()
                 elif event.key == pygame.K_DOWN:
                     descent_var = 0
                     current_block, next_block = check_and_go_down(ti, erase_sound, break_sound, current_block, next_block)

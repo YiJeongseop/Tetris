@@ -4,7 +4,7 @@ from enum import Enum
 from typing import Protocol
 
 import pygame
-from pygame import mixer
+from pygame import mixer, Surface
 
 from db_and_time import DB, Time
 from settings import (
@@ -13,6 +13,8 @@ from settings import (
 
 
 class Move(Enum):
+    """Movement options in the game."""
+    UP = 0
     LEFT = 1
     RIGHT = 2
     DOWN = 3
@@ -36,9 +38,6 @@ class Block(Protocol):
         ...
 
 
-background_blocks = [[0 for j in range(X_LENGTH)] for i in range(Y_LENGTH)]  # Game Screen consisting of 12 × 21 blocks
-
-
 class BackgroundBlock:
     def __init__(self, x: int, y: int, number: int, not_block: bool):
         """
@@ -53,8 +52,8 @@ class BackgroundBlock:
         self.not_block = not_block
 
     @property
-    def color(self):
-        """Return the color related with each block."""
+    def color(self) -> tuple:
+        """Return the color related with each block type."""
         if self.number == 1:
             return SKY_BLUE
         elif self.number == 2:
@@ -71,10 +70,24 @@ class BackgroundBlock:
             return RED
 
 
+def color_the_block(screen: Surface, coordinates: tuple, x: int, y: int) -> None:
+    pygame.draw.rect(screen, coordinates, pygame.Rect(32 * x, 32 * y, 32, 32))
+    pygame.draw.rect(screen, BLACK, pygame.Rect(32 * x, 32 * y, 32, 32), width=1)
+
+
+background_blocks = [[0 for j in range(X_LENGTH)] for i in range(Y_LENGTH)]  # Game Screen consisting of 12 × 21 blocks
+
+
 class Tetris:
     score = 0
     gameover = False
     number_of_blocks = 0  # How many blocks were made?
+
+    mixer.init()
+    break_sound = mixer.Sound("resources/audio/202230__deraj__pop-sound.wav")
+    break_sound.set_volume(0.2)
+    erase_sound = mixer.Sound("resources/audio/143607__dwoboyle__menu-interface-confirm-003.wav")
+    erase_sound.set_volume(0.15)
 
     def __init__(self, block_number: int):
         self.block_number = block_number
@@ -128,7 +141,7 @@ class Tetris:
             return
         self.current_blocks.extend(current_iter(self.block_number, blocks))
 
-    def go(self, move: Enum, ti: Time, break_sound: mixer.Sound, erase_sound: mixer.Sound):
+    def go(self, move: Enum, ti: Time):
         self.next_blocks.clear()
 
         if move in (Move.LEFT, Move.RIGHT):
@@ -137,12 +150,16 @@ class Tetris:
             else:
                 adjust = 1
             for i in range(4):
-                self.next_blocks.append(background_blocks[self.current_blocks[i].y//32][(self.current_blocks[i].x//32)+adjust])
+                self.next_blocks.append(
+                    background_blocks[self.current_blocks[i].y//32][(self.current_blocks[i].x//32)+adjust]
+                )
                 if self.next_blocks[i].number in range(1, 9) and self.next_blocks[i].not_block:
                     return
         elif move == Move.DOWN:
             for i in range(4):
-                self.next_blocks.append(background_blocks[(self.current_blocks[i].y//32) + 1][(self.current_blocks[i].x//32)])  
+                self.next_blocks.append(
+                    background_blocks[(self.current_blocks[i].y//32) + 1][(self.current_blocks[i].x//32)]
+                )
                 # Add background blocks in where the blocks are moving
                 
                 if self.next_blocks[i].number in range(1, 9) and self.next_blocks[i].not_block:  
@@ -152,9 +169,9 @@ class Tetris:
                         self.current_blocks[j].not_block = True
                         y_list.append(self.current_blocks[j].y)
                     self.current_blocks.clear()
-                    break_sound.play()
+                    self.break_sound.play()
                     ti.update_time(time.time(), Tetris.number_of_blocks)
-                    self.erase_line_plus_score(y_list, erase_sound)
+                    self.erase_line_plus_score(y_list, self.erase_sound)
                     return y_list
 
         self.clear()  # The block is now moving! Remove the background blocks color beforehand.
@@ -198,7 +215,9 @@ class Tetris:
                     for x in range(1, 11):
                         background_blocks[max_y][x].not_block = False
                         background_blocks[max_y][x].number = 0
-                        pygame.draw.rect(SCREEN, BLACK, pygame.Rect(background_blocks[max_y][x].x, background_blocks[max_y][x].y, 32, 32))
+                        pygame.draw.rect(
+                            SCREEN, BLACK, pygame.Rect(background_blocks[max_y][x].x, background_blocks[max_y][x].y, 32, 32)  # noqa
+                        )
 
                     for y2 in range(max_y, 0, -1):
                         for x in range(1, 11):
@@ -206,7 +225,9 @@ class Tetris:
                             background_blocks[y2][x].number = background_blocks[y2-1][x].number
                             background_blocks[y2-1][x].not_block = False
                             background_blocks[y2-1][x].number = 0
-                            pygame.draw.rect(SCREEN, BLACK, pygame.Rect(background_blocks[y2-1][x].x, background_blocks[y2-1][x].y, 32, 32))
+                            pygame.draw.rect(
+                                SCREEN, BLACK, pygame.Rect(background_blocks[y2-1][x].x, background_blocks[y2-1][x].y, 32, 32)  # noqa
+                            )
 
                     Tetris.score += 100
                     max_y += 1
@@ -711,23 +732,23 @@ class Block7(Tetris, Block):
             pygame.draw.rect(SCREEN, RED, pygame.Rect(32 * x, 32 * 12, 32, 32))
 
 
-def color_the_block(screen, coordinates: tuple, x: int, y: int):
-    pygame.draw.rect(screen, coordinates, pygame.Rect(32 * x, 32 * y, 32, 32))
-    pygame.draw.rect(screen, BLACK, pygame.Rect(32 * x, 32 * y, 32, 32), width=1)
-
-
 def main():
     block_shape_list = [Block1, Block2, Block3, Block4, Block5, Block6, Block7]
 
-    def check_and_go_down(ti: Time, erase_sound: mixer.Sound, break_sound: mixer.Sound, current_block, next_block):
+    def check_and_go_down(ti: Time, current_block: Tetris, next_block: Tetris):
+        """Check if the block can go down and do it if it is possible.
+
+        Args:
+            ti (Time): Current time
+            current_block (Tetris): Current block
+            next_block (Tetris): Next block
+
+        Returns:
+            current_block, next_block: the updated blocks if the movement was possible, the same blocks otherwise.
         """
-        Check if the block can go down and go down if possible.
-        Return current_block and next_block,
-        Because these are not global variables, they need to be updated.
-        """
-        if type(current_block.go(Move.DOWN, ti, erase_sound, break_sound)) == list:
+        if type(current_block.go(Move.DOWN, ti)) == list:
             current_block = next_block
-            next_block = random.choice(block_shape_list)() 
+            next_block = random.choice(block_shape_list)()
             current_block.start(ti)
         return current_block, next_block
     
@@ -750,12 +771,6 @@ def main():
     mixer.music.load("resources/audio/580898__bloodpixelhero__in-game.wav")
     mixer.music.set_volume(0.04)
     mixer.music.play()
-    break_sound = mixer.Sound("resources/audio/202230__deraj__pop-sound.wav")
-    break_sound.set_volume(0.2)
-    gameover_sound = mixer.Sound("resources/audio/42349__irrlicht__game-over.wav")
-    gameover_sound.set_volume(0.2)
-    erase_sound = mixer.Sound("resources/audio/143607__dwoboyle__menu-interface-confirm-003.wav")
-    erase_sound.set_volume(0.15)
 
     for y in range(Y_LENGTH):  # Create blocks that make up the game screen
         for x in range(X_LENGTH):
@@ -781,15 +796,15 @@ def main():
                     current_block.turn()
                 elif event.key == pygame.K_DOWN:
                     descent_var = 0
-                    current_block, next_block = check_and_go_down(ti, erase_sound, break_sound, current_block, next_block)
+                    current_block, next_block = check_and_go_down(ti, current_block, next_block)
                 elif event.key == pygame.K_LEFT:
-                    current_block.go(Move.LEFT, ti, erase_sound, break_sound)
+                    current_block.go(Move.LEFT, ti)
                 elif event.key == pygame.K_RIGHT:
-                    current_block.go(Move.RIGHT, ti, erase_sound, break_sound)
+                    current_block.go(Move.RIGHT, ti)
 
         descent_var += 1
         if descent_var % DESCENT_SPEED == 0:
-            current_block, next_block = check_and_go_down(ti, erase_sound, break_sound, current_block, next_block)  
+            current_block, next_block = check_and_go_down(ti, current_block, next_block)
             # The block automatically goes down If you don't press down key.
 
         score_info = font_score.render("Score : " + str(Tetris.score), True, WHITE)
@@ -823,6 +838,8 @@ def main():
             SCREEN.blit(score_info, (70, 360))
             avg_time_info = font_average_time.render(f"Average time to put a block : {ti.avg_time:.2f}s", True, WHITE)
             SCREEN.blit(avg_time_info, (70, 400))
+            gameover_sound = mixer.Sound("resources/audio/42349__irrlicht__game-over.wav")
+            gameover_sound.set_volume(0.2)
             gameover_sound.play()
             pygame.display.flip()
             db.save_highest_score(Tetris.score, ti.avg_time)

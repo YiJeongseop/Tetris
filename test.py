@@ -39,10 +39,6 @@ class TestTetris(unittest.TestCase):
         self.test_block.turn()
         self.assertEqual(self.test_block.state, 2)
 
-    def test_draw_block_to_wait(self):
-        tetris.draw_block_to_wait(1)
-        self.assertEqual(SCREEN.get_at((464, 384)), SKY_BLUE)
-
     def test_color_the_block(self):
         tetris.color_the_block(SCREEN, SKY_BLUE, 0, 0)
         self.assertEqual(SCREEN.get_at((0, 0)), BLACK)

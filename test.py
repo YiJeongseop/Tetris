@@ -31,7 +31,7 @@ class TestTetris(unittest.TestCase):
 
     def test_go(self):
         self.test_block.start(Time())
-        self.test_block.go(tetris.Move.DOWN, Time(), self.break_sound, self.erase_sound)
+        self.test_block.go(tetris.Move.DOWN, Time())
         self.assertEqual(tetris.background_blocks[2][4].number, 2)
 
     def test_turn(self):

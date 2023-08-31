@@ -17,7 +17,7 @@ class TestTetris(unittest.TestCase):
         self.break_sound.set_volume(0.2)
         self.erase_sound = mixer.Sound("resources/audio/143607__dwoboyle__menu-interface-confirm-003.wav")
         self.erase_sound.set_volume(0.15)
-        self.test_block = tetris.Block2()
+        self.test_block = tetris.BlockJ()
         for y in range(0, 21): 
             for x in range(0, 12):
                 if x == 0 or x == 11 or y == 20: 
@@ -40,7 +40,7 @@ class TestTetris(unittest.TestCase):
         self.assertEqual(self.test_block.state, 2)
 
     def test_color_the_block(self):
-        tetris.color_the_block(SCREEN, SKY_BLUE, 0, 0)
+        tetris.BackgroundBlock.color_the_block(SCREEN, SKY_BLUE, 0, 0)
         self.assertEqual(SCREEN.get_at((0, 0)), BLACK)
         self.assertEqual(SCREEN.get_at((1, 1)), SKY_BLUE)
 

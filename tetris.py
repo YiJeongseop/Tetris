@@ -70,10 +70,10 @@ class BackgroundBlock:
         elif self.number == 7:
             return RED
 
-
-def color_the_block(screen: Surface, coordinates: tuple, x: int, y: int) -> None:
-    pygame.draw.rect(screen, coordinates, pygame.Rect(32 * x, 32 * y, 32, 32))
-    pygame.draw.rect(screen, BLACK, pygame.Rect(32 * x, 32 * y, 32, 32), width=1)
+    @staticmethod
+    def color_the_block(screen: Surface, coordinates: tuple, x: int, y: int) -> None:
+        pygame.draw.rect(screen, coordinates, pygame.Rect(32 * x, 32 * y, 32, 32))
+        pygame.draw.rect(screen, BLACK, pygame.Rect(32 * x, 32 * y, 32, 32), width=1)
 
 
 background_blocks = [[0 for j in range(X_LENGTH)] for i in range(Y_LENGTH)]  # Game Screen consisting of 12 × 21 blocks
@@ -826,7 +826,7 @@ def main():
         for y in range(Y_LENGTH):  # Color the blocks on the game screen
             for x in range(X_LENGTH):
                 if background_blocks[y][x].number in range(1, 8):
-                    color_the_block(SCREEN, background_blocks[y][x].color, x, y)
+                    BackgroundBlock.color_the_block(SCREEN, background_blocks[y][x].color, x, y)
                 elif background_blocks[y][x].number == 8:
                     pygame.draw.rect(SCREEN, (128, 128, 128), pygame.Rect(32 * x, 32 * y, 32, 32))
 

@@ -1,4 +1,4 @@
-# Tetris-Python
+# Tetris
 
 Tetris game!, made with Python :snake: and love :heart:.
 
@@ -59,7 +59,7 @@ make test (mingw32-make test)
 To see a Coverage Report, you could run the next command:
 
 ```bash
-make coverage
+make coverage (mingw32-make coverage)
 ```
 
 ## Technical Details

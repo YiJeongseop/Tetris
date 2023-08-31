@@ -125,7 +125,7 @@ Each block have an associated name, and is represented with a Class.
   consider necessary to the [configuration file](pyproject.toml).
 * [X] Subdivide the [db_and_time.py](db_and_time.py) file in two files, one for the DB management, and another for 
   the time tracking.
-* [ ] Maybe a `Block` must not inherit from a `Tetris`, in order to decrease the dependency between those classes.
+* [X] Maybe a `Block` must not inherit from a `Tetris`, in order to decrease the dependency between those classes.
 * [X] Exist the Class `BackgroundBlock` and the function `color_the_block`, 
       maybe those elements are related and is better to be together in the same class?
       The idea is relate the "same things", and unrelate the "things that are different".

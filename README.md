@@ -123,7 +123,7 @@ Each block have an associated name, and is represented with a Class.
 * [X] Send to [settings.py](settings.py) the configs constant variables, maybe like the screen size, the colors, etc.
 * [X] Check the different [rules for the linter](https://beta.ruff.rs/docs//rules/), and add the ones that you 
   consider necessary to the [configuration file](pyproject.toml).
-* [ ] Subdivide the [db_and_time.py](db_and_time.py) file in two files, one for the DB management, and another for 
+* [X] Subdivide the [db_and_time.py](db_and_time.py) file in two files, one for the DB management, and another for 
   the time tracking.
 * [ ] Maybe a `Block` must not inherit from a `Tetris`, in order to decrease the dependency between those classes.
 * [ ] Exist the Class `BackgroundBlock` and the function `color_the_block`, 

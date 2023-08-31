@@ -3,7 +3,7 @@ import unittest
 import tetris
 from pygame import mixer
 from settings import SCREEN, BLACK, SKY_BLUE
-from db_and_time import Time
+from time_tracking import TimeTracking
 
 
 class TestTetris(unittest.TestCase):
@@ -26,16 +26,16 @@ class TestTetris(unittest.TestCase):
                     tetris.background_blocks[y][x] = tetris.BackgroundBlock(32 * x, 32 * y, 0, False)
     
     def test_start(self):
-        self.test_block.start(Time())
+        self.test_block.start(TimeTracking())
         self.assertEqual(tetris.background_blocks[0][4].number, 2)
 
     def test_go(self):
-        self.test_block.start(Time())
-        self.test_block.go(tetris.Move.DOWN, Time())
+        self.test_block.start(TimeTracking())
+        self.test_block.go(tetris.Move.DOWN, TimeTracking())
         self.assertEqual(tetris.background_blocks[2][4].number, 2)
 
     def test_turn(self):
-        self.test_block.start(Time())
+        self.test_block.start(TimeTracking())
         self.test_block.turn()
         self.assertEqual(self.test_block.state, 2)
 

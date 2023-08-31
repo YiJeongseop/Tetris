@@ -6,7 +6,8 @@ from typing import Protocol
 import pygame
 from pygame import mixer, Surface
 
-from db_and_time import DB, Time
+from db import DB
+from time_tracking import TimeTracking
 from settings import (
     SCREEN, BLACK, WHITE, SKY_BLUE, BLUE, ORANGE, YELLOW, GREEN, PURPLE, RED, DESCENT_SPEED, X_LENGTH, Y_LENGTH
 )
@@ -112,7 +113,7 @@ class Tetris:
         # What if there are other blocks where they will be?
         return any(i in self.next_blocks for i in range(1, 8))
 
-    def start(self, ti: Time):
+    def start(self, ti: TimeTracking):
         Tetris.number_of_blocks += 1
         ti.start_time = time.time()
 
@@ -141,7 +142,7 @@ class Tetris:
             return
         self.current_blocks.extend(current_iter(self.block_number, blocks))
 
-    def go(self, move: Enum, ti: Time):
+    def go(self, move: Enum, ti: TimeTracking):
         self.next_blocks.clear()
 
         if move in (Move.LEFT, Move.RIGHT):
@@ -735,7 +736,7 @@ class Block7(Tetris, Block):
 def main():
     block_shape_list = [Block1, Block2, Block3, Block4, Block5, Block6, Block7]
 
-    def check_and_go_down(ti: Time, current_block: Tetris, next_block: Tetris):
+    def check_and_go_down(ti: TimeTracking, current_block: Tetris, next_block: Tetris):
         """Check if the block can go down and do it if it is possible.
 
         Args:
@@ -756,7 +757,7 @@ def main():
 
     db = DB()
     score_list = db.fetch_highest_score()
-    ti = Time()
+    ti = TimeTracking()
 
     font_score = pygame.font.SysFont("consolas", 30)  
     font_game_over = pygame.font.SysFont("ebrima", 100)  

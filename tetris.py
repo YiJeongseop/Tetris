@@ -236,7 +236,7 @@ class Tetris:
             max_y -= 1
 
 
-class Block1(Tetris, Block):
+class BlockI(Tetris, Block): 
     def __init__(self):
         super().__init__(1)
 
@@ -313,7 +313,7 @@ class Block1(Tetris, Block):
             pygame.draw.rect(SCREEN, SKY_BLUE, pygame.Rect(32 * x + 16, 32 * 12, 32, 32))
 
 
-class Block2(Tetris, Block):
+class BlockJ(Tetris, Block): 
     def __init__(self):
         super().__init__(2)
 
@@ -389,7 +389,7 @@ class Block2(Tetris, Block):
         pygame.draw.rect(SCREEN, BLUE, pygame.Rect(32 * 15, 32 * 11, 32, 32))
 
         
-class Block3(Tetris, Block):
+class BlockL(Tetris, Block):
     def __init__(self):
         super().__init__(3)
 
@@ -465,7 +465,7 @@ class Block3(Tetris, Block):
         pygame.draw.rect(SCREEN, ORANGE, pygame.Rect(32 * 17, 32 * 11, 32, 32))
 
 
-class Block4(Tetris, Block):
+class BlockO(Tetris, Block):
     def __init__(self):
         super().__init__(4)
 
@@ -479,7 +479,7 @@ class Block4(Tetris, Block):
                 pygame.draw.rect(SCREEN, YELLOW, pygame.Rect(32 * x + 16, 32 * y, 32, 32))
 
 
-class Block5(Tetris, Block):
+class BlockS(Tetris, Block):
     def __init__(self):
         super().__init__(5)
 
@@ -566,7 +566,7 @@ class Block5(Tetris, Block):
             pygame.draw.rect(SCREEN, GREEN, pygame.Rect(32 * x, 32 * 12, 32, 32))
 
 
-class Block6(Tetris, Block):
+class BlockT(Tetris, Block):
     def __init__(self):
         super().__init__(6)
 
@@ -646,7 +646,7 @@ class Block6(Tetris, Block):
         pygame.draw.rect(SCREEN, PURPLE, pygame.Rect(32 * 16, 32 * 11, 32, 32))
 
 
-class Block7(Tetris, Block):
+class BlockZ(Tetris, Block):
     def __init__(self):
         super().__init__(7)
 
@@ -734,7 +734,7 @@ class Block7(Tetris, Block):
 
 
 def main():
-    block_shape_list = [Block1, Block2, Block3, Block4, Block5, Block6, Block7]
+    block_shape_list = [BlockI, BlockJ, BlockL, BlockO, BlockS, BlockT, BlockZ]
 
     def check_and_go_down(ti: TimeTracking, current_block: Tetris, next_block: Tetris):
         """Check if the block can go down and do it if it is possible.

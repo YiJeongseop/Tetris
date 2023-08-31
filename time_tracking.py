@@ -1,4 +1,3 @@
-
 class TimeTracking:
     def __init__(self):
         self.avg_time = 0

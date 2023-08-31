@@ -137,4 +137,4 @@ Each block have an associated name, and is represented with a Class.
 
 ## License
 
-This project is licensed under the _GNU General Public Licence_ - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the _MIT licence_ - see the [LICENSE](LICENSE) file for details.

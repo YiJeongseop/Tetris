@@ -280,7 +280,7 @@ class BlockI():
             self.tetris.clear()
             for y in range(4):
                 background_blocks[self.tetris.current_y_list[2] - 2 + y][self.tetris.current_x_list[2]].number = self.tetris.block_number
-                self.current_blocks[y] = background_blocks[self.tetris.current_y_list[2] - 2 + y][self.tetris.current_x_list[2]]
+                self.tetris.current_blocks[y] = background_blocks[self.tetris.current_y_list[2] - 2 + y][self.tetris.current_x_list[2]]
 
         elif self.tetris.state == 4:
             for y in range(4):

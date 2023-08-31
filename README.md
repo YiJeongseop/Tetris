@@ -131,10 +131,10 @@ Each block have an associated name, and is represented with a Class.
       The idea is relate the "same things", and unrelate the "things that are different".
 * [X] Maybe rename the `Block` classes, to a little more representative name as: `BlockO`, `BlockL`, etc. 
       Taking into account the different block type defined in [#technical-details](#technical-details).
-* [ ] Increase the code coverage  of the test suite, you could run `make coverage` 
+* [X] Increase the code coverage  of the test suite, you could run `make coverage` 
       and see which lines are not covered by the test suite:
       ![img.png](resources/images/img.png)
-
+      ![coverage](https://github.com/YiJeongseop/Tetris/assets/112690335/3a2cdcf9-44d4-48ba-a903-25153546fea7)
 ## License
 
 This project is licensed under the _MIT licence_ - see the [LICENSE](LICENSE) file for details.

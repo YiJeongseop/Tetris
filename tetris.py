@@ -358,7 +358,6 @@ class BlockJ():
             block.number = self.tetris.block_number
             self.tetris.current_blocks[i + 1] = block
 
-
     def turn(self):
         self.tetris.current_y_list.clear()
         self.tetris.current_x_list.clear()
@@ -367,25 +366,23 @@ class BlockJ():
             self.tetris.current_x_list.append(self.tetris.current_blocks[i].x//32)
 
         if self.tetris.state == 1:
-            if not self.turnable(lambda x: (1, x), lambda x: (0, x + 1)):
-                return
+            turnable_args = (lambda x: (1, x), lambda x: (0, x + 1))
             render_args = ((0, 2), lambda y: (y - 1, 0))
 
         elif self.tetris.state == 2:
-            if not self.turnable(lambda y: (y, -1), lambda y: (y + 1, 0)):
-                return
+            turnable_args = (lambda y: (y, -1), lambda y: (y + 1, 0))
             render_args = ((2, 0), lambda x: (1, -x))
 
         elif self.tetris.state == 3:
-            if not self.turnable(lambda x: (-1, -x), lambda x: (0, x - 1)):
-                return
+            turnable_args = (lambda x: (-1, -x), lambda x: (0, x - 1))
             render_args = ((0, -2), lambda y: (1 - y, 0))
 
         elif self.tetris.state == 4:
-            if not self.turnable(lambda y: (y, 1), lambda y: (y - 2, 0)):
-                return
+            turnable_args = (lambda y: (y, 1), lambda y: (y - 2, 0))
             render_args = ((-2, 0), lambda x: (-1, x))
 
+        if not self.turnable(*turnable_args):
+            return
         self.tetris.clear()
         self.render_background_blocks(*render_args)
         self.tetris.state += 1

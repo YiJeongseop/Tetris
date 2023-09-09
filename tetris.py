@@ -1,3 +1,4 @@
+import itertools
 import random
 import time
 from enum import Enum
@@ -239,64 +240,72 @@ class BlockI():
         if self.tetris.state == 1:
             if self.tetris.current_y_list[0] == 0:
                 return
-            for x in range(4):
-                if background_blocks[self.tetris.current_y_list[0] - 1][self.tetris.current_x_list[0] + x].not_block:
-                    return
-                if background_blocks[self.tetris.current_y_list[0] + 1][self.tetris.current_x_list[0] + x].not_block:
-                    return
-                if background_blocks[self.tetris.current_y_list[0] + 2][self.tetris.current_x_list[0] + x].not_block:
-                    return
+            current_y = self.tetris.current_y_list[0] 
+            current_x = self.tetris.current_x_list[0] 
+            coords = ((y, x) for x in range(4) for y in [-1, 1, 2])
+            if any(background_blocks[current_y + y][current_x+ x].not_block for y, x in coords):
+                return
 
             self.tetris.clear()
-            for y in range(4):
-                background_blocks[self.tetris.current_y_list[2] + 2 - y][self.tetris.current_x_list[2]].number = self.tetris.block_number
-                self.tetris.current_blocks[y] = background_blocks[self.tetris.current_y_list[2] + 2 - y][self.tetris.current_x_list[2]]
+            current_y = self.tetris.current_y_list[2] 
+            current_x = self.tetris.current_x_list[2] 
+            blocks_to_process = (background_blocks[current_y + 2 - y][current_x] for y in range(4))
+            for i, block in enumerate(blocks_to_process):
+                block.number = self.tetris.block_number
+                self.tetris.current_blocks[i] = block
 
         elif self.tetris.state == 2:
-            for y in range(4):
-                if background_blocks[self.tetris.current_y_list[3] + y][self.tetris.current_x_list[0] - 1].not_block:
-                    return
-            for y in range(4):
-                if background_blocks[self.tetris.current_y_list[3] + y][self.tetris.current_x_list[0] + 1].not_block:
-                    return
-            for y in range(4):
-                if background_blocks[self.tetris.current_y_list[3] + y][self.tetris.current_x_list[0] - 2].not_block:
-                    return
+            current_y = self.tetris.current_y_list[3]
+            current_x = self.tetris.current_x_list[0]
+            coords = itertools.chain(
+                ((y, -1) for y in range(4)),
+                ((y, 1) for y in range(4)),
+                ((y, -2) for y in range(4)),
+            )
+            if any(background_blocks[current_y + y][current_x + x].not_block for y, x in coords):
+                return
 
             self.tetris.clear()
-            for x in range(4):
-                background_blocks[self.tetris.current_y_list[1]][self.tetris.current_x_list[1] + 1 - x].number = self.tetris.block_number
-                self.tetris.current_blocks[x] = background_blocks[self.tetris.current_y_list[1]][self.tetris.current_x_list[1] + 1 - x]
+            current_y = self.tetris.current_y_list[1]
+            current_x = self.tetris.current_x_list[1]
+            blocks_to_process = (background_blocks[current_y][current_x + 1 - x] for x in range(4))
+            for i, block in enumerate(blocks_to_process):
+                block.number = self.tetris.block_number
+                self.tetris.current_blocks[i] = block
 
         elif self.tetris.state == 3:
-            for x in range(4):
-                if background_blocks[self.tetris.current_y_list[0] + 1][self.tetris.current_x_list[0] - x].not_block:
-                    return
-                if background_blocks[self.tetris.current_y_list[0] - 1][self.tetris.current_x_list[0] - x].not_block:
-                    return
-                if background_blocks[self.tetris.current_y_list[0] - 2][self.tetris.current_x_list[0] - x].not_block:
-                    return
+            current_y = self.tetris.current_y_list[0] 
+            current_x = self.tetris.current_x_list[0] 
+            coords = ((y, -x) for x in range(4) for y in [1, -1, -2])
+            if any(background_blocks[current_y + y][current_x + x].not_block for y, x in coords):
+                return
 
             self.tetris.clear()
-            for y in range(4):
-                background_blocks[self.tetris.current_y_list[2] - 2 + y][self.tetris.current_x_list[2]].number = self.tetris.block_number
-                self.tetris.current_blocks[y] = background_blocks[self.tetris.current_y_list[2] - 2 + y][self.tetris.current_x_list[2]]
+            current_y = self.tetris.current_y_list[2]
+            current_x = self.tetris.current_x_list[2]
+            blocks_to_process = (background_blocks[current_y - 2 + y][current_x] for y in range(4))
+            for i, block in enumerate(blocks_to_process):
+                block.number = self.tetris.block_number
+                self.tetris.current_blocks[i] = block
 
         elif self.tetris.state == 4:
-            for y in range(4):
-                if background_blocks[self.tetris.current_y_list[0] + y][self.tetris.current_x_list[0] - 1].not_block:
-                    return
-            for y in range(4):
-                if background_blocks[self.tetris.current_y_list[0] + y][self.tetris.current_x_list[0] + 1].not_block:
-                    return
-            for y in range(4):
-                if background_blocks[self.tetris.current_y_list[0] + y][self.tetris.current_x_list[0] + 2].not_block:
-                    return
+            current_y = self.tetris.current_y_list[0] 
+            current_x = self.tetris.current_x_list[0] 
+            coords = itertools.chain(
+                ((y, -1) for y in range(4)),
+                ((y, 1) for y in range(4)),
+                ((y, 2) for y in range(4)),
+            )
+            if any(background_blocks[current_y + y][current_x + x].not_block for y, x in coords):
+                return
 
             self.tetris.clear()
-            for x in range(4):
-                background_blocks[self.tetris.current_y_list[1]][self.tetris.current_x_list[1] - 1 + x].number = self.tetris.block_number
-                self.tetris.current_blocks[x] = background_blocks[self.tetris.current_y_list[1]][self.tetris.current_x_list[1] - 1 + x]
+            current_y = self.tetris.current_y_list[1]
+            current_x = self.tetris.current_x_list[1]
+            blocks_to_process = (background_blocks[current_y][current_x - 1 + x] for x in range(4))
+            for i, block in enumerate(blocks_to_process):
+                block.number = self.tetris.block_number
+                self.tetris.current_blocks[i] = block
 
         self.tetris.state += 1
 

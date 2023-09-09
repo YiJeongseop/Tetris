@@ -229,6 +229,28 @@ class BlockI():
     def __init__(self, tetris: Tetris):
         self.number = 1
         self.tetris = tetris
+        self.current_list_coords = [
+            (0, 0),
+            (0, 3),
+            (0, 0),
+            (0, 0),
+        ]
+        self.background_list_coords = [
+            (2, 2),
+            (1, 1),
+            (2, 2),
+            (1, 1),
+        ]
+
+    @property
+    def current_coord(self):
+        y, x = self.current_list_coords[self.tetris.state - 1]
+        return (self.tetris.current_y_list[y], self.tetris.current_x_list[x])
+
+    @property
+    def background_coord(self):
+        y, x = self.background_list_coords[self.tetris.state - 1]
+        return (self.tetris.current_y_list[y], self.tetris.current_x_list[x])
 
     def turn(self):
         self.tetris.current_y_list.clear()
@@ -240,73 +262,44 @@ class BlockI():
         if self.tetris.state == 1:
             if self.tetris.current_y_list[0] == 0:
                 return
-            current_y = self.tetris.current_y_list[0] 
-            current_x = self.tetris.current_x_list[0] 
-            coords = ((y, x) for x in range(4) for y in [-1, 1, 2])
-            if any(background_blocks[current_y + y][current_x+ x].not_block for y, x in coords):
-                return
-
-            self.tetris.clear()
-            current_y = self.tetris.current_y_list[2] 
-            current_x = self.tetris.current_x_list[2] 
-            blocks_to_process = (background_blocks[current_y + 2 - y][current_x] for y in range(4))
-            for i, block in enumerate(blocks_to_process):
-                block.number = self.tetris.block_number
-                self.tetris.current_blocks[i] = block
+            checking_coords = ((y, x) for x in range(4) for y in [-1, 1, 2])
+            turning_coords = ((2 - y, 0) for y in range(4))
 
         elif self.tetris.state == 2:
-            current_y = self.tetris.current_y_list[3]
-            current_x = self.tetris.current_x_list[0]
-            coords = itertools.chain(
+            checking_coords = itertools.chain(
                 ((y, -1) for y in range(4)),
                 ((y, 1) for y in range(4)),
                 ((y, -2) for y in range(4)),
             )
-            if any(background_blocks[current_y + y][current_x + x].not_block for y, x in coords):
-                return
-
-            self.tetris.clear()
-            current_y = self.tetris.current_y_list[1]
-            current_x = self.tetris.current_x_list[1]
-            blocks_to_process = (background_blocks[current_y][current_x + 1 - x] for x in range(4))
-            for i, block in enumerate(blocks_to_process):
-                block.number = self.tetris.block_number
-                self.tetris.current_blocks[i] = block
+            turning_coords = ((0, 1 - x) for x in range(4))
 
         elif self.tetris.state == 3:
-            current_y = self.tetris.current_y_list[0] 
-            current_x = self.tetris.current_x_list[0] 
-            coords = ((y, -x) for x in range(4) for y in [1, -1, -2])
-            if any(background_blocks[current_y + y][current_x + x].not_block for y, x in coords):
-                return
-
-            self.tetris.clear()
-            current_y = self.tetris.current_y_list[2]
-            current_x = self.tetris.current_x_list[2]
-            blocks_to_process = (background_blocks[current_y - 2 + y][current_x] for y in range(4))
-            for i, block in enumerate(blocks_to_process):
-                block.number = self.tetris.block_number
-                self.tetris.current_blocks[i] = block
+            checking_coords = ((y, -x) for x in range(4) for y in [1, -1, -2])
+            turning_coords = ((y - 2, 0) for y in range(4))
 
         elif self.tetris.state == 4:
-            current_y = self.tetris.current_y_list[0] 
-            current_x = self.tetris.current_x_list[0] 
-            coords = itertools.chain(
+            checking_coords = itertools.chain(
                 ((y, -1) for y in range(4)),
                 ((y, 1) for y in range(4)),
                 ((y, 2) for y in range(4)),
             )
-            if any(background_blocks[current_y + y][current_x + x].not_block for y, x in coords):
-                return
+            turning_coords = ((0, x - 1) for x in range(4))
 
-            self.tetris.clear()
-            current_y = self.tetris.current_y_list[1]
-            current_x = self.tetris.current_x_list[1]
-            blocks_to_process = (background_blocks[current_y][current_x - 1 + x] for x in range(4))
-            for i, block in enumerate(blocks_to_process):
-                block.number = self.tetris.block_number
-                self.tetris.current_blocks[i] = block
-
+        current_y, current_x = self.current_coord
+        background_y, background_x = self.background_coord
+        is_not_turnable = any(
+            background_blocks[current_y + y][current_x + x].not_block for y, x in checking_coords
+        )
+        if is_not_turnable:
+            return
+        self.tetris.clear()
+        blocks_to_render = (
+            background_blocks[background_y + y][background_x + x]
+            for y, x in turning_coords
+        )
+        for i, block in enumerate(blocks_to_render):
+            block.number = self.tetris.block_number
+            self.tetris.current_blocks[i] = block
         self.tetris.state += 1
 
     @staticmethod

@@ -312,6 +312,12 @@ class BlockJ():
     def __init__(self, tetris: Tetris):
         self.number = 2
         self.tetris = tetris
+        self.turnable_check_coords = [
+            [(1, 1), (0, 0)],
+            [(1, 1), (0, 0)],
+            [(1, 1), (0, 0)],
+            [(3, 1), (0, 0)],
+        ]
         self.background_list_coords = [
             [(0, 0), (2, 2)],
             [(0, 0), (0, 0)],
@@ -319,6 +325,21 @@ class BlockJ():
             [(0, 0), (0, 0)],
         ]
 
+    def turnable(self, offset_func1, offset_func2):
+        current_coords = [
+            (self.tetris.current_y_list[y], self.tetris.current_x_list[x])
+            for y, x in self.turnable_check_coords[self.tetris.state - 1]
+        ]
+        (y1, x1), (y2, x2) = current_coords
+        for i in range(3):
+            oy, ox = offset_func1(i)
+            if background_blocks[y1 + oy][x1 + ox].not_block:
+                return False
+        for i in range(2):
+            oy, ox = offset_func2(i)
+            if background_blocks[y2 + oy][x2 + ox].not_block:
+                return False
+        return True
 
     def render_background_blocks(self, offset, offset_loop_func):
         (y1, x1), (y2, x2) = self.background_list_coords[self.tetris.state - 1]
@@ -346,39 +367,23 @@ class BlockJ():
             self.tetris.current_x_list.append(self.tetris.current_blocks[i].x//32)
 
         if self.tetris.state == 1:
-            for x in range(3):
-                if background_blocks[self.tetris.current_y_list[1] + 1][self.tetris.current_x_list[1] + x].not_block:
-                    return
-            for x in range(2):
-                if background_blocks[self.tetris.current_y_list[0]][self.tetris.current_x_list[0] + 1 + x].not_block:
-                    return
+            if not self.turnable(lambda x: (1, x), lambda x: (0, x + 1)):
+                return
             render_args = ((0, 2), lambda y: (y - 1, 0))
 
         elif self.tetris.state == 2:
-            for y in range(3):
-                if background_blocks[self.tetris.current_y_list[1] + y][self.tetris.current_x_list[1] - 1].not_block:
-                    return
-            for x in range(2):
-                if background_blocks[self.tetris.current_y_list[0] + 1 + y][self.tetris.current_x_list[0]].not_block:
-                    return
+            if not self.turnable(lambda y: (y, -1), lambda y: (y + 1, 0)):
+                return
             render_args = ((2, 0), lambda x: (1, -x))
 
         elif self.tetris.state == 3:
-            for x in range(3):
-                if background_blocks[self.tetris.current_y_list[1] - 1][self.tetris.current_x_list[1] - x].not_block:
-                    return
-            for x in range(2):
-                if background_blocks[self.tetris.current_y_list[0]][self.tetris.current_x_list[0] - 1 + x].not_block:
-                    return
+            if not self.turnable(lambda x: (-1, -x), lambda x: (0, x - 1)):
+                return
             render_args = ((0, -2), lambda y: (1 - y, 0))
 
         elif self.tetris.state == 4:
-            for y in range(3):
-                if background_blocks[self.tetris.current_y_list[3] + y][self.tetris.current_x_list[1] + 1].not_block:
-                    return
-            for x in range(2):
-                if background_blocks[self.tetris.current_y_list[0] - 2 + y][self.tetris.current_x_list[0]].not_block:
-                    return
+            if not self.turnable(lambda y: (y, 1), lambda y: (y - 2, 0)):
+                return
             render_args = ((-2, 0), lambda x: (-1, x))
 
         self.tetris.clear()

@@ -312,6 +312,31 @@ class BlockJ():
     def __init__(self, tetris: Tetris):
         self.number = 2
         self.tetris = tetris
+        self.background_list_coords = [
+            [(0, 0), (2, 2)],
+            [(0, 0), (0, 0)],
+            [(0, 0), (2, 2)],
+            [(0, 0), (0, 0)],
+        ]
+
+
+    def render_background_blocks(self, offset, offset_loop_func):
+        (y1, x1), (y2, x2) = self.background_list_coords[self.tetris.state - 1]
+
+        current_y = self.tetris.current_y_list[y1]
+        current_x = self.tetris.current_x_list[x1]
+        block = background_blocks[current_y + offset[0]][current_x + offset[1]]
+        block.number = self.tetris.block_number
+        self.tetris.current_blocks[0] = block
+
+        current_y = self.tetris.current_y_list[y2]
+        current_x = self.tetris.current_x_list[x2]
+        for i in range(3):
+            y, x = offset_loop_func(i)
+            block = background_blocks[current_y + y][current_x + x]
+            block.number = self.tetris.block_number
+            self.tetris.current_blocks[i + 1] = block
+
 
     def turn(self):
         self.tetris.current_y_list.clear()
@@ -329,11 +354,7 @@ class BlockJ():
                     return
 
             self.tetris.clear()
-            background_blocks[self.tetris.current_y_list[0]][self.tetris.current_x_list[0] + 2].number = self.tetris.block_number
-            self.tetris.current_blocks[0] = background_blocks[self.tetris.current_y_list[0]][self.tetris.current_x_list[0] + 2]
-            for y in range(3):
-                background_blocks[self.tetris.current_y_list[2] - 1 + y][self.tetris.current_x_list[2]].number = self.tetris.block_number
-                self.tetris.current_blocks[y + 1] = background_blocks[self.tetris.current_y_list[2] - 1 + y][self.tetris.current_x_list[2]]
+            self.render_background_blocks((0, 2), lambda y: (y - 1, 0))
 
         elif self.tetris.state == 2:
             for y in range(3):
@@ -344,11 +365,7 @@ class BlockJ():
                     return
 
             self.tetris.clear()
-            background_blocks[self.tetris.current_y_list[0] + 2][self.tetris.current_x_list[0]].number = self.tetris.block_number
-            self.tetris.current_blocks[0] = background_blocks[self.tetris.current_y_list[0] + 2][self.tetris.current_x_list[0]]
-            for x in range(3):
-                background_blocks[self.tetris.current_y_list[0] + 1][self.tetris.current_x_list[0] - x].number = self.tetris.block_number
-                self.tetris.current_blocks[x + 1] = background_blocks[self.tetris.current_y_list[0] + 1][self.tetris.current_x_list[0] - x]
+            self.render_background_blocks((2, 0), lambda x: (1, -x))
 
         elif self.tetris.state == 3:
             for x in range(3):
@@ -359,11 +376,7 @@ class BlockJ():
                     return
 
             self.tetris.clear()
-            background_blocks[self.tetris.current_y_list[0]][self.tetris.current_x_list[0] - 2].number = self.tetris.block_number
-            self.tetris.current_blocks[0] = background_blocks[self.tetris.current_y_list[0]][self.tetris.current_x_list[0] - 2]
-            for y in range(3):
-                background_blocks[self.tetris.current_y_list[2] + 1 - y][self.tetris.current_x_list[2]].number = self.tetris.block_number
-                self.tetris.current_blocks[y + 1] = background_blocks[self.tetris.current_y_list[2] + 1 - y][self.tetris.current_x_list[2]]
+            self.render_background_blocks((0, -2), lambda y: (1 - y, 0))
 
         elif self.tetris.state == 4:
             for y in range(3):
@@ -374,11 +387,7 @@ class BlockJ():
                     return
 
             self.tetris.clear()
-            background_blocks[self.tetris.current_y_list[0] - 2][self.tetris.current_x_list[0]].number = self.tetris.block_number
-            self.tetris.current_blocks[0] = background_blocks[self.tetris.current_y_list[0] - 2][self.tetris.current_x_list[0]]
-            for x in range(3):
-                background_blocks[self.tetris.current_y_list[0] - 1][self.tetris.current_x_list[0] + x].number = self.tetris.block_number
-                self.tetris.current_blocks[x + 1] = background_blocks[self.tetris.current_y_list[0] - 1][self.tetris.current_x_list[0] + x]
+            self.render_background_blocks((-2, 0), lambda x: (-1, x))
 
         self.tetris.state += 1
 

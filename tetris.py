@@ -352,9 +352,7 @@ class BlockJ():
             for x in range(2):
                 if background_blocks[self.tetris.current_y_list[0]][self.tetris.current_x_list[0] + 1 + x].not_block:
                     return
-
-            self.tetris.clear()
-            self.render_background_blocks((0, 2), lambda y: (y - 1, 0))
+            render_args = ((0, 2), lambda y: (y - 1, 0))
 
         elif self.tetris.state == 2:
             for y in range(3):
@@ -363,9 +361,7 @@ class BlockJ():
             for x in range(2):
                 if background_blocks[self.tetris.current_y_list[0] + 1 + y][self.tetris.current_x_list[0]].not_block:
                     return
-
-            self.tetris.clear()
-            self.render_background_blocks((2, 0), lambda x: (1, -x))
+            render_args = ((2, 0), lambda x: (1, -x))
 
         elif self.tetris.state == 3:
             for x in range(3):
@@ -374,9 +370,7 @@ class BlockJ():
             for x in range(2):
                 if background_blocks[self.tetris.current_y_list[0]][self.tetris.current_x_list[0] - 1 + x].not_block:
                     return
-
-            self.tetris.clear()
-            self.render_background_blocks((0, -2), lambda y: (1 - y, 0))
+            render_args = ((0, -2), lambda y: (1 - y, 0))
 
         elif self.tetris.state == 4:
             for y in range(3):
@@ -385,10 +379,10 @@ class BlockJ():
             for x in range(2):
                 if background_blocks[self.tetris.current_y_list[0] - 2 + y][self.tetris.current_x_list[0]].not_block:
                     return
+            render_args = ((-2, 0), lambda x: (-1, x))
 
-            self.tetris.clear()
-            self.render_background_blocks((-2, 0), lambda x: (-1, x))
-
+        self.tetris.clear()
+        self.render_background_blocks(*render_args)
         self.tetris.state += 1
 
     @staticmethod

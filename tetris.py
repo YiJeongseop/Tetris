@@ -579,77 +579,82 @@ class BlockT():
         self.number = 6
         self.tetris = tetris
 
+        self.turnable_check_coords = [
+            [(1, 1), (0, 1), (0, 3)],
+            [(1, 1), (0, 0), (0, 0)],
+            [(1, 3), (0, 0), (0, 0)],
+            [(3, 1), (0, 0), (0, 0)],
+        ]
+        self.background_list_coords = [
+            [(3, 3), (0, 0)],
+            [(3, 3), (0, 0)],
+            [(3, 3), (2, 0)],
+            [(3, 3), (0, 0)],
+        ]
+        self._turnable_offsets = [
+            [lambda x: (1, x), (0, 0), (0, 0)],
+            [lambda y: (y, -1), (-1, 0), (1, 0)],
+            [lambda x: (-1, x), (0, -1), (0, 1)],
+            [lambda y: (y, 1), (-1, 0), (1, 0)],
+        ]
+        self._render_offsets = [
+            [(0, 0), lambda y: (y, 0)],
+            [(0, 0), lambda x: (0, -x)],
+            [(0, 0), lambda y: (1 - y, 0)],
+            [(0, 0), lambda x: (0, x)],
+        ]
+
+    @property
+    def turnable(self):
+        state_index = self.tetris.state - 1
+        coords = [
+            (self.tetris.current_y_list[y], self.tetris.current_x_list[x])
+            for y, x in self.turnable_check_coords[state_index]
+        ]
+        y, x = coords[0]
+        offset_func = self._turnable_offsets[state_index][0]
+        for i in range(3):
+            oy, ox = offset_func(i)
+            if background_blocks[y + oy][x + ox].not_block:
+                return False
+        blocks_to_check = zip(coords[1:], self._turnable_offsets[state_index][1:])
+        for (y, x), (oy, ox) in blocks_to_check:
+            if background_blocks[y + oy][x + ox].not_block:
+                return False
+        return True
+
+
+    def render_background_blocks(self):
+        state_index = self.tetris.state - 1
+        (y1, x1), (y2, x2) = self.background_list_coords[state_index]
+        coords = [
+            (self.tetris.current_y_list[y], self.tetris.current_x_list[x])
+            for y, x in self.background_list_coords[state_index]
+        ]
+        y, x = coords[0]
+        oy, ox = self._render_offsets[state_index][0]
+        block = background_blocks[y + oy][x + ox]
+        block.number = self.tetris.block_number
+        self.tetris.current_blocks[0] = block
+
+        y, x = coords[1]
+        offset_func = self._render_offsets[state_index][1]
+        for i in range(3):
+            oy, ox = offset_func(i)
+            block = background_blocks[y + oy][x + ox]
+            block.number = self.tetris.block_number
+            self.tetris.current_blocks[i + 1] = block
+
     def turn(self):
         self.tetris.current_y_list.clear()
         self.tetris.current_x_list.clear()
         for i in range(4):
             self.tetris.current_y_list.append(self.tetris.current_blocks[i].y//32)
             self.tetris.current_x_list.append(self.tetris.current_blocks[i].x//32)
-
-        if self.tetris.state == 1:
-            for x in range(3):
-                if background_blocks[self.tetris.current_y_list[1] + 1][self.tetris.current_x_list[1] + x].not_block:
-                    return
-            if background_blocks[self.tetris.current_y_list[0]][self.tetris.current_x_list[1]].not_block:
-                return
-            if background_blocks[self.tetris.current_y_list[0]][self.tetris.current_x_list[3]].not_block:
-                return
-
-            self.tetris.clear()
-            background_blocks[self.tetris.current_y_list[3]][self.tetris.current_x_list[3]].number = self.tetris.block_number
-            self.tetris.current_blocks[0] = background_blocks[self.tetris.current_y_list[3]][self.tetris.current_x_list[3]]
-            for y in range(3):
-                background_blocks[self.tetris.current_y_list[0] + y][self.tetris.current_x_list[0]].number = self.tetris.block_number
-                self.tetris.current_blocks[y + 1] = background_blocks[self.tetris.current_y_list[0] + y][self.tetris.current_x_list[0]]
-
-        elif self.tetris.state == 2:
-            for y in range(3):
-                if background_blocks[self.tetris.current_y_list[1] + y][self.tetris.current_x_list[1] - 1].not_block:
-                    return
-            if background_blocks[self.tetris.current_y_list[0] - 1][self.tetris.current_x_list[0]].not_block:
-                return
-            if background_blocks[self.tetris.current_y_list[0] + 1][self.tetris.current_x_list[0]].not_block:
-                return
-
-            self.tetris.clear()
-            background_blocks[self.tetris.current_y_list[3]][self.tetris.current_x_list[3]].number = self.tetris.block_number
-            self.tetris.current_blocks[0] = background_blocks[self.tetris.current_y_list[3]][self.tetris.current_x_list[3]]
-            for x in range(3):
-                background_blocks[self.tetris.current_y_list[0]][self.tetris.current_x_list[0] - x].number = self.tetris.block_number
-                self.tetris.current_blocks[x + 1] = background_blocks[self.tetris.current_y_list[0]][self.tetris.current_x_list[0] - x]
-
-        elif self.tetris.state == 3:
-            for x in range(3):
-                if background_blocks[self.tetris.current_y_list[1] - 1][self.tetris.current_x_list[3] + x].not_block:
-                    return
-            if background_blocks[self.tetris.current_y_list[0]][self.tetris.current_x_list[0] - 1].not_block:
-                return
-            if background_blocks[self.tetris.current_y_list[0]][self.tetris.current_x_list[0] + 1].not_block:
-                return
-
-            self.tetris.clear()
-            background_blocks[self.tetris.current_y_list[3]][self.tetris.current_x_list[3]].number = self.tetris.block_number
-            self.tetris.current_blocks[0] = background_blocks[self.tetris.current_y_list[3]][self.tetris.current_x_list[3]]
-            for y in range(3):
-                background_blocks[self.tetris.current_y_list[2] + 1 - y][self.tetris.current_x_list[0]].number = self.tetris.block_number
-                self.tetris.current_blocks[y + 1] = background_blocks[self.tetris.current_y_list[2] + 1 - y][self.tetris.current_x_list[0]]
-
-        elif self.tetris.state == 4:
-            for y in range(3):
-                if background_blocks[self.tetris.current_y_list[3] + y][self.tetris.current_x_list[1] + 1].not_block:
-                    return
-            if background_blocks[self.tetris.current_y_list[0] - 1][self.tetris.current_x_list[0]].not_block:
-                return
-            if background_blocks[self.tetris.current_y_list[0] + 1][self.tetris.current_x_list[0]].not_block:
-                return
-
-            self.tetris.clear()
-            background_blocks[self.tetris.current_y_list[3]][self.tetris.current_x_list[3]].number = self.tetris.block_number
-            self.tetris.current_blocks[0] = background_blocks[self.tetris.current_y_list[3]][self.tetris.current_x_list[3]]
-            for x in range(3):
-                background_blocks[self.tetris.current_y_list[0]][self.tetris.current_x_list[0] + x].number = self.tetris.block_number
-                self.tetris.current_blocks[x + 1] = background_blocks[self.tetris.current_y_list[0]][self.tetris.current_x_list[0] + x]
-
+        if not self.turnable:
+            return
+        self.tetris.clear()
+        self.render_background_blocks()
         self.tetris.state += 1
         
     @staticmethod

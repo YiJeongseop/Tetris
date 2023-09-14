@@ -337,20 +337,16 @@ class BlockJ():
     @property
     def turnable(self):
         state_index = self.tetris.state - 1
-        current_coords = [
+        coords = [
             (self.tetris.current_y_list[y], self.tetris.current_x_list[x])
             for y, x in self.turnable_check_coords[state_index]
         ]
-        (y1, x1), (y2, x2) = current_coords
-        offset_func1, offset_func2 = self._turnable_offsets[state_index]
-        for i in range(3):
-            oy, ox = offset_func1(i)
-            if background_blocks[y1 + oy][x1 + ox].not_block:
-                return False
-        for i in range(2):
-            oy, ox = offset_func2(i)
-            if background_blocks[y2 + oy][x2 + ox].not_block:
-                return False
+        blocks_to_check = zip(coords, self._turnable_offsets[state_index], [3, 2])
+        for (y, x), offset_func, offsets in blocks_to_check:
+            for i in range(offsets):
+                oy, ox = offset_func(i)
+                if background_blocks[y + oy][x + ox].not_block:
+                    return False
         return True
 
     def render_background_blocks(self):
@@ -527,16 +523,16 @@ class BlockS():
             (self.tetris.current_y_list[y], self.tetris.current_x_list[x])
             for y, x in self.turnable_check_coords[state_index]
         ]
-        (y1, x1), (y2, x2), (y3, x3) = coords
-        offset_func1, (oy2, ox2), (oy3, ox3) = self._turnable_offsets[state_index]
+        y, x = coords[0]
+        offset_func = self._turnable_offsets[state_index][0]
         for i in range(3):
-            oy1, ox1 = offset_func1(i)
-            if background_blocks[y1 + oy1][x1 + ox1].not_block:
+            oy, ox = offset_func(i)
+            if background_blocks[y + oy][x + ox].not_block:
                 return False
-        if background_blocks[y2 + oy2][x2 + ox2].not_block:
-            return False
-        if background_blocks[y3 + oy3][x3 + ox3].not_block:
-            return False
+        blocks_to_check = zip(coords[1:], self._turnable_offsets[state_index][1:])
+        for (y, x), (oy, ox) in blocks_to_check:
+            if background_blocks[y + oy][x + ox].not_block:
+                return False
         return True
 
     def render_background_blocks(self):

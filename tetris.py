@@ -230,6 +230,13 @@ class Tetris:
         block.render_background_blocks()
         self.state += 1
 
+    def refresh(self):
+        self.current_y_list.clear()
+        self.current_x_list.clear()
+        for i in range(4):
+            self.current_y_list.append(self.current_blocks[i].y//32)
+            self.current_x_list.append(self.current_blocks[i].x//32)
+
 
 class BlockI(): 
     def __init__(self, tetris: Tetris):
@@ -295,11 +302,7 @@ class BlockI():
             self.tetris.current_blocks[i] = block
 
     def turn(self):
-        self.tetris.current_y_list.clear()
-        self.tetris.current_x_list.clear()
-        for i in range(4):
-            self.tetris.current_y_list.append(self.tetris.current_blocks[i].y//32)
-            self.tetris.current_x_list.append(self.tetris.current_blocks[i].x//32)
+        self.tetris.refresh()
         self.tetris.rotate(self)
 
     @staticmethod
@@ -372,11 +375,7 @@ class BlockJ():
             self.tetris.current_blocks[i + 1] = block
 
     def turn(self):
-        self.tetris.current_y_list.clear()
-        self.tetris.current_x_list.clear()
-        for i in range(4):
-            self.tetris.current_y_list.append(self.tetris.current_blocks[i].y//32)
-            self.tetris.current_x_list.append(self.tetris.current_blocks[i].x//32)
+        self.tetris.refresh()
         self.tetris.rotate(self)
 
     @staticmethod
@@ -450,11 +449,7 @@ class BlockL():
 
 
     def turn(self):
-        self.tetris.current_y_list.clear()
-        self.tetris.current_x_list.clear()
-        for i in range(4):
-            self.tetris.current_y_list.append(self.tetris.current_blocks[i].y//32)
-            self.tetris.current_x_list.append(self.tetris.current_blocks[i].x//32)
+        self.tetris.refresh()
         self.tetris.rotate(self)
 
     @staticmethod
@@ -546,11 +541,7 @@ class BlockS():
                 self.tetris.current_blocks[i + block_offset] = block
 
     def turn(self):
-        self.tetris.current_y_list.clear()
-        self.tetris.current_x_list.clear()
-        for i in range(4):
-            self.tetris.current_y_list.append(self.tetris.current_blocks[i].y//32)
-            self.tetris.current_x_list.append(self.tetris.current_blocks[i].x//32)
+        self.tetris.refresh()
         self.tetris.rotate(self)
 
     @staticmethod
@@ -713,11 +704,7 @@ class BlockZ():
                 self.tetris.current_blocks[i + block_offset] = block
 
     def turn(self):
-        self.tetris.current_y_list.clear()
-        self.tetris.current_x_list.clear()
-        for i in range(4):
-            self.tetris.current_y_list.append(self.tetris.current_blocks[i].y//32)
-            self.tetris.current_x_list.append(self.tetris.current_blocks[i].x//32)
+        self.tetris.refresh()
         self.tetris.rotate(self)
 
     @staticmethod

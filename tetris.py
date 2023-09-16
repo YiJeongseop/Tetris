@@ -223,6 +223,13 @@ class Tetris:
                     min_y += 1
             max_y -= 1
 
+    def rotate(self, block: Block):
+        if not block.turnable:
+            return
+        self.clear()
+        block.render_background_blocks()
+        self.state += 1
+
 
 class BlockI(): 
     def __init__(self, tetris: Tetris):
@@ -293,11 +300,7 @@ class BlockI():
         for i in range(4):
             self.tetris.current_y_list.append(self.tetris.current_blocks[i].y//32)
             self.tetris.current_x_list.append(self.tetris.current_blocks[i].x//32)
-        if not self.turnable:
-            return
-        self.tetris.clear()
-        self.render_background_blocks()
-        self.tetris.state += 1
+        self.tetris.rotate(self)
 
     @staticmethod
     def draw():
@@ -374,11 +377,7 @@ class BlockJ():
         for i in range(4):
             self.tetris.current_y_list.append(self.tetris.current_blocks[i].y//32)
             self.tetris.current_x_list.append(self.tetris.current_blocks[i].x//32)
-        if not self.turnable:
-            return
-        self.tetris.clear()
-        self.render_background_blocks()
-        self.tetris.state += 1
+        self.tetris.rotate(self)
 
     @staticmethod
     def draw():
@@ -456,11 +455,7 @@ class BlockL():
         for i in range(4):
             self.tetris.current_y_list.append(self.tetris.current_blocks[i].y//32)
             self.tetris.current_x_list.append(self.tetris.current_blocks[i].x//32)
-        if not self.turnable:
-            return
-        self.tetris.clear()
-        self.render_background_blocks()
-        self.tetris.state += 1
+        self.tetris.rotate(self)
 
     @staticmethod
     def draw():
@@ -556,11 +551,7 @@ class BlockS():
         for i in range(4):
             self.tetris.current_y_list.append(self.tetris.current_blocks[i].y//32)
             self.tetris.current_x_list.append(self.tetris.current_blocks[i].x//32)
-        if not self.turnable:
-            return
-        self.tetris.clear()
-        self.render_background_blocks()
-        self.tetris.state += 1
+        self.tetris.rotate(self)
 
     @staticmethod
     def draw():
@@ -647,11 +638,7 @@ class BlockT():
         for i in range(4):
             self.tetris.current_y_list.append(self.tetris.current_blocks[i].y//32)
             self.tetris.current_x_list.append(self.tetris.current_blocks[i].x//32)
-        if not self.turnable:
-            return
-        self.tetris.clear()
-        self.render_background_blocks()
-        self.tetris.state += 1
+        self.tetris.rotate(self)
         
     @staticmethod
     def draw():
@@ -731,11 +718,7 @@ class BlockZ():
         for i in range(4):
             self.tetris.current_y_list.append(self.tetris.current_blocks[i].y//32)
             self.tetris.current_x_list.append(self.tetris.current_blocks[i].x//32)
-        if not self.turnable:
-            return
-        self.tetris.clear()
-        self.render_background_blocks()
-        self.tetris.state += 1
+        self.tetris.rotate(self)
 
     @staticmethod
     def draw():

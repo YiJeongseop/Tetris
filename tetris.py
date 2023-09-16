@@ -102,10 +102,13 @@ class Tetris:
 
     @state.setter
     def state(self, value):
-        if self._state != 4:
+        """Checks the bounds of the state value and wraps the value when necessary before setting"""
+        if value in range(1, 5):
             self._state = value
-        else:
+        elif value > 4:
             self._state = 1
+        elif value < 1:
+            self._state = 4
 
     def gameover_state(self):
         # What if there are other blocks where they will be?

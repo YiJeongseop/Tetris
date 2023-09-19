@@ -26,7 +26,7 @@ class TestTetris(unittest.TestCase):
         self.test_block_t = tetris.BlockT(self.tetris)
         self.test_block_z = tetris.BlockZ(self.tetris)
         self.time_tracking = TimeTracking()
-        self._turns = (2, 3, 4, 1)
+        self._turns = (1, 2, 3, 0)
         for y in range(21): 
             for x in range(12):
                 if x in (0, 11) or y == 20: 

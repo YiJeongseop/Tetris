@@ -26,9 +26,10 @@ class TestTetris(unittest.TestCase):
         self.test_block_t = tetris.BlockT(self.tetris)
         self.test_block_z = tetris.BlockZ(self.tetris)
         self.time_tracking = TimeTracking()
-        for y in range(0, 21): 
-            for x in range(0, 12):
-                if x == 0 or x == 11 or y == 20: 
+        self._turns = (2, 3, 4, 1)
+        for y in range(21): 
+            for x in range(12):
+                if x in (0, 11) or y == 20: 
                     tetris.background_blocks[y][x] = tetris.BackgroundBlock(32 * x, 32 * y, 8, True)
                 else:
                     tetris.background_blocks[y][x] = tetris.BackgroundBlock(32 * x, 32 * y, 0, False)
@@ -61,74 +62,44 @@ class TestTetris(unittest.TestCase):
     def test_turn_i(self):
         self.tetris.start(self.time_tracking, self.test_block_i)
         self.tetris.go(tetris.Move.DOWN, self.time_tracking)
-        self.test_block_i.turn()
-        self.assertEqual(self.tetris.state, 2)
-        self.test_block_i.turn()
-        self.assertEqual(self.tetris.state, 3)
-        self.test_block_i.turn()
-        self.assertEqual(self.tetris.state, 4)
-        self.test_block_i.turn()
-        self.assertEqual(self.tetris.state, 1)
+        for state in self._turns:
+            self.test_block_i.turn()
+            self.assertEqual(self.tetris.state, state)
 
     def test_turn_j(self):
         self.tetris.start(self.time_tracking, self.test_block_j)
         self.tetris.go(tetris.Move.DOWN, self.time_tracking)
-        self.test_block_j.turn()
-        self.assertEqual(self.tetris.state, 2)
-        self.test_block_j.turn()
-        self.assertEqual(self.tetris.state, 3)
-        self.test_block_j.turn()
-        self.assertEqual(self.tetris.state, 4)
-        self.test_block_j.turn()
-        self.assertEqual(self.tetris.state, 1)
+        for state in self._turns:
+            self.test_block_j.turn()
+            self.assertEqual(self.tetris.state, state)
         
     def test_turn_l(self):
         self.tetris.start(self.time_tracking, self.test_block_l)
         self.tetris.go(tetris.Move.DOWN, self.time_tracking)
-        self.test_block_l.turn()
-        self.assertEqual(self.tetris.state, 2)
-        self.test_block_l.turn()
-        self.assertEqual(self.tetris.state, 3)
-        self.test_block_l.turn()
-        self.assertEqual(self.tetris.state, 4)
-        self.test_block_l.turn()
-        self.assertEqual(self.tetris.state, 1)
+        for state in self._turns:
+            self.test_block_l.turn()
+            self.assertEqual(self.tetris.state, state)
         
     def test_turn_s(self):
         self.tetris.start(self.time_tracking, self.test_block_s)
         self.tetris.go(tetris.Move.DOWN, self.time_tracking)
-        self.test_block_s.turn()
-        self.assertEqual(self.tetris.state, 2)
-        self.test_block_s.turn()
-        self.assertEqual(self.tetris.state, 3)
-        self.test_block_s.turn()
-        self.assertEqual(self.tetris.state, 4)
-        self.test_block_s.turn()
-        self.assertEqual(self.tetris.state, 1)
+        for state in self._turns:
+            self.test_block_s.turn()
+            self.assertEqual(self.tetris.state, state)
         
     def test_turn_t(self):
         self.tetris.start(self.time_tracking, self.test_block_t)
         self.tetris.go(tetris.Move.DOWN, self.time_tracking)
-        self.test_block_t.turn()
-        self.assertEqual(self.tetris.state, 2)
-        self.test_block_t.turn()
-        self.assertEqual(self.tetris.state, 3)
-        self.test_block_t.turn()
-        self.assertEqual(self.tetris.state, 4)
-        self.test_block_t.turn()
-        self.assertEqual(self.tetris.state, 1)
+        for state in self._turns:
+            self.test_block_t.turn()
+            self.assertEqual(self.tetris.state, state)
         
     def test_turn_z(self):
         self.tetris.start(self.time_tracking, self.test_block_z)
         self.tetris.go(tetris.Move.DOWN, self.time_tracking)
-        self.test_block_z.turn()
-        self.assertEqual(self.tetris.state, 2)
-        self.test_block_z.turn()
-        self.assertEqual(self.tetris.state, 3)
-        self.test_block_z.turn()
-        self.assertEqual(self.tetris.state, 4)
-        self.test_block_z.turn()
-        self.assertEqual(self.tetris.state, 1)
+        for state in self._turns:
+            self.test_block_z.turn()
+            self.assertEqual(self.tetris.state, state)
 
     def test_i_draw(self):
         self.test_block_i.draw()
